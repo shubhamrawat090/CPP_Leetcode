@@ -1,50 +1,54 @@
-#include <vector>
-using namespace std;
-
 class Solution {
 public:
     vector<int> sortArray(vector<int>& nums) {
         int n = nums.size();
-        vector<int> temp(n); // Temporary array for merging
-        mergeSort(nums, temp, 0, n-1);
+        int s = 0, e = n-1;
+        mergeSort(nums, s, e);
         return nums;
     }
 
-    void mergeSort(vector<int>& arr, vector<int>& temp, int s, int e) {
-        if (s >= e) return;
-        int mid = s + (e - s) / 2;
-        
-        mergeSort(arr, temp, s, mid);
-        mergeSort(arr, temp, mid + 1, e);
-        
-        mergeSortedArr(arr, temp, s, mid, e);
+    void mergeSort(vector<int>& nums, int s, int e) {
+        if(s >= e) return;
+        int mid = s + (e-s)/2;
+        mergeSort(nums, s, mid);
+        mergeSort(nums, mid+1, e);
+
+        mergeSorted(nums, s, mid, e);
     }
 
-    void mergeSortedArr(vector<int>& arr, vector<int>& temp, int s, int mid, int e) {
-        int i = s, j = mid + 1, k = s;
-        
-        // Merge the two subarrays into temp
-        while (i <= mid && j <= e) {
-            if (arr[i] <= arr[j]) {
-                temp[k++] = arr[i++];
-            } else {
-                temp[k++] = arr[j++];
+    void mergeSorted(vector<int>& nums, int s, int mid, int e) {
+        if(s >= e) return;
+        if(s == e-1) {
+            // only 1 element
+            if(nums[s] > nums[e]) {
+                swap(nums[s], nums[e]);
+            }
+            return;
+        }
+        vector<int> left, right;
+        for(int i=s; i<=mid; i++) {
+            if(i>=s && i<=e) {
+                left.push_back(nums[i]);
+            } 
+        }
+        for(int i=mid+1; i<=e; i++) {
+            if(i>=s && i<=e) {
+                right.push_back(nums[i]);
             }
         }
-        
-        // Copy any remaining elements from the left subarray
-        while (i <= mid) {
-            temp[k++] = arr[i++];
+        int itr = s, l=0, r=0;
+        while(l<left.size() && r<right.size()) {
+            if(left[l] < right[r]) {
+                nums[itr++] = left[l++];
+            } else {
+                nums[itr++] = right[r++];
+            }
         }
-        
-        // Copy any remaining elements from the right subarray
-        while (j <= e) {
-            temp[k++] = arr[j++];
+        while(l<left.size()) {
+            nums[itr++] = left[l++];
         }
-        
-        // Copy the merged subarray back into the original array
-        for (int i = s; i <= e; i++) {
-            arr[i] = temp[i];
+        while(r<right.size()) {
+            nums[itr++] = right[r++];
         }
     }
 };
