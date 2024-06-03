@@ -61,32 +61,40 @@ public:
     }
 
     int get(int key) {
+        // If the node is NOT PRESENT in the cache
         if (cache.find(key) == cache.end()) {
             return -1;
         }
 
+        // If the node is present, we move it to front of cache to make MOST RECENTLY USED
         Node* node = cache[key];
         moveToFront(node);
+        // AND WE RETURN THE NODE's VALUE
         return node->keyVal.second;
     }
 
     void put(int key, int value) {
+        // If the key is already present in the cache - MOVE THIS ENTRY TO FRONT
         if (cache.find(key) != cache.end()) {
             Node* node = cache[key];
             node->keyVal.second = value;
             moveToFront(node);
-        } else {
+        } 
+        // Key in NOT present in the cache - ADD A NEW ENTRY
+        else {
             if (size == capacity) {
+                // If cache is full then we remove the last items (LEAST RECENTLY USED)
                 removeTail();
             }
 
-            Node* newNode = new Node({key, value});
-            newNode->next = head;
-            if (head) head->prev = newNode;
-            head = newNode;
-            if (tail == NULL) tail = head;
 
-            cache[key] = newNode;
+            Node* newNode = new Node({key, value});
+            newNode->next = head; // ptr --> head
+            if (head) head->prev = newNode; // ptr <-- head, complete the doubly link
+            head = newNode; // move head 1 step back
+            if (tail == NULL) tail = head; // If these was not tail, the added node is the first
+
+            cache[key] = newNode; // add the node to our cache in count the size
             size++;
         }
     }
