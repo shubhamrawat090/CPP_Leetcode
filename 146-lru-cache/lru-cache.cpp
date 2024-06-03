@@ -1,4 +1,6 @@
 class Node {
+    // A Doubly Linked List
+    //  prev <- val -> next
 public:
     pair<int, int> keyVal;
     Node* next;
