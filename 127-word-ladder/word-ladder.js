@@ -17,10 +17,9 @@ var ladderLength = function(beginWord, endWord, wordList) {
     while(queue.length) {
         const [currWord, level] = queue.shift();
         for(let i=0; i<currWord.length; i++) {
-            for(let j=0; j<26; j++) {
-                const nextChar = String.fromCharCode("a".charCodeAt(0) + j);
-                if(nextChar !== currWord[i]) {
-                    const newWord = currWord.slice(0, i) + nextChar + currWord.slice(i+1);
+            for(let char = 'a'; char <= 'z'; char = String.fromCharCode(char.charCodeAt(0) + 1)) {
+                if(char !== currWord[i]) {
+                    const newWord = currWord.slice(0, i) + char + currWord.slice(i+1);
                     if(newWord === endWord) {
                         return level + 1;
                     }
