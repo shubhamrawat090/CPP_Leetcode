@@ -5,10 +5,13 @@
 var orangesRotting = function(grid) {
     const queue = [];
     const m = grid.length, n = grid[0].length;
+    let freshCount = 0;
     for(let i=0; i<m; i++) {
         for(let j=0; j<n; j++) {
             if(grid[i][j] === 2) {
                 queue.push([i, j, 0]);
+            } else if(grid[i][j] === 1) {
+                freshCount++;
             }
         }
     }
@@ -27,17 +30,10 @@ var orangesRotting = function(grid) {
                 grid[newX][newY] = 2;
                 queue.push([newX, newY, time+1])
                 maxTime = Math.max(maxTime, time+1);
+                freshCount--;
             }
         }
     }
 
-     for(let i=0; i<m; i++) {
-        for(let j=0; j<n; j++) {
-            if(grid[i][j] === 1) {
-                return -1;
-            }
-        }
-    }
-
-    return maxTime;
+    return freshCount ? -1 : maxTime;
 };
