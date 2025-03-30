@@ -6,8 +6,26 @@ var rob = function (nums) {
     // return robHouseRecursion(nums, 0);
     // const dp = new Array(nums.length).fill(-1);
     // return robHouseMemo(nums, 0, dp);
-    return robHouseTabulate(nums);
+    // return robHouseTabulate(nums);
+    return robHouseSpaceOptimized(nums);
 };
+
+var robHouseSpaceOptimized = function (nums) {
+    const size = nums.length;
+    if (size === 0) return 0;
+    if (size === 1) return nums[0];
+
+    let prev1 = 0, prev2 = 0; // prev1 = dp[i+1], prev2 = dp[i+2]
+
+    for (let i = size - 1; i >= 0; i--) {
+        let curr = Math.max(nums[i] + prev2, prev1);
+        prev2 = prev1;
+        prev1 = curr;
+    }
+
+    return prev1;
+};
+
 
 var robHouseTabulate = function (nums) {
     const size = nums.length;
