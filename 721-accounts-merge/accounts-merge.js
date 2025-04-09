@@ -55,7 +55,8 @@ var accountsMerge = function (accounts) {
         for (let j = 1; j < accounts[i].length; j++) {
             const email = accounts[i][j];
             if (emailToIndex[email] !== undefined) {
-                ds.unionByRank(i, emailToIndex[email]);
+                // ds.unionByRank(i, emailToIndex[email]);
+                ds.unionBySize(i, emailToIndex[email]);
             } else {
                 emailToIndex[email] = i;
             }
