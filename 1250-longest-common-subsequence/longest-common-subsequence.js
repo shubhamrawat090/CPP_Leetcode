@@ -7,8 +7,32 @@ var longestCommonSubsequence = function (text1, text2) {
     // return lcsRecursive(text1, text2, text1.length - 1, text2.length - 1);
     // const dp = new Array(text1.length).fill().map(() => new Array(text2.length).fill(-1));
     // return lcsMemo(text1, text2, text1.length - 1, text2.length - 1, dp);
-    return lcsTabulate(text1, text2);
+    // return lcsTabulate(text1, text2);
+    return lcsSpaceOptimized(text1, text2);
 };
+
+function lcsSpaceOptimized(text1, text2) {
+    const textLen1 = text1.length, textLen2 = text2.length;
+    let prev = new Array(textLen2 + 1), curr = new Array(textLen2 + 1).fill(0);
+    for (let j = 0; j <= textLen2; j++) {
+        prev[j] = 0;
+    }
+
+    for (let i = 1; i <= textLen1; i++) {
+        for (let j = 1; j <= textLen2; j++) {
+            if (text1[i - 1] === text2[j - 1]) {
+                // both match
+                curr[j] = 1 + prev[j - 1];
+            } else {
+                // doesn't match
+                curr[j] = Math.max(prev[j], curr[j - 1]);
+            }
+        }
+        prev = [...curr];
+    }
+
+    return prev[textLen2];
+}
 
 function lcsTabulate(text1, text2) {
     const textLen1 = text1.length, textLen2 = text2.length;
