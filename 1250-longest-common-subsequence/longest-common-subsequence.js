@@ -28,7 +28,7 @@ function lcsSpaceOptimized(text1, text2) {
                 curr[j] = Math.max(prev[j], curr[j - 1]);
             }
         }
-        prev = [...curr];
+        prev = [...curr]; ///// KEEP IN MIND TO DO LIKE THIS
     }
 
     return prev[textLen2];
