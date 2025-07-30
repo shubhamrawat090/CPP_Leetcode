@@ -36,13 +36,11 @@ function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
         second = second.next;
     }
 
-    if(first) {
         let skippedNode = first.next; // Can delete this ISOLATED node after in languages like C++
 
         if(skippedNode) {
             first.next = skippedNode.next;
         }
-    }
 
 
     return head;
