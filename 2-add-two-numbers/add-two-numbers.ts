@@ -20,12 +20,9 @@ function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | nul
     while (n1 != null || n2 != null) {
         const n1Val = n1 != null ? n1.val : 0;
         const n2Val = n2 != null ? n2.val : 0;
-        console.log("\nBefore adding: ", {n1Val, n2Val, carry});
         let sum = (n1Val + n2Val + carry);
         let remainder = sum % 10;
         carry = Math.floor(sum / 10);
-        console.log("After adding: ", {sum, carry, remainder})
-
         ansPtr.next = new ListNode(remainder);
         ansPtr = ansPtr.next;
 
