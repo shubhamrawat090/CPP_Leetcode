@@ -15,5 +15,7 @@ class Solution:
                     return False
                 elif char == "}" and lst.pop() != "{":
                     return False
+                else: 
+                    continue
 
         return len(lst) == 0
