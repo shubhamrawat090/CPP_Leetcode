@@ -11,8 +11,6 @@ var nextPermutation = function (nums) {
         }
     }
 
-    console.log("pivot: ", pivot)
-
     if (pivot === -1) { // curr permutation is the highest
         // return the smallest combination
         let left = 0, right = nums.length - 1;
