@@ -9,8 +9,7 @@ const swap = (nums, i, j) => {
     nums[i] = nums[i] ^ nums[j];
 };
 
-const reverse = (nums, start) => {
-    let left = start, right = nums.length - 1;
+const reverse = (nums, left, right = nums.length - 1) => {
     while (left < right) {
         swap(nums, left, right);
         left++;
