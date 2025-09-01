@@ -2,6 +2,22 @@
  * @param {number[]} nums
  * @return {void} Do not return anything, modify nums in-place instead.
  */
+
+const swap = (nums, i, j) => {
+    nums[i] = nums[i] ^ nums[j];
+    nums[j] = nums[i] ^ nums[j];
+    nums[i] = nums[i] ^ nums[j];
+};
+
+const reverse = (nums, start) => {
+    let left = start, right = nums.length - 1;
+    while (left < right) {
+        swap(nums, left, right);
+        left++;
+        right--;
+    }
+};
+
 var nextPermutation = function (nums) {
     let pivot = -1;
     for (let i = nums.length - 1; i > 0; i--) {
@@ -12,16 +28,8 @@ var nextPermutation = function (nums) {
     }
 
     if (pivot === -1) { // curr permutation is the highest
-        // return the smallest combination
-        let left = 0, right = nums.length - 1;
-        while (left < right) {
-            nums[left] = nums[left] ^ nums[right];
-            nums[right] = nums[left] ^ nums[right];
-            nums[left] = nums[left] ^ nums[right];
-
-            left++;
-            right--;
-        }
+        // POINT TO NOTE: Here I returned as it is without sorting. In the question smallest was asked if none possible so we reverse it. I forgot it, so need to keep in mind.
+        reverse(nums, 0);
         return;
     }
 
@@ -34,18 +42,9 @@ var nextPermutation = function (nums) {
     }
 
     // swap nums[pivot] and nums[successor]
-    nums[pivot] = nums[pivot] ^ nums[successor];
-    nums[successor] = nums[pivot] ^ nums[successor];
-    nums[pivot] = nums[pivot] ^ nums[successor];
+    swap(nums, pivot, successor);
 
     // reverse from pivot + 1, end
-    let left = pivot + 1, right = nums.length - 1;
-    while (left < right) {
-        nums[left] = nums[left] ^ nums[right];
-        nums[right] = nums[left] ^ nums[right];
-        nums[left] = nums[left] ^ nums[right];
-
-        left++;
-        right--;
-    }
+    // POINT TO NOTE: Here I did left != right and not left < right which caused TLE as left and right crosses each other and are never equal. It failed in test case [1,1]
+    reverse(nums, pivot + 1);
 };
