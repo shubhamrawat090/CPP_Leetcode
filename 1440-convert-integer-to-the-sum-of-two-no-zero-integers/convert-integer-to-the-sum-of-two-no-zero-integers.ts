@@ -1,14 +1,13 @@
 function getNoZeroIntegers(n: number): number[] {
-    let ans = [];
     for(let num1=1; num1<n; num1++) {
         if(isNoZero(num1)) {
             const num2 = n - num1;
             if(isNoZero(num2)) {
-                ans = [num1, num2];
+                return [num1, num2];
             }
         }
     }
-    return ans;
+    return [];
 };
 
 function isNoZero(num: number): boolean {
