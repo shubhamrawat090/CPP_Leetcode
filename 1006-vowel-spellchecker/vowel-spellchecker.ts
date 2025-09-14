@@ -46,7 +46,7 @@ function getWordMaps(wordlist) {
 
 function removeVowels(word) {
     let result = "";
-    const vowelList = ['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'];
+    const vowelList = ['a', 'e', 'i', 'o', 'u'];
 
     for (let i = 0; i < word.length; i++) {
         let char = word[i];
