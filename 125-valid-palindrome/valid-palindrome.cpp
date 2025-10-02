@@ -4,10 +4,10 @@ public:
         int left = 0, right = s.length();
 
         while(left < right) {
-            while(left < s.length() && !isalpha(s[left]) && !isdigit(s[left])) {
+            while(left < s.length() && !isalnum(s[left])) {
                 left++;
             }
-            while(right >= 0 && !isalpha(s[right]) && !isdigit(s[right])) {
+            while(right >= 0 && !isalnum(s[right])) {
                 right--;
             }
             if(left >= right) break;
