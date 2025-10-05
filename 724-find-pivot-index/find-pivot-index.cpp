@@ -10,13 +10,14 @@ public:
 
         int leftSum = 0, rightSum = totalSum;
         for(int i=0; i<nums.size(); i++) {
-            leftSum += i-1>=0 ? nums[i-1] : 0;
             rightSum -= nums[i];
 
             if(leftSum == rightSum) {
                 ans = i;
                 break;
             }
+
+            leftSum += nums[i];
         }
 
         return ans;
