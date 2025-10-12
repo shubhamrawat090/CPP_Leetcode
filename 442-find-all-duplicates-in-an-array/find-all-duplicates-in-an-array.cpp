@@ -6,7 +6,9 @@ public:
         while (i < n) {
             int correctIndex = nums[i] - 1;
             if (nums[i] != nums[correctIndex]) {
-                swap(nums[i], nums[correctIndex]);
+                int temp = nums[i];
+                nums[i] = nums[correctIndex];
+                nums[correctIndex] = temp;
             } else {
                 i++;
             }
