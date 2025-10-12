@@ -21,6 +21,6 @@ public:
             }
         }
 
-        return n;
+        return -1;
     }
 };
