@@ -17,8 +17,7 @@ public:
         }
 
         for (int j = 0; j < n; j++) {
-            cout << j << " : " << nums[j] << endl;
-            if (nums[j] != j + 1) {
+            if (j + 1 != nums[j]) {
                 return j + 1;
             }
         }
