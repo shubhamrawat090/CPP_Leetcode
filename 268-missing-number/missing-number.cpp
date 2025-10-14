@@ -3,9 +3,9 @@ public:
     int missingNumber(vector<int>& nums) {
         int n = nums.size();
         int i = 0;
-        while(i < n) {
+        while (i < n) {
             int correctIndex = nums[i];
-            if(nums[i] < n && nums[i] != i) {
+            if (i != nums[i] && nums[i] < n) {
                 int temp = nums[i];
                 nums[i] = nums[correctIndex];
                 nums[correctIndex] = temp;
@@ -14,9 +14,9 @@ public:
             }
         }
 
-        for(int i=0; i<n; i++) {
-            if(i != nums[i]) {
-                return i;
+        for (int j = 0; j < n; j++) {
+            if (j != nums[j]) {
+                return j;
             }
         }
 
