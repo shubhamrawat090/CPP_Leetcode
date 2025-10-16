@@ -3,9 +3,10 @@ public:
     int mySqrt(int x) {
         if (x == 0 || x == 1)
             return x;
-        int low = 1, high = x, ans = -1;
+        int low = 0, high = x, ans = -1;
         while (low <= high) {
-            int mid = low + (high - low) / 2;
+            // int mid = low + (high - low) / 2;
+            int mid = (low + high) / 2;
             if (mid <= x / mid) {
                 // store the potential answer and go right
                 ans = mid;
