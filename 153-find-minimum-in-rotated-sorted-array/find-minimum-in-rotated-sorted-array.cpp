@@ -1,26 +1,18 @@
 class Solution {
 public:
     int findMin(vector<int>& nums) {
-        int n = nums.size();
-        int st=0, ed=n-1;
-
-        while(st < ed) {
-            int mid = st + (ed - st)/2;
-            
-            if(mid+1 < n-1 && nums[mid+1] < nums[mid]) {
-                return nums[mid + 1];
-            } else if(mid-1 >= 0 && nums[mid-1] > nums[mid]) {
-                return nums[mid];
+        int low = 0, high = nums.size() - 1;
+        while (low < high) {
+            int mid = (low + high) / 2;
+            // NOTE: Check the right side always -> mid - high
+            if (nums[mid] > nums[high]) {
+                // unsorted part -> ans is here only
+                low = mid + 1;
             } else {
-                // Is it in left increasing or right increasing
-                if(nums[mid] > nums[ed]) {
-                    st = mid+1;
-                } else {
-                    ed = mid-1;
-                }
+                // sorted part -> answer cannot be here
+                high = mid;
             }
         }
-
-        return nums[st]; // nums[ed]
+        return nums[high]; // or low
     }
 };
