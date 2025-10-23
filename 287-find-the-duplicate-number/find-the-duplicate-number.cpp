@@ -4,23 +4,22 @@ public:
         int n = nums.size();
         int i = 0;
 
+        // rearrange - cyclic sort
         while (i < n) {
             int correctIndex = nums[i] - 1;
             if (nums[i] != nums[correctIndex]) {
-                int temp = nums[i];
-                nums[i] = nums[correctIndex];
-                nums[correctIndex] = temp;
+                swap(nums[i], nums[correctIndex]);
             } else {
                 i++;
             }
         }
 
-        for (int i = 0; i < n; i++) {
-            if (i + 1 != nums[i]) {
-                return nums[i];
+        for (int j = 0; j < n; j++) {
+            if (j + 1 != nums[j]) {
+                return nums[j];
             }
         }
 
-        return -1; // DOESN'T MATTER WHAT YOU RETURN HERE. BECAUSE CODE NEVER REACHES HERE DUE TO THE NATURE OF THE TEST CASES
+        return n;
     }
 };
