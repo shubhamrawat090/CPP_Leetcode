@@ -3,12 +3,12 @@ public:
     vector<int> findDuplicates(vector<int>& nums) {
         int n = nums.size();
         int i = 0;
+
+        // rearrange - cyclic sort
         while (i < n) {
             int correctIndex = nums[i] - 1;
             if (nums[i] != nums[correctIndex]) {
-                int temp = nums[i];
-                nums[i] = nums[correctIndex];
-                nums[correctIndex] = temp;
+                swap(nums[i], nums[correctIndex]);
             } else {
                 i++;
             }
@@ -16,7 +16,7 @@ public:
 
         vector<int> ans;
         for (int j = 0; j < n; j++) {
-            if (nums[j] != j + 1) {
+            if (j + 1 != nums[j]) {
                 ans.push_back(nums[j]);
             }
         }
