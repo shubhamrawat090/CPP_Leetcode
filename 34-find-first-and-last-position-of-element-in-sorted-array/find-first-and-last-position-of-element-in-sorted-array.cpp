@@ -8,15 +8,14 @@ public:
     }
 
     int firstOccurrence(vector<int>& nums, int target) {
-        int low = 0, high = nums.size() - 1;
-        int ans = -1;
-
-        while (low <= high) {
+        int low = 0, high = nums.size() - 1, ans = -1;
+        while(low <= high) {
             int mid = (low + high) / 2;
-            if (nums[mid] == target) {
-                ans = mid;
+            if(nums[mid] == target) {
+                ans = mid; // possible ans
+                // find better ans on left
                 high = mid - 1;
-            } else if (nums[mid] < target) {
+            } else if(nums[mid] < target) {
                 low = mid + 1;
             } else {
                 high = mid - 1;
@@ -26,15 +25,14 @@ public:
     }
 
     int lastOccurrence(vector<int>& nums, int target) {
-        int low = 0, high = nums.size() - 1;
-        int ans = -1;
-
-        while (low <= high) {
+        int low = 0, high = nums.size() - 1, ans = -1;
+        while(low <= high) {
             int mid = (low + high) / 2;
-            if (nums[mid] == target) {
-                ans = mid;
+            if(nums[mid] == target) {
+                ans = mid; // possible ans
+                // find better ans on right
                 low = mid + 1;
-            } else if (nums[mid] < target) {
+            } else if(nums[mid] < target) {
                 low = mid + 1;
             } else {
                 high = mid - 1;
