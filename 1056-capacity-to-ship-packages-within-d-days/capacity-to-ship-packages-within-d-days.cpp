@@ -1,39 +1,43 @@
 class Solution {
 public:
     int shipWithinDays(vector<int>& weights, int days) {
-        int maxVal = 0, sum = 0;
-        for(int weight: weights) {
-            sum += weight;
-            maxVal = max(weight, maxVal);
+        int N = weights.size(), sum = 0, maxVal = 0;
+        for(int i=0; i<N; i++) {
+            if(weights[i] > maxVal) {
+                maxVal = weights[i];
+            }
+            sum += weights[i];
         }
 
-        int low = maxVal, high = sum, ans = 0;
+        int low = maxVal, high = sum, ans;
         while(low <= high) {
-            int mid = (low + high) / 2;
-            if(isPossible(mid, weights, days)) {
+            int mid = low + ((high - low) / 2);
+            if(isPossible(mid, weights, N, days)) {
                 ans = mid;
-                high = mid - 1;
+                high = mid - 1; // try a smaller weight
             } else {
                 low = mid + 1;
             }
         }
-
         return ans;
     }
 
-    bool isPossible(int shipWeight, vector<int>& weights, int daysReq) {
-        int days = 1;
-        int weight = 0;
-
-        for(int i=0; i<weights.size(); i++) {
-            if(weight + weights[i] <= shipWeight) {
-                weight += weights[i];
+    bool isPossible(int checkWeight, vector<int>& weights, int N, int days) {
+        // If we can add weights[i] to the curr day's weight sum then we do it.
+        // Otherwise, we do not add weights[i] and move to next day
+        // For the next day we start with weightSum = weights[i]; // Because that weight wasn't added in prev day
+        int daysCounted = 1; // we start with day 1
+        int weightSum = 0;
+        for(int i = 0; i < N; i++) {
+            // Can we add to curr day's wtSum??
+            if(weightSum + weights[i] <= checkWeight) {
+                weightSum += weights[i];
             } else {
-                days++;
-                weight = weights[i];
+                daysCounted++;
+                weightSum = weights[i];
+                // Need to add weights[i] to next day
             }
         }
-
-        return days <= daysReq;
+        return daysCounted <= days;
     }
 };
