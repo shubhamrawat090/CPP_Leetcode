@@ -12,10 +12,10 @@ public:
         while(low <= high) {
             int mid = (low + high) / 2;
             if(nums[mid] == target) {
-                ans = mid; // possible ans
-                // find better ans on left
+                ans = mid; // potential answer
+                // First occurrence would be on left side 
                 high = mid - 1;
-            } else if(nums[mid] < target) {
+            } else if(target > nums[mid]) {
                 low = mid + 1;
             } else {
                 high = mid - 1;
@@ -29,10 +29,10 @@ public:
         while(low <= high) {
             int mid = (low + high) / 2;
             if(nums[mid] == target) {
-                ans = mid; // possible ans
-                // find better ans on right
+                ans = mid; // potential answer
+                // Last occurrence would be on right side 
                 low = mid + 1;
-            } else if(nums[mid] < target) {
+            } else if(target > nums[mid]) {
                 low = mid + 1;
             } else {
                 high = mid - 1;
