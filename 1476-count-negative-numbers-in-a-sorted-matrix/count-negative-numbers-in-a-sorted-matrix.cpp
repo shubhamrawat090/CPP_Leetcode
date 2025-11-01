@@ -9,6 +9,7 @@ public:
     }
 
     int countSingleRowNegatives(vector<int>& nums) {
+        // Binary search for decreasing array
         int N = nums.size();
         if(N == 0 || nums[N-1] >= 0) {
             return 0;
