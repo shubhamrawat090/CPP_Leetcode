@@ -16,12 +16,14 @@ public:
         // Row-wise sweep
         for (int i = 0; i < m; i++) {
             bool seen = false;
+            // To right
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == 2) seen = false;
                 else if (grid[i][j] == 1) seen = true;
                 else if (seen && grid[i][j] == 0) grid[i][j] = 3;
             }
             seen = false;
+            // To left
             for (int j = n - 1; j >= 0; j--) {
                 if (grid[i][j] == 2) seen = false;
                 else if (grid[i][j] == 1) seen = true;
@@ -32,12 +34,14 @@ public:
         // Column-wise sweep
         for (int j = 0; j < n; j++) {
             bool seen = false;
+            // To Bottom
             for (int i = 0; i < m; i++) {
                 if (grid[i][j] == 2) seen = false;
                 else if (grid[i][j] == 1) seen = true;
                 else if (seen && grid[i][j] == 0) grid[i][j] = 3;
             }
             seen = false;
+            // To Top
             for (int i = m - 1; i >= 0; i--) {
                 if (grid[i][j] == 2) seen = false;
                 else if (grid[i][j] == 1) seen = true;
