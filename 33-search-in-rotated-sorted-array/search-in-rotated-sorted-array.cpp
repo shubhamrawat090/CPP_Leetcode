@@ -1,6 +1,8 @@
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
+        // Search for sorted site
+        // Search if elem is inside sorted side
         int low = 0, high = nums.size() - 1;
         while(low <= high) {
             int mid = (low + high) / 2;
@@ -8,29 +10,27 @@ public:
                 return mid;
             }
 
-            // NOTE: nums[mid] cannot be equal to target as we covered it in the first If statement
+            // nums[mid] can NEVER be equal to target
 
-            // Is the left range (low -> mid) a sorted one like 1,3,4,5
+            // Is left side sorted? low -> mid
             if(nums[low] <= nums[mid]) {
-                // Can target be between this range nums[low] -> nums[mid]
-                if(target >= nums[low] && target < nums[mid]) { 
-                    // We move on the search on the left range only
+                // Left side is sorted
+
+                // Is target within sorted side - LEFT
+                if(target >= nums[low] && target < nums[mid]) {
+                    // Go left
                     high = mid - 1;
                 } else {
-                    // we move on to the right range
                     low = mid + 1;
                 }
+            } else {
+                // Right side is sorted
 
-            }
-            // Left range (low -> mid) is not a sorted one like 5,6,1,2,3
-            else {
-                // WE KNOW THAT The right range is sorted here (mid -> high)
-                // Can the target be in the right range(nums[mid], nums[high])
+                // Is target within sorted side - RIGHT
                 if(target > nums[mid] && target <= nums[high]) {
-                    // We keep searching in the right range
+                    // Go right
                     low = mid + 1;
                 } else {
-                    // We move to the left range
                     high = mid - 1;
                 }
             }
