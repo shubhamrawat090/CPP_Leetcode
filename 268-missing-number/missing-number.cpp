@@ -1,25 +1,24 @@
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {
-        int i = 0, N = nums.size();
-        // Rearrange - Make arr[i] = i
-        while(i < N) {
-            int correctIndex = nums[i];
-            if(i != nums[i] && nums[i] < N) {
+        int n = nums.size(), i = 0;
+        while(i < n) { // Rearrange
+            int correctIndex =  nums[i];
+            if(nums[i] < n && i != nums[i]) {
                 swap(nums[i], nums[correctIndex]);
             } else {
                 i++;
             }
         }
 
-        // Check - if arr[i] == i
-        for(int j=0; j<N; j++) {
-            if(nums[j] != j) {
-                return j;
+        // Check
+        int ans = n;
+        for(int j=0; j<n; j++) {
+            if(j != nums[j]) {
+                ans = j;
+                break;
             }
         }
-
-        // If no value is missing - 0 1 2 3. Then ans is 4 i.e. N
-        return N;
+        return ans;
     }
 };
