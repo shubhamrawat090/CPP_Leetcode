@@ -11,13 +11,25 @@ public:
             }
         }
 
-        vector<int> ans;
+        // vector<int> ans;
+        // for(int j=0; j<n; j++) {
+        //     if(j+1 != nums[j]) {
+        //         ans.push_back(nums[j]);
+        //     }
+        // }
+
+        // return ans;
+
+        // // If number appeared more than twice
+        unordered_set<int> ans;
         for(int j=0; j<n; j++) {
             if(j+1 != nums[j]) {
-                ans.push_back(nums[j]);
+                ans.insert(nums[j]);
             }
         }
 
-        return ans;
+        vector<int> finalAns(ans.begin(), ans.end());
+
+        return finalAns;
     }
 };
