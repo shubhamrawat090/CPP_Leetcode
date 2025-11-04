@@ -2,23 +2,23 @@ class Solution {
 public:
     vector<vector<int>> subsets(vector<int>& nums) {
         vector<vector<int>> ans;
-        vector<int> currSubset;
-        subsetsHelper(nums, 0, ans, currSubset);
+        vector<int> curr;
+        helper(nums, 0, nums.size() - 1, ans, curr);
         return ans;
     }
 
-    void subsetsHelper(vector<int>& nums, int i, vector<vector<int>>& ans, vector<int> &currSubset) {
-        if(i == nums.size()) {
-            ans.push_back(currSubset);
+    void helper(vector<int>& nums, int l, int r, vector<vector<int>>& ans, vector<int>& curr) {
+        if(l > r) {
+            ans.push_back(curr);
             return;
         }
 
-        // Include
-        currSubset.push_back(nums[i]);
-        subsetsHelper(nums, i+1, ans, currSubset); 
+        // INCLUDE
+        curr.push_back(nums[l]);
+        helper(nums, l + 1, r, ans, curr);
 
-        // Exclude
-        currSubset.pop_back();
-        subsetsHelper(nums, i+1, ans, currSubset); 
+        // EXCLUDE
+        curr.pop_back();
+        helper(nums, l + 1, r, ans, curr);
     }
 };
