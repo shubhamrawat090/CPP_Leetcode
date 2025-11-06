@@ -2,27 +2,25 @@ class Solution {
 public:
     vector<string> generateParenthesis(int n) {
         vector<string> ans;
-        string curr = "";
-        helper(ans, n, 0, 0, curr);
+        string curr;
+        helper(n, ans, curr, 0, 0);
         return ans;
     }
 
-    void helper(vector<string>& ans, int n, int open, int close, string& curr) {
+    void helper(int n, vector<string>& ans, string curr, int open, int close) {
         if(curr.size() == n * 2) {
             ans.push_back(curr);
             return;
         }
 
+        // open < n -> can add open bracket
+        // open > close -> can add closed bracket
         if(open < n) {
-            curr.push_back('(');
-            helper(ans, n, open + 1, close, curr);
-            curr.pop_back();
+            helper(n, ans, curr + '(', open + 1, close);
         }
 
         if(open > close) {
-            curr.push_back(')');
-            helper(ans, n, open, close + 1, curr);
-            curr.pop_back();
+            helper(n, ans, curr + ')', open, close + 1);
         }
     }
 };
