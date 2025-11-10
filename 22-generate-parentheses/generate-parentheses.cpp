@@ -3,24 +3,28 @@ public:
     vector<string> generateParenthesis(int n) {
         vector<string> ans;
         string curr;
-        helper(n, ans, curr, 0, 0);
+        helper(ans, n, 0, 0, curr);
         return ans;
     }
 
-    void helper(int n, vector<string>& ans, string curr, int open, int close) {
-        if(curr.size() == n * 2) {
+    void helper(vector<string>& ans, int n, int open, int close, string& curr) {
+        if(curr.size() == 2 * n) {
             ans.push_back(curr);
             return;
         }
 
-        // open < n -> can add open bracket
-        // open > close -> can add closed bracket
+        // Try to add open brackets
         if(open < n) {
-            helper(n, ans, curr + '(', open + 1, close);
+            curr.push_back('(');
+            helper(ans, n, open+1, close, curr);
+            curr.pop_back();
         }
 
-        if(open > close) {
-            helper(n, ans, curr + ')', open, close + 1);
+        // Try to add close brackets
+        if(close < open) {
+            curr.push_back(')');
+            helper(ans, n, open, close+1, curr);
+            curr.pop_back();
         }
     }
 };
