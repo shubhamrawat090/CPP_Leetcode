@@ -1,56 +1,61 @@
 class Solution {
 public:
-    int sol = 0;
     int totalNQueens(int n) {
         vector<vector<bool>> board(n, vector<bool>(n, false));
-        func(board, n, 0);
-        return sol;
+        int ans = 0;
+        helper(board, n, ans, 0);
+        return ans;
     }
 
-    void func(vector<vector<bool>>& board, int n, int row) {
+    void helper(vector<vector<bool>>& board, int n, int& ans, int row) {
         if(row == n) {
-            sol++;
+            ans++;
             return;
         }
 
         for(int col=0; col<n; col++) {
             board[row][col] = true;
-            if(isValid(board, n, row, col)) {
-                func(board, n, row+1);
+            if(isSafe(board, n, row, col)) {
+                helper(board, n, ans, row+1);
             }
             board[row][col] = false;
         }
     }
 
+    bool isSafe(vector<vector<bool>>& board, int n, int row, int col) {
+        // top->bottom
+        for(int r=0; r<row; r++) {
+            if(board[r][col] == true) {
+                return false;
+            }
+        }
+        // left->right
+        for(int c=0; c<col; c++) {
+            if(board[row][c] == true) {
+                return false;
+            } 
+        }
 
-    bool isValid(vector<vector<bool>>& board, int n, int row, int col) {
-        for(int i=0; i<n; i++) {
-            if(i != col && board[row][i]) return false;
+        // left diagonal
+        // top-half
+        int r=row-1, c=col-1;
+        while(r>=0 && c>=0) {
+            if(board[r][c] == true) {
+                return false;
+            }
+            r--, c--;
         }
-        for(int i=0; i<n; i++) {
-            if(i != row && board[i][col]) return false;
+
+        // right diagonal
+        // top-half
+        r=row-1, c=col+1;
+        while(r>=0 && c<n) {
+            if(board[r][c] == true) {
+                return false;
+            }
+            r--, c++;
         }
-        int tr, tc;
-        tr = row+1, tc = col+1;
-        while(tr<n && tc <n) {
-            if(board[tr][tc]) return false;
-            tr++, tc++;
-        }
-        tr = row+1, tc = col-1;
-        while(tr<n && tc >=0) {
-            if(board[tr][tc]) return false;
-            tr++, tc--;
-        }
-        tr = row-1, tc = col-1;
-        while(tr>=0 && tc >=0) {
-            if(board[tr][tc]) return false;
-            tr--, tc--;
-        }
-        tr = row-1, tc = col+1;
-        while(tr>=0 && tc <n) {
-            if(board[tr][tc]) return false;
-            tr--, tc++;
-        }
-        return true;
+
+        return true; // None of the condition caught pre-existing queen
     }
 };
