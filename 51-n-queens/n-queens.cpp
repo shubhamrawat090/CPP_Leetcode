@@ -42,7 +42,7 @@ public:
 
     bool isSafe(vector<vector<bool>>& board, int n, int row, int col) {
         // top->bottom
-        for(int r=0; r<n; r++) {
+        for(int r=0; r<row; r++) {
             if(r != row && board[r][col] == true) {
                 return false;
             }
