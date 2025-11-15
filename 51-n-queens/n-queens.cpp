@@ -43,13 +43,13 @@ public:
     bool isSafe(vector<vector<bool>>& board, int n, int row, int col) {
         // top->bottom
         for(int r=0; r<row; r++) {
-            if(r != row && board[r][col] == true) {
+            if(board[r][col] == true) {
                 return false;
             }
         }
         // left->right
         for(int c=0; c<col; c++) {
-            if(c != col && board[row][c] == true) {
+            if(board[row][c] == true) {
                 return false;
             } 
         }
@@ -63,14 +63,6 @@ public:
             }
             r--, c--;
         }
-        //bottom-half
-        r=row+1, c=col+1;
-        while(r<n && c<n) {
-            if(board[r][c] == true) {
-                return false;
-            }
-            r++, c++;
-        }
 
         // right diagonal
         // top-half
@@ -80,14 +72,6 @@ public:
                 return false;
             }
             r--, c++;
-        }
-        // bottom-half
-        r=row+1, c=col-1;
-        while(r<n && c>=0) {
-            if(board[r][c] == true) {
-                return false;
-            }
-            r++, c--;
         }
 
         return true; // None of the condition caught pre-existing queen
