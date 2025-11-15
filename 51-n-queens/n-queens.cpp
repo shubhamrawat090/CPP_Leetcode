@@ -48,7 +48,7 @@ public:
             }
         }
         // left->right
-        for(int c=0; c<n; c++) {
+        for(int c=0; c<col; c++) {
             if(c != col && board[row][c] == true) {
                 return false;
             } 
