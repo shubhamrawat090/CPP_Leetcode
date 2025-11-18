@@ -17,7 +17,6 @@ public:
     }
 
     int partition(vector<int>& arr, int low, int high) {
-
         // GIST: Make sure that all elem < pivot are on LEFT
         // and all elem > pivot are on right
 
