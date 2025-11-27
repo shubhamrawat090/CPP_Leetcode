@@ -10,6 +10,6 @@ public:
                 high = mid;
             }
         }
-        return low; // or high, at the end both at same
+        return low;
     }
 };
