@@ -4,7 +4,7 @@ public:
         int n = nums.size(), i=0;
         while(i < n) {
             int correctIndex = nums[i];
-            if(nums[i] < n && nums[i] != i) {
+            if(nums[i] < n && nums[correctIndex] != nums[i]) {
                 swap(nums[correctIndex], nums[i]);
             } else {
                 i++;
