@@ -3,6 +3,8 @@ public:
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
         vector<int> res;
 
+        if(matrix.size() == 0) return res; // No rows in matrix
+
         int top = 0, bottom = matrix.size() - 1;
         int left = 0, right = matrix[0].size() - 1;
         while (left <= right && top <= bottom) {
