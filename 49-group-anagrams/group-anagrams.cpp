@@ -22,7 +22,7 @@ public:
 
             string key = "";
             for(int val: freq) {
-                key += (val + '#');
+                key += (to_string(val) + '#');
             }
             
             anagramGroup[key].push_back(str);
