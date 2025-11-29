@@ -29,8 +29,8 @@ public:
         }
 
         // STEP 2
-        for(auto keyVal: anagramGroup) {
-            ans.push_back(keyVal.second);
+        for(auto [_, list]: anagramGroup) {
+            ans.push_back(list);
         }
 
         return ans;
