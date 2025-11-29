@@ -29,7 +29,7 @@ public:
         }
 
         // STEP 2
-        for(auto [_, list]: anagramGroup) {
+        for(auto &[_, list]: anagramGroup) {
             ans.push_back(list);
         }
 
