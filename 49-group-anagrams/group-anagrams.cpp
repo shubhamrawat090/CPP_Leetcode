@@ -9,19 +9,22 @@ public:
         
         // STEP 1
         unordered_map<string, vector<string>> anagramGroup;
-        for(string str: strs) {
+        for(int i=0; i<strs.size(); i++) {
+            string str = strs[i];
             // string key = str;
             // sort(key.begin(), key.end());
 
             // commonKey optimization: instead of sorting make a frequency string
             // like for "abc", 1#1#1#0#0....till 26 chars
             vector<int> freq(26, 0);
-            for(char ch: str) {
+            for(int i=0; i<str.size(); i++) {
+                char ch = str[i];
                 freq[ch - 'a']++;
             }
 
             string key = "";
-            for(int val: freq) {
+            for(int i=0; i<26; i++) {
+                int val = freq[i];
                 key += (to_string(val) + '#');
             }
             
