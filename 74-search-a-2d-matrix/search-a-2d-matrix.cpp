@@ -1,21 +1,19 @@
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        int rows = matrix.size();
-        if(rows == 0) return false;
-        int cols = matrix[0].size();
-        int left = 0, right = rows * cols - 1;
-
-        while(left <= right) {
-            int pivotIndex = (left + right) / 2;
-            int pivotElem = matrix[pivotIndex/cols][pivotIndex%cols];
-
-            if(target == pivotElem) {
+        // Staircase Search
+        // take top right element as starting point: i = 0, j = cols-1
+        // if target > arr[i][j] => go down
+        // else target < arr[i][j] => go left
+        int rows = matrix.size(), cols = matrix[0].size();
+        int i=0, j=cols-1;
+        while(i<rows && j>=0) {
+            if(matrix[i][j] == target) {
                 return true;
-            } else if(target > pivotElem) {
-                left = pivotIndex + 1;
+            } else if(matrix[i][j] > target) {
+                j--;
             } else {
-                right = pivotIndex - 1;
+                i++;
             }
         }
         return false;
