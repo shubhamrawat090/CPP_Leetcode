@@ -12,14 +12,11 @@ public:
     }
 
     void transpose(vector<vector<int>>& matrix) {
-        int R = matrix.size(), C = matrix[0].size();
-        vector<vector<int>> ans(C, vector<int>(R, 0));
-        for(int i=0; i<R; i++) {
-            for(int j=0; j<C; j++) {
-                ans[j][i] = matrix[i][j];
+        int N = matrix.size();
+        for(int i=0; i<N; i++) {
+            for(int j=0; j<i; j++) {
+                swap(matrix[i][j], matrix[j][i]);
             }
         }
-        
-        matrix = ans;
     }
 };
