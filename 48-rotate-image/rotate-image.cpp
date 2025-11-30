@@ -7,11 +7,7 @@ public:
 
     void reverseRows(vector<vector<int>>& matrix) {
         for(int i=0; i<matrix.size(); i++) {
-            int l = 0, r = matrix[0].size() - 1;
-            while(l < r) {
-                swap(matrix[i][l], matrix[i][r]);
-                l++, r--;
-            }
+            reverse(matrix[i].begin(), matrix[i].end());
         }
     }
 
