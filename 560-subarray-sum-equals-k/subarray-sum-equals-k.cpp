@@ -3,23 +3,34 @@ public:
     int subarraySum(vector<int>& nums, int k) {
         int n = nums.size();
         int prefix[n];
-        unordered_map<int, int>mp;
-        int cnt = 0;
+        
+        int count = 0;
+
+        // Generate prefix sum array (BOTH WAYS ARE CORRECT TO GENERATE PREFIX SUM ARRAY)
+        // int sum = 0;
+        // for(int i=0; i<n; i++) {
+        //     sum += nums[i];
+        //     prefix[i] = sum;
+        // }
 
         prefix[0] = nums[0];
-        for(int i = 1; i < n; i++){
+        for(int i=1; i<n; i++) {
             prefix[i] = prefix[i-1] + nums[i];
         }
 
-        for(int i = 0; i < n; i++){
-            if(prefix[i] == k) cnt++;
+        unordered_map<int, int> mp; // prefixSum --> freq map
+        for(int i=0; i<n; i++) {
+            // Direct sum check
+            if(prefix[i] == k) count++;
 
-            if(mp.find(prefix[i] - k) != mp.end()){
-                cnt += mp[prefix[i] - k];
+            // Check Indirect sum --> check if prefix[i] - k is present already or not
+            if(mp.find(prefix[i] - k) != mp.end()) {
+                count += mp[prefix[i] - k];
             }
 
             mp[prefix[i]]++;
         }
-        return cnt;
+
+        return count;
     }
 };
