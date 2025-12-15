@@ -1,6 +1,10 @@
 class Solution {
 public:
     int subarraySum(vector<int>& nums, int k) {
+        return usingPrefixSum(nums, k);
+    }
+
+    int usingPrefixSum(vector<int>& nums, int k) {
         int n = nums.size();
         int prefix[n];
         
