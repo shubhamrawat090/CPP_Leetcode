@@ -1,29 +1,31 @@
 class Solution {
 public:
     int findPairs(vector<int>& nums, int k) {
-        sort(nums.begin(), nums.end());
-        int n = nums.size();
-        int left = 0, right = 1;
-        int count = 0;
-        while(right < n) {
-            if(left == right) {
-                right++;
-                continue;
-            }
-            int diff = nums[right] - nums[left];
-            if(diff == k) {
-                count++;
-                left++, right++;
+        // Create a freq hashmap
+        // WHEN k == 0, y - x = 0, y == x. This means we need elements which are present >= 2 times => get elements with freq >= 2
+        // WHEN k != 0, do the below while searching in the keys of the map
+        // for each element x search if x + k also exists or not. 
+        // if yes count it.
+        unordered_map<int, int> freqMap;
+        for(int num: nums) {
+            freqMap[num]++;
+        }
 
-                // Skip all copies of left and right as we need unique pairs only
-                while(left < n && nums[left] == nums[left-1]) left++;
-                while(right < n && nums[right] == nums[right-1]) right++;
-            } else if(diff > k) {
-                left++;
-            } else {
-                right++;
+        int count = 0;
+
+        if(k == 0) {
+            for(auto elem: freqMap) {
+                if(elem.second >= 2) count++;
+            }
+        } else {
+            for(auto elem: freqMap) {
+                int x = elem.first;
+                if(freqMap.find(x + k) != freqMap.end()) {
+                    count++;
+                }
             }
         }
+
         return count;
     }
 };
