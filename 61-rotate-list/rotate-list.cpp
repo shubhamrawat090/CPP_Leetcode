@@ -11,31 +11,28 @@
 class Solution {
 public:
     ListNode* rotateRight(ListNode* head, int k) {
-        if(head == NULL || head->next == NULL || k == 0) return head;
-        int length = 0;
+        if(head == NULL || head->next == NULL || k == 0) return head; // 0 nodes or 1 node or 0 rotations
         ListNode* curr = head;
-        ListNode* tail;
-
-        while(curr != NULL) {
+        int length = 1;
+        while(curr->next != NULL) {
+            curr = curr->next;
             length++;
-            if(curr->next == NULL) tail = curr;
+        }
+
+        // curr points at the last node
+        // orig list: 1->2->3->4->5->
+        // 5--->1 in this step
+        curr->next = head;
+
+        k = k % length;
+        for(int i=0; i<length-k; i++) {
+            // from node 5 to get to node 3 we need to move 3 steps(n-k steps)
             curr = curr->next;
         }
 
-        if(length == 0) return NULL;
-
-        k = k%length; // k rotations is orig array
-        if(k == 0) return head;
-
-        curr = head;
-        for(int i=1; i<length-k; i++) {
-            curr = curr->next;
-        }
-
-        ListNode* origHead = head;
+        // Before breaking connection b/w nodes 3 and 4. MAKE 4 the head
         head = curr->next;
-        curr->next = NULL;
-        tail->next = origHead;
+        curr->next = NULL; // break connection between nodes 3 and 4
 
         return head;
     }
