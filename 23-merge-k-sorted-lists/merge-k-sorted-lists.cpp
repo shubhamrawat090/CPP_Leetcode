@@ -11,22 +11,21 @@
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        if (lists.size() == 0)
-            return NULL;
-        if (lists.size() == 1)
-            return lists[0];
+        int k = lists.size();
+        if(k == 0) return NULL;
+        if(k == 1) return lists[0];
+        ListNode* mergedList = mergeTwoLists(lists[0], lists[1]);
 
-        ListNode* ans = lists[0];
-        for (int i = 1; i < lists.size(); i++) {
-            ans = mergeTwoLists(ans, lists[i]);
+        for(int i=2; i<k; i++) {
+            mergedList = mergeTwoLists(mergedList, lists[i]);
         }
-        return ans;
+
+        return mergedList;
     }
 
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
         ListNode* dummy = new ListNode();
         ListNode* temp = dummy;
-
         while (list1 != NULL && list2 != NULL) {
             if (list1->val < list2->val) {
                 temp->next = list1;
@@ -37,13 +36,11 @@ public:
             }
             temp = temp->next;
         }
-
         if (list1 != NULL) {
             temp->next = list1;
         } else if (list2 != NULL) {
             temp->next = list2;
         }
-
         return dummy->next;
     }
 };
