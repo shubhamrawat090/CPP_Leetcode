@@ -2,19 +2,24 @@ class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
         vector<int> ans;
-        ans.push_back(firstPos(nums, target));
-        ans.push_back(lastPos(nums, target));
+        int firstPos = findFirstPos(nums, target);
+        ans.push_back(firstPos);
+        if(firstPos != -1) {
+            int lastPos = findLastPos(nums, target);
+            ans.push_back(lastPos);
+        } else {
+            ans.push_back(-1);
+        }
         return ans;
     }
 
-    int firstPos(vector<int>& nums, int target) {
-        int low = 0, high = nums.size() - 1, ans = -1;
+    int findFirstPos(vector<int>& nums, int target) {
+        int n = nums.size();
+        int low = 0, high = n - 1, ans = -1;
         while(low <= high) {
             int mid = (low + high) / 2;
             if(nums[mid] == target) {
-                // Potential ans
                 ans = mid;
-                // Go left - first pos
                 high = mid - 1;
             } else if(nums[mid] > target) {
                 high = mid - 1;
@@ -25,19 +30,18 @@ public:
         return ans;
     }
 
-    int lastPos(vector<int>& nums, int target) {
-        int low = 0, high = nums.size() - 1, ans = -1;
+    int findLastPos(vector<int>& nums, int target) {
+        int n = nums.size();
+        int low = 0, high = n - 1, ans = -1;
         while(low <= high) {
             int mid = (low + high) / 2;
             if(nums[mid] == target) {
-                // Potential ans
                 ans = mid;
-                // Go right - last pos
                 low = mid + 1;
-            } else if(nums[mid] < target) {
-                low = mid + 1;
-            } else {
+            } else if(nums[mid] > target) {
                 high = mid - 1;
+            } else {
+                low = mid + 1;
             }
         }
         return ans;
