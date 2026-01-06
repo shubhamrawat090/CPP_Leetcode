@@ -1,12 +1,11 @@
 class Solution {
 public:
     int minEatingSpeed(vector<int>& piles, int h) {
+        int n = piles.size();
         int low = 1, high = 1000000009;
-        int ans;
-        // Koko wants to eat slowly
-        // Check if mid speed possible and store if yes and try lower speed
+        int ans = 1;
         while(low <= high) {
-            int mid = low + (high - low) / 2;
+            int mid = (low + high) / 2;
             if(isPossible(mid, piles, h)) {
                 ans = mid;
                 high = mid - 1;
@@ -17,11 +16,11 @@ public:
         return ans;
     }
 
-    bool isPossible(int checkPileSpeed, vector<int>& piles, int hours) {
-        long long hoursCounted = 0;
+    bool isPossible(int speed, vector<int>& piles, int hours) {
+        long long hoursTaken = 0;
         for(int pile: piles) {
-            hoursCounted += ceil(pile * 1.0 / checkPileSpeed);
+            hoursTaken += ceil(pile * 1.0 / speed);
         }
-        return hoursCounted <= hours;
+        return hoursTaken <= hours;
     }
 };
