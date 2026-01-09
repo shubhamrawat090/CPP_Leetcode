@@ -15,6 +15,6 @@ public:
                 st.pop();
             }
         }
-        return st.size() == 0;
+        return st.empty(); // at the end all the open should be cancelled out by closed
     }
 };
