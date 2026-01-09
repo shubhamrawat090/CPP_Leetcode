@@ -1,72 +1,38 @@
 class Solution {
 public:
     int largestRectangleArea(vector<int>& heights) {
-      // get arr of first smaller to left  
-      // get arr of first smaller to right  
-      // for arr[i] => AREA = height * length = arr[i] * (nextSmall[i]-prevSmall[i]-1)
-      int n = heights.size();
-      vector<int> nextSmall = getSmallArr(heights, n, "next");
-      vector<int> prevSmall = getSmallArr(heights, n, "prev");
-
-      int maxArea = -1;
-      for(int i=0; i<n; i++) {
-        int nextSmallElem = nextSmall[i] == -1 ? n : nextSmall[i];
-        int prevSmallElem = prevSmall[i] == -1 ? -1 : prevSmall[i];
-        int currArea = heights[i] * (nextSmallElem-prevSmallElem-1);
-        maxArea = max(maxArea, currArea);
-      }
-
-      return maxArea;
+        vector<int> smallerRight = getSmallerRight(heights);
+        vector<int> smallerLeft = getSmallerLeft(heights);
+        int maxArea = 0;
+        for(int i=0; i<heights.size(); i++) {
+            int area = heights[i] * (smallerRight[i]-smallerLeft[i]-1);
+            maxArea = max(area, maxArea);
+        }
+        return maxArea;
     }
 
-private:
-    vector<int> getSmallArr(vector<int>& arr, int n, string type) {
-        vector<int> ans(n, -1);
-        stack<int> stk; // NOTE: stores index instead of element
-        stk.push(-1);
-
-        if(type == "next") {
-            // next small
-            for(int i=n-1; i>=0; i--) {
-                int minFound = -1;
-                // POP - till you find a topElem < arr[i]
-                while(!stk.empty()) {
-                    int top = stk.top();
-                    int topElem = top == -1 ? -1 : arr[top];
-                    if(topElem < arr[i]) {
-                        minFound = top;
-                        break;
-                    } else {
-                        stk.pop();
-                    }
-                }
-                // add elem < arr[i] at ans[i]
-                ans[i] = minFound;
-                // push arr[i] in stk
-                stk.push(i);
-            } 
-        } else {
-            // prev small
-            for(int i=0; i<n; i++) {
-                int minFound = -1;
-                // POP - till you find a topElem < arr[i]
-                while(!stk.empty()) {
-                    int top = stk.top();
-                    int topElem = top == -1 ? -1 : arr[top];
-                    if(topElem < arr[i]) {
-                        minFound = top;
-                        break;
-                    } else {
-                        stk.pop();
-                    }
-                }
-                // add elem < arr[i] at ans[i]
-                ans[i] = minFound;
-                // push arr[i] in stk
-                stk.push(i);
-            } 
+    vector<int> getSmallerRight(vector<int>& heights) {
+        int n = heights.size();
+        stack<int> st;
+        vector<int> ans(n);
+        for(int i=n-1; i>=0; i--) {
+            while(!st.empty() && heights[st.top()] >= heights[i]) st.pop();
+            ans[i] = st.empty() ? n : st.top();
+            st.push(i);
         }
+        return ans;
+    }
 
+
+    vector<int> getSmallerLeft(vector<int>& heights) {
+        int n = heights.size();
+        stack<int> st;
+        vector<int> ans(n);
+        for(int i=0; i<n; i++) {
+            while(!st.empty() && heights[st.top()] >= heights[i]) st.pop();
+            ans[i] = st.empty() ? -1 : st.top();
+            st.push(i);
+        }
         return ans;
     }
 };
