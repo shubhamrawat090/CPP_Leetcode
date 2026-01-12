@@ -58,7 +58,9 @@ public:
     void put(int key, int value) {
         if (cache.contains(key)) {
             // if(cache.find(key) != cache.end()) // we can use this also
-            remove(cache[key]);
+            Node* existingNode = cache[key];
+            remove(existingNode);
+            delete existingNode; // AVOID memory leak
         }
         Node* newNode = new Node(key, value);
         insert(newNode);
@@ -67,6 +69,7 @@ public:
             Node* lru = oldest->next;
             remove(lru);
             cache.erase(lru->key);
+            delete lru; // AVOID Memory
         }
     }
 };
