@@ -1,101 +1,79 @@
-class Node {
-    // A Doubly Linked List
-    //  prev <- val -> next
-public:
-    pair<int, int> keyVal;
-    Node* next;
-    Node* prev;
-
-    Node(pair<int, int> newKeyVal) {
-        this->keyVal = newKeyVal;
-        this->next = NULL;
-        this->prev = NULL;
-    }
-};
-
 class LRUCache {
-    int size;
-    int capacity;
-    Node* head;
-    Node* tail;
+private:
+    // NEED Doubly Linked List + Map
+    struct Node {
+        int key, val;
+        Node* next;
+        Node* prev;
+
+        Node(int key, int val) {
+            this->key = key;
+            this->val = val;
+            this->next = NULL;
+            this->prev = NULL;
+        }
+    };
+    int cap;
+    Node* latest;
+    Node* oldest;
     unordered_map<int, Node*> cache;
 
-    void moveToFront(Node* node) {
-        if (node == head) return;
+    void insert(Node* node) {
+        Node* prev = latest->prev;
+        Node* next = latest;
 
-        // Remove node from current position
-        if (node->prev) node->prev->next = node->next;
-        if (node->next) node->next->prev = node->prev;
-        if (node == tail) tail = node->prev;
-
-        // Move node to front
-        node->next = head;
-        node->prev = NULL;
-        if (head) head->prev = node;
-        head = node;
-        if (tail == NULL) tail = head;
+        prev->next = node;
+        next->prev = node;
+        node->prev = prev;
+        node->next = next;
     }
 
-    void removeTail() {
-        if (tail == NULL) return;
+    void remove(Node* node) {
+        Node* prev = node->prev;
+        Node* next = node->next;
 
-        if (tail->prev) {
-            tail->prev->next = NULL;
-        } else {
-            head = NULL;
-        }
-
-        Node* temp = tail;
-        tail = tail->prev;
-        cache.erase(temp->keyVal.first);
-        delete temp;
-        size--;
+        prev->next = next;
+        next->prev = prev;
     }
 
 public:
     LRUCache(int capacity) {
-        this->capacity = capacity;
-        this->size = 0;
-        this->head = NULL;
-        this->tail = NULL;
+        this->cap = capacity;
+        this->oldest = new Node(0, 0);
+        this->latest = new Node(0, 0);
+        this->oldest->next = this->latest;
+        this->latest->prev = this->oldest;
     }
 
     int get(int key) {
-        // If the node is NOT PRESENT in the cache
-        if (cache.find(key) == cache.end()) {
-            return -1;
+        if (cache.contains(key)) {
+            Node* node = cache[key];
+            remove(node);
+            insert(node);
+            return node->val;
         }
-
-        // If the node is present, we move it to front of cache to make MOST RECENTLY USED
-        Node* node = cache[key];
-        moveToFront(node);
-        // AND WE RETURN THE NODE's VALUE
-        return node->keyVal.second;
+        return -1; // not present in cache
     }
 
     void put(int key, int value) {
-        // If the key is already present in the cache - MOVE THIS ENTRY TO FRONT
-        if (cache.find(key) != cache.end()) {
-            Node* node = cache[key];
-            node->keyVal.second = value;
-            moveToFront(node);
-        } 
-        // Key in NOT present in the cache - ADD A NEW ENTRY
-        else {
-            if (size == capacity) {
-                // If cache is full then we remove the last items (LEAST RECENTLY USED)
-                removeTail();
-            }
-
-
-            Node* newNode = new Node({key, value});
-            newNode->next = head; // ptr --> head
-            if (head) head->prev = newNode; // ptr <-- head, complete the doubly link
-            head = newNode; // move head 1 step back
-            if (tail == NULL) tail = head; // If these was not tail, the added node is the first
-
-            cache[key] = newNode; // add the node to our cache in count the size
-            size++;
+        if (cache.contains(key)) {
+            // if(cache.find(key) != cache.end()) // we can use this also
+            remove(cache[key]);
+        }
+        Node* newNode = new Node(key, value);
+        insert(newNode);
+        cache[key] = newNode;
+        if (cache.size() > cap) {
+            Node* lru = oldest->next;
+            remove(lru);
+            cache.erase(lru->key);
         }
     }
 };
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
