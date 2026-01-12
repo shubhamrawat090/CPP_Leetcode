@@ -58,9 +58,19 @@ public:
     void put(int key, int value) {
         if (cache.contains(key)) {
             // if(cache.find(key) != cache.end()) // we can use this also
-            Node* existingNode = cache[key];
-            remove(existingNode);
-            delete existingNode; // AVOID memory leak
+
+            // // OLDER LOGIC: Working but it deletes and recreates the node
+            // instead of just updating the existing node. Which is a better
+            // approach Node* existingNode = cache[key]; remove(existingNode);
+            // delete existingNode; // AVOID memory leak
+
+            // BETTER APPROACH: Instead of deleting and recreating. Just update
+            // existing node's value
+            Node* node = cache[key];
+            node->val = value;
+            remove(node);
+            insert(node);
+            return;
         }
         Node* newNode = new Node(key, value);
         insert(newNode);
