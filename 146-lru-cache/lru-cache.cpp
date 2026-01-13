@@ -56,9 +56,9 @@ public:
             // already present -> update the value
             Node* node = cache[key];
             remove(node);
-            insert(node);
-            node->val = value;
-            return;
+            // insert(node);
+            // node->val = value;
+            // return;
         }
 
         Node* node = new Node(key, value);
