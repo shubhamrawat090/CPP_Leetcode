@@ -1,31 +1,30 @@
 class MyStack {
     queue<int> q;
-
 public:
     MyStack() {}
-
+    
     void push(int x) {
+        // add target elem in queue
+        // remove and add back first n-1 elements back in the same queue
         q.push(x);
-        int sz = q.size();
-        // rotate previous elements
-        while (sz-- > 1) {
-            q.push(q.front());
+        int size = q.size();
+        for(int i=0; i<size-1; i++) {
+            int elem = q.front();
             q.pop();
+            q.push(elem);
         }
     }
-
+    
     int pop() {
-        if (q.empty()) return -1;
         int elem = q.front();
         q.pop();
         return elem;
     }
-
+    
     int top() {
-        if (q.empty()) return -1;
         return q.front();
     }
-
+    
     bool empty() {
         return q.empty();
     }
@@ -36,6 +35,6 @@ public:
  * MyStack* obj = new MyStack();
  * obj->push(x);
  * int param_2 = obj->pop();
- * int param_3 = obj->front();
+ * int param_3 = obj->top();
  * bool param_4 = obj->empty();
  */
