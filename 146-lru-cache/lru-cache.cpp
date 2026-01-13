@@ -1,22 +1,20 @@
 class LRUCache {
 private:
-    // NEED Doubly Linked List + Map
     struct Node {
         int key, val;
-        Node* next;
         Node* prev;
+        Node* next;
 
         Node(int key, int val) {
             this->key = key;
             this->val = val;
-            this->next = NULL;
-            this->prev = NULL;
         }
     };
-    int cap;
-    Node* latest;
+
     Node* oldest;
+    Node* latest;
     unordered_map<int, Node*> cache;
+    int cap;
 
     void insert(Node* node) {
         Node* prev = latest->prev;
@@ -39,47 +37,43 @@ private:
 public:
     LRUCache(int capacity) {
         this->cap = capacity;
-        this->oldest = new Node(0, 0);
-        this->latest = new Node(0, 0);
-        this->oldest->next = this->latest;
-        this->latest->prev = this->oldest;
+        oldest = new Node(0, 0);
+        latest = new Node(0, 0);
+        oldest->next = latest;
+        latest->prev = oldest;
     }
 
     int get(int key) {
-        if (cache.contains(key)) {
-            Node* node = cache[key];
-            remove(node);
-            insert(node);
-            return node->val;
-        }
-        return -1; // not present in cache
+        if(!cache.contains(key)) return -1; // not present in cache
+        Node* node = cache[key];
+        remove(node);
+        insert(node);
+        return node->val;
     }
 
     void put(int key, int value) {
-        if (cache.contains(key)) {
-            // if(cache.find(key) != cache.end()) // we can use this also
-
-            // // OLDER LOGIC: Working but it deletes and recreates the node
-            // instead of just updating the existing node. Which is a better
-            // approach Node* existingNode = cache[key]; remove(existingNode);
-            // delete existingNode; // AVOID memory leak
-
-            // BETTER APPROACH: Instead of deleting and recreating. Just update
-            // existing node's value
+        if(cache.contains(key)) {
+            // already present -> update the value
             Node* node = cache[key];
-            node->val = value;
             remove(node);
             insert(node);
+            node->val = value;
             return;
         }
-        Node* newNode = new Node(key, value);
-        insert(newNode);
-        cache[key] = newNode;
-        if (cache.size() > cap) {
+
+        Node* node = new Node(key, value);
+        insert(node);
+        cache[key] = node;
+        if(cache.size() > cap) {
+            // Remove the least recently used node
             Node* lru = oldest->next;
             remove(lru);
             cache.erase(lru->key);
-            delete lru; // AVOID Memory
+
+            // OPTIONAL: If you want to not have memory leak
+            lru->prev = NULL;
+            lru->next = NULL;
+            delete lru; 
         }
     }
 };
