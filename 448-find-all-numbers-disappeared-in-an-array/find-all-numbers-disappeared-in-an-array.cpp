@@ -1,8 +1,7 @@
 class Solution {
 public:
     vector<int> findDisappearedNumbers(vector<int>& nums) {
-        int n = nums.size();
-        int i = 0;
+        int i = 0, n = nums.size();
         while(i < n) {
             int correctIndex = nums[i] - 1;
             if(nums[i] != nums[correctIndex]) {
@@ -11,11 +10,10 @@ public:
                 i++;
             }
         }
-        
         vector<int> ans;
-        for(int j=0; j<n; j++) {
-            if(j + 1 != nums[j]) {
-                ans.push_back(j+1);
+        for(int i=0; i<n; i++) {
+            if(nums[i] != i+1) {
+                ans.push_back(i+1);
             }
         }
         return ans;
