@@ -1,7 +1,8 @@
 class Solution {
 public:
     vector<int> findDuplicates(vector<int>& nums) {
-        int i = 0, n = nums.size();
+        int n = nums.size();
+        int i = 0;
         while(i < n) {
             int correctIndex = nums[i] - 1;
             if(nums[i] != nums[correctIndex]) {
@@ -11,25 +12,12 @@ public:
             }
         }
 
-        // vector<int> ans;
-        // for(int j=0; j<n; j++) {
-        //     if(j+1 != nums[j]) {
-        //         ans.push_back(nums[j]);
-        //     }
-        // }
-
-        // return ans;
-
-        // // If number appeared more than twice
-        unordered_set<int> ans;
-        for(int j=0; j<n; j++) {
-            if(j+1 != nums[j]) {
-                ans.insert(nums[j]);
+        vector<int> ans;
+        for(int i=0; i<n; i++) {
+            if(nums[i] != i+1) {
+                ans.push_back(nums[i]);
             }
         }
-
-        vector<int> finalAns(ans.begin(), ans.end());
-
-        return finalAns;
+        return ans;
     }
 };
