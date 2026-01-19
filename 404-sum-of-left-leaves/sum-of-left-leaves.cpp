@@ -11,21 +11,23 @@
  * };
  */
 class Solution {
-    int ans = 0;
+    int sum;
 
 public:
     int sumOfLeftLeaves(TreeNode* root) {
+        sum = 0;
         helper(root);
-        return ans;
+        return sum;
     }
 
     void helper(TreeNode* root) {
         if (root == NULL)
             return;
-        if (root->left != NULL && root->left->left == NULL &&
-            root->left->right == NULL)
-            ans += root->left->val;
         helper(root->left);
         helper(root->right);
+        // check if left child is a leaf node
+        if (root->left != NULL && root->left->left == NULL &&
+            root->left->right == NULL)
+            sum += root->left->val;
     }
 };
