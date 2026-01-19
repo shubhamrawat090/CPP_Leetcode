@@ -10,20 +10,19 @@
  * };
  */
 class Solution {
-    int ans;
 public:
     int sumNumbers(TreeNode* root) {
-        ans = 0;
+        int ans = 0;
         int sum = 0;
-        helper(root, sum);
+        helper(root, sum, ans);
         return ans;
     }
 
-    void helper(TreeNode* root, int sum) {
+    void helper(TreeNode* root, int sum, int& ans) {
         if(root == NULL) return;
         sum = sum * 10 + root->val;
-        helper(root->left, sum);
-        helper(root->right, sum);
+        helper(root->left, sum, ans);
+        helper(root->right, sum, ans);
         if(root->left == NULL && root->right == NULL) {
             ans += sum;
         }
