@@ -24,7 +24,6 @@ public:
         if(root->left == NULL && root->right == NULL) {
             if(sum == targetSum) {
                 ans = true;
-                return; // Slight Optimisation, no need to make other calls
             }
         }
         helper(root->left, sum, ans, targetSum);
