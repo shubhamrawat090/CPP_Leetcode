@@ -1,7 +1,29 @@
 class Solution {
 public:
     int maximumUnits(vector<vector<int>>& boxTypes, int truckSize) {
-        return brute(boxTypes, truckSize);
+        // return brute(boxTypes, truckSize);
+        return better(boxTypes, truckSize);
+    }
+
+    int better(vector<vector<int>>& boxTypes, int truckSize) {
+        int UNITS_VS_BOXES_SIZE = 1001;
+        vector<int> unitsVsBoxes(UNITS_VS_BOXES_SIZE); // size constraint is 1000. 
+        for(vector<int>& boxType: boxTypes) {
+            int box = boxType[0], units = boxType[1];
+            unitsVsBoxes[units] += box;
+        }
+
+        int ans = 0;
+        // Iterate from back as we need highest units first
+        for(int i=UNITS_VS_BOXES_SIZE-1; i>=0; i--) {
+            if(truckSize == 0) break;
+            int units = i;
+            int boxes = unitsVsBoxes[units];
+            int size = min(truckSize, boxes);
+            ans += (size * units);
+            truckSize -= size;
+        }
+        return ans;
     }
 
     int brute(vector<vector<int>>& boxTypes, int truckSize) {
