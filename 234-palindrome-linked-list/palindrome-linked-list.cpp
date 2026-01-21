@@ -12,9 +12,10 @@ class Solution {
 public:
     bool isPalindrome(ListNode* head) {
         if(head == NULL || head->next == NULL) return true;
-        int size = sizeOfLL(head);
+        // int size = sizeOfLL(head);
         ListNode* mid = middleNode(head);
-        ListNode* revListHead = size % 2 == 0 ? mid : mid->next;
+        // ListNode* revListHead = size % 2 == 0 ? mid : mid->next;
+        ListNode* revListHead = isOddLen(head) ? mid->next : mid; 
         revListHead = reverseList(revListHead);
 
         ListNode* curr = head;
@@ -40,15 +41,25 @@ public:
         return prev;
     }
 
-    int sizeOfLL(ListNode* head) {
-        ListNode* curr = head;
-        int size = 0;
-        while(curr != NULL) {
-            size++;
-            curr = curr->next;
+    bool isOddLen(ListNode* head) {
+        if(head == NULL) return false;
+        if(head->next == NULL) return true;
+        ListNode* fast = head;
+        while(fast != NULL && fast->next != NULL) {
+            fast = fast->next->next;
         }
-        return size;
+        return fast == NULL ? false : true;
     }
+
+    // int sizeOfLL(ListNode* head) {
+    //     ListNode* curr = head;
+    //     int size = 0;
+    //     while(curr != NULL) {
+    //         size++;
+    //         curr = curr->next;
+    //     }
+    //     return size;
+    // }
 
     ListNode* middleNode(ListNode* head) {
         ListNode *slow = head, *fast = head;
