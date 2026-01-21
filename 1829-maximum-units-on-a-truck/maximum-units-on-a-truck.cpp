@@ -1,6 +1,10 @@
 class Solution {
 public:
     int maximumUnits(vector<vector<int>>& boxTypes, int truckSize) {
+        return brute(boxTypes, truckSize);
+    }
+
+    int brute(vector<vector<int>>& boxTypes, int truckSize) {
         // Sort by maximum units
         sort(boxTypes.begin(), boxTypes.end(), [](const vector<int>& a, const vector<int>& b) {
             return a[1] > b[1];
