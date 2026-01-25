@@ -1,22 +1,29 @@
 class Solution {
 public:
     int pivotIndex(vector<int>& nums) {
-        int ans = -1;
         int n = nums.size();
+        int leftSum = 0, rightSum = 0, totalSum = 0;
+        for(int num: nums) {
+            totalSum += num;
+        }
+        rightSum = totalSum;
         for(int i=0; i<n; i++) {
-            int leftSum = 0;
-            for(int j=0; j<i; j++) {
-                leftSum += nums[j];
+            cout<<"-- Before --"<<endl;
+            cout<<"(i, leftSum, rightSum) "<<i<<","<<leftSum<<","<<rightSum<<endl;
+            if(i == 0) {
+                leftSum += 0;
+            } else {
+                leftSum += nums[i-1];
             }
-            int rightSum = 0;
-            for(int k=i+1; k<n; k++) {
-                rightSum += nums[k];
-            }
+            
+                rightSum -= nums[i];
+
+            cout<<"-- After --"<<endl;
+            cout<<"(i, leftSum, rightSum) "<<i<<","<<leftSum<<","<<rightSum<<endl<<endl;
             if(leftSum == rightSum) {
-                ans = i;
-                break;
+                return i;
             }
         }
-        return ans;
+        return -1;
     }
 };
