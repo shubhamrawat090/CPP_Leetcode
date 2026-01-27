@@ -9,14 +9,14 @@ public:
         int i = 0;
         vector<vector<int>> ans;
         while(i < n) {
-            int st = intervals[i][0], ed = intervals[i][1];
+            int start = intervals[i][0], end = intervals[i][1];
             int j = i+1;
-            while(j < n && ed >= intervals[j][0]) {
-                ed = max(ed, intervals[j][1]);
+            while(j < n && end >= intervals[j][0]) {
+                end = max(end, intervals[j][1]);
                 j++;
             }
             i = j;
-            ans.push_back({st, ed});
+            ans.push_back({start, end});
         }
         return ans;
     }
