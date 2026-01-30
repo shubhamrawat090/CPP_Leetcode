@@ -48,8 +48,8 @@ public:
             return false;
         } else {
             int index = ch - 'a';
-            if (!curr->children[index])
-                return false;
+            // if (!curr->children[index])
+            //     return false;
             return dfs(word, pos + 1, curr->children[index]);
         }
     }
