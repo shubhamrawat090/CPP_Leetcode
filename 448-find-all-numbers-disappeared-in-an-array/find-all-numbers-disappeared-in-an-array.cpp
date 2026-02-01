@@ -1,19 +1,16 @@
 class Solution {
 public:
     vector<int> findDisappearedNumbers(vector<int>& nums) {
-        int i = 0, n = nums.size();
-        while(i < n) {
-            int correctIndex = nums[i] - 1;
-            if(nums[i] != nums[correctIndex]) {
-                swap(nums[i], nums[correctIndex]);
-            } else {
-                i++;
-            }
+        int n = nums.size();
+        vector<int> temp(n+1, 0);
+        for(int num: nums) {
+            temp[num] = 1;
         }
+
         vector<int> ans;
-        for(int i=0; i<n; i++) {
-            if(nums[i] != i+1) {
-                ans.push_back(i+1);
+        for(int i=1; i<=n; i++) {
+            if(temp[i] == 0) {
+                ans.push_back(i);
             }
         }
         return ans;
