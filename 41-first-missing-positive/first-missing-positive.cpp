@@ -1,23 +1,18 @@
 class Solution {
 public:
     int firstMissingPositive(vector<int>& nums) {
-        int i=0, n=nums.size();
-        while(i < n) {
-            if(nums[i] <= n && nums[i] > 0 && nums[i] != nums[nums[i] - 1]) {
-                swap(nums[i], nums[nums[i] - 1]);
-            } else {
-                i++;
+        int n = nums.size();
+        vector<int>temp(n+1, 0);
+        for(int num: nums) {
+            if(num > 0 && num <= n) {
+                temp[num] = 1;
             }
         }
 
-        int ans = n + 1;
-        for(int j=0; j<n; j++) {
-            if(nums[j] != j + 1) {
-                ans = j + 1;
-                break;
-            }
+        for(int i=1; i<=n; i++) {
+            if(temp[i] == 0) return i;
         }
 
-        return ans;
+        return n+1;
     }
 };
