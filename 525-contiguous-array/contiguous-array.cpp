@@ -9,8 +9,8 @@ public:
                 maxLen = i+1;
             }
 
-            if(sumIdx.find(sum - 0) != sumIdx.end()) {
-                maxLen = max(maxLen, i - sumIdx[sum - 0]);
+            if(sumIdx.find(sum) != sumIdx.end()) {
+                maxLen = max(maxLen, i - sumIdx[sum]);
             }
 
             if(sumIdx.find(sum) == sumIdx.end()) {
