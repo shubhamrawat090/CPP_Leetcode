@@ -11,20 +11,23 @@
  */
 class Solution {
 public:
-    TreeNode* trimBST(TreeNode* root, int l, int r) {
+    TreeNode* trimBST(TreeNode* root, int low, int high) {
         // Your code here
-        if(!root)return nullptr;
-        int data = root->val;
-        if(data>=l and data<=r){
-            root->left = trimBST(root->left,l,r);
-            root->right = trimBST(root->right,l,r);
-        }else if(data < l){
-            root->left = nullptr;
-            root = trimBST(root->right,l,r);
+        if(root == NULL) {
+            return NULL;
         }
-        else{
-            root->right = nullptr;
-            root = trimBST(root->left,l,r);
+
+        if(root->val < low) {
+            // cut left child
+            root->left = NULL;
+            root = trimBST(root->right, low, high);
+        } else if(root->val > high) {
+            // cut right child
+            root->right = NULL;
+            root = trimBST(root->left, low, high);
+        } else {
+            root->right = trimBST(root->right, low, high);
+            root->left = trimBST(root->left, low, high);
         }
         return root;
     }
