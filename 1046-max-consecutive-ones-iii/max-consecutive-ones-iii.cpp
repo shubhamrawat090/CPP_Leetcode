@@ -10,9 +10,6 @@ public:
 
             while(freqMap[0] > k) {
                 freqMap[nums[start]]--;
-                // if(freqMap[nums[start]] == 0) {
-                //     freqMap.erase(nums[start]);
-                // }
                 start++;
             }
 
