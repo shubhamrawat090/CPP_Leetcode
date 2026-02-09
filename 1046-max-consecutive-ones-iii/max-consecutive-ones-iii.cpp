@@ -2,14 +2,20 @@ class Solution {
 public:
     int longestOnes(vector<int>& nums, int k) {
         int n = nums.size();
-        vector<int> freqMap(2, 0);
+        int flips = 0;
         int start = 0;
         int maxLen = 0;
-        for(int end = 0; end < n; end++) {
-            freqMap[nums[end]]++;
 
-            while(freqMap[0] > k) {
-                freqMap[nums[start]]--;
+        for (int end = 0; end < n; end++) {
+            if (nums[end] == 0) {
+                flips++;
+            }
+
+            while (flips > k) {
+                if (nums[start] == 0) {
+                    // unflip 0->1
+                    flips--;
+                }
                 start++;
             }
 
