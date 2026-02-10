@@ -9,16 +9,14 @@ public:
             }
         }
 
+        int count = 0;
         for(int i=n-2; i>=0; i--) {
             if(ratings[i] > ratings[i+1]) {
                 temp[i] = max(temp[i], temp[i+1] + 1);
             }
+            count += temp[i];
         }
 
-        int count = 0;
-        for(int val: temp) {
-            count += val;
-        }
-        return count;
+        return count + temp[n-1];
     }
 };
