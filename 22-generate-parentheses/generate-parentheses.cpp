@@ -2,28 +2,24 @@ class Solution {
 public:
     vector<string> generateParenthesis(int n) {
         vector<string> ans;
-        string str;
-        helper(ans, str, 0, 0, n);
+        helper(n, ans, 0, 0, "");
         return ans;
     }
 
-    void helper(vector<string>& ans, string& str, int open, int close, int n) {
-        if(open == n && close == n) {
-            ans.push_back(str);
+    void helper(int& n, vector<string>& ans, int open, int close, string curr) {
+        if(curr.size() == n * 2) {
+            ans.push_back(curr);
             return;
         }
 
-        // Try open
         if(open < n) {
-            str += '(';
-            helper(ans, str, open + 1, close, n);
-            str.pop_back();
+            // add open
+            helper(n, ans, open+1, close, curr + '(');
         }
-        // Try close
+
         if(open > close) {
-            str += ')';
-            helper(ans, str, open, close + 1, n);
-            str.pop_back();
+            // add close
+            helper(n, ans, open, close+1, curr + ')');
         }
     }
 };
