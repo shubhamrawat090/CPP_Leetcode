@@ -2,11 +2,12 @@ class Solution {
 public:
     vector<string> generateParenthesis(int n) {
         vector<string> ans;
-        helper(n, ans, 0, 0, "");
+        string curr = "";
+        helper(n, ans, 0, 0, curr);
         return ans;
     }
 
-    void helper(int& n, vector<string>& ans, int open, int close, string curr) {
+    void helper(int& n, vector<string>& ans, int open, int close, string& curr) {
         if(curr.size() == n * 2) {
             ans.push_back(curr);
             return;
@@ -14,12 +15,16 @@ public:
 
         if(open < n) {
             // add open
-            helper(n, ans, open+1, close, curr + '(');
+            curr.push_back('(');
+            helper(n, ans, open+1, close, curr);
+            curr.pop_back();
         }
 
         if(open > close) {
             // add close
-            helper(n, ans, open, close+1, curr + ')');
+            curr.push_back(')');
+            helper(n, ans, open, close+1, curr);
+            curr.pop_back();
         }
     }
 };
