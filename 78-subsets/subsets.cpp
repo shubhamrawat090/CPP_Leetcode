@@ -2,18 +2,21 @@ class Solution {
 public:
     vector<vector<int>> subsets(vector<int>& nums) {
         vector<vector<int>> ans;
-        vector<int> path;
-        helper(nums, 0, ans, path);
+        vector<int> sum;
+        helper(nums, 0, nums.size()-1, ans, sum);
         return ans;
     }
 
-    void helper(vector<int>& nums, int start, vector<vector<int>>& ans, vector<int>& path) {
-        ans.push_back(path);
-
-        for(int i=start; i<nums.size(); i++) {
-            path.push_back(nums[i]);
-            helper(nums, i + 1, ans, path);
-            path.pop_back();
+    void helper(vector<int>& arr, int l, int r, vector<vector<int>>& ans, vector<int> sum) {
+        if(l > r) {
+            ans.push_back(sum);
+            return;
         }
+        // pick
+        sum.push_back(arr[l]);
+        helper(arr, l+1, r, ans, sum);
+        sum.pop_back();
+        // not pick
+        helper(arr, l+1, r, ans, sum);
     }
 };
