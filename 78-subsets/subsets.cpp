@@ -7,7 +7,7 @@ public:
         return ans;
     }
 
-    void helper(vector<int>& arr, int l, int r, vector<vector<int>>& ans, vector<int> sum) {
+    void helper(vector<int>& arr, int l, int r, vector<vector<int>>& ans, vector<int>& sum) {
         if(l > r) {
             ans.push_back(sum);
             return;
