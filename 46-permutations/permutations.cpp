@@ -2,23 +2,24 @@ class Solution {
 public:
     vector<vector<int>> permute(vector<int>& nums) {
         vector<vector<int>> ans;
-        vector<int> temp;
-        helper(ans, temp, nums);
+        vector<int> subArr;
+        sort(nums.begin(), nums.end());
+        helper(nums, subArr, ans);
         return ans;
     }
 
-    void helper(vector<vector<int>>& ans, vector<int>& temp, vector<int>& nums) {
-        if(temp.size() == nums.size()) {
-            ans.push_back(temp);
+    void helper(vector<int>& nums, vector<int>& subArr, vector<vector<int>>& ans) {
+        if (subArr.size() == nums.size()) {
+            ans.push_back(subArr);
         }
 
-        for(int i=0; i<nums.size(); i++) {
-            if(find(temp.begin(), temp.end(), nums[i]) != temp.end()) {
-                continue;
+        for (int i = 0; i < nums.size(); i++) {
+            if (find(subArr.begin(), subArr.end(), nums[i]) != subArr.end()) {
+                continue; // remove duplicates
             }
-            temp.push_back(nums[i]);
-            helper(ans, temp, nums);
-            temp.pop_back();
+            subArr.push_back(nums[i]);
+            helper(nums, subArr, ans);
+            subArr.pop_back();
         }
     }
 };
