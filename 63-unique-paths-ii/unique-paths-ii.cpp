@@ -1,7 +1,7 @@
 class Solution {
 public:
     int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
-        if (obstacleGrid[0][0] == 1) {
+        if(obstacleGrid[0][0] == 1) {
             return 0;
         }
         int m = obstacleGrid.size(), n = obstacleGrid[0].size();
@@ -11,7 +11,7 @@ public:
             for (int j = 0; j < n; j++) {
                 if (obstacleGrid[i][j] == 1) {
                     dp[j] = 0;
-                } else if (j > 0) {
+                } else if(j > 0) {
                     dp[j] = dp[j] + dp[j - 1];
                 }
             }
