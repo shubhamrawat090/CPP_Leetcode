@@ -9,14 +9,14 @@ public:
             }
         }
 
-        int totalSum = 0;
+        int sum = 0;
         for(int i=n-2; i>=0; i--) {
             if(ratings[i] > ratings[i+1]) {
                 candies[i] = max(candies[i], candies[i+1] + 1);
             }
-            totalSum += candies[i];
+            sum += candies[i];
         }
 
-        return totalSum + candies[n-1];
+        return sum + candies[n-1];
     }
 };
