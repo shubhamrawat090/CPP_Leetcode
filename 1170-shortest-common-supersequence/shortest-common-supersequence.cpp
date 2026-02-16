@@ -29,10 +29,12 @@ public:
         }
 
         while(i > 0) {
-            ans.push_back(str1[--i]);
+            ans.push_back(str1[i-1]);
+            i--;
         }
         while(j > 0) {
-            ans.push_back(str2[--j]);
+            ans.push_back(str2[j-1]);
+            j--;
         }
         reverse(ans.begin(), ans.end());
         return ans;
