@@ -1,50 +1,45 @@
 class Trie {
-    class Node {
-    public:
-        Node* children[26];
+    struct Node {
         bool isEnd = false;
-        Node() {
-            for (int i = 0; i < 26; i++) {
-                children[i] = NULL;
-            }
-        }
+        Node* children[26] = {NULL};
     };
 
     Node* root;
-
 public:
-    Trie() { root = new Node(); }
-
+    Trie() {
+        root = new Node();
+    }
+    
     void insert(string word) {
         Node* curr = root;
-        for (char ch : word) {
-            int index = ch - 'a';
-            if (curr->children[index] == NULL) {
+        for(int i=0; i<word.size(); i++) {
+            int index = word[i] - 'a';
+            if(curr->children[index] == NULL) {
                 curr->children[index] = new Node();
             }
             curr = curr->children[index];
-        }
-        curr->isEnd = true;
+        }   
+        curr->isEnd = true; // end of word
     }
-
+    
     bool search(string word) {
         Node* curr = root;
-        for (char ch : word) {
-            int index = ch - 'a';
-            if (curr->children[index] == NULL) {
-                return false;
+        for(int i=0; i<word.size(); i++) {
+            int index = word[i] - 'a';
+            if(curr->children[index] == NULL) {
+                return false; // char not present
             }
             curr = curr->children[index];
         }
-        return curr->isEnd == true;
+        return curr->isEnd;
     }
-
+    
     bool startsWith(string prefix) {
         Node* curr = root;
-        for (char ch : prefix) {
-            int index = ch - 'a';
-            if (curr->children[index] == NULL) {
-                return false;
+        for(int i=0; i<prefix.size(); i++) {
+            int index = prefix[i] - 'a';
+            if(curr->children[index] == NULL) {
+                return false; // char not present
             }
             curr = curr->children[index];
         }
