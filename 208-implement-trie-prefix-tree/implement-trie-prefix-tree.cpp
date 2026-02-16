@@ -1,7 +1,8 @@
 class Trie {
     struct Node {
         bool isEnd = false;
-        Node* children[26] = {NULL};
+        // Node* children[26] = {NULL};
+        unordered_map<char, Node*> children;
     };
 
     Node* root;
@@ -13,11 +14,11 @@ public:
     void insert(string word) {
         Node* curr = root;
         for(int i=0; i<word.size(); i++) {
-            int index = word[i] - 'a';
-            if(curr->children[index] == NULL) {
-                curr->children[index] = new Node();
+            // int index = word[i] - 'a';
+            if(curr->children.find(word[i]) == curr->children.end()) {
+                curr->children[word[i]] = new Node();
             }
-            curr = curr->children[index];
+            curr = curr->children[word[i]];
         }   
         curr->isEnd = true; // end of word
     }
@@ -25,11 +26,11 @@ public:
     bool search(string word) {
         Node* curr = root;
         for(int i=0; i<word.size(); i++) {
-            int index = word[i] - 'a';
-            if(curr->children[index] == NULL) {
+            // int index = word[i] - 'a';
+            if(curr->children.find(word[i]) == curr->children.end()) {
                 return false; // char not present
             }
-            curr = curr->children[index];
+            curr = curr->children[word[i]];
         }
         return curr->isEnd;
     }
@@ -37,11 +38,11 @@ public:
     bool startsWith(string prefix) {
         Node* curr = root;
         for(int i=0; i<prefix.size(); i++) {
-            int index = prefix[i] - 'a';
-            if(curr->children[index] == NULL) {
+            // int index = prefix[i] - 'a';
+            if(curr->children.find(prefix[i]) == curr->children.end()) {
                 return false; // char not present
             }
-            curr = curr->children[index];
+            curr = curr->children[prefix[i]];
         }
         return true;
     }
