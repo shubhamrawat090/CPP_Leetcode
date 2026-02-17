@@ -4,7 +4,8 @@ public:
         int n = s.size();
         vector<vector<int>> dp(n, vector<int>(n, 0));
 
-        int maxLen = 0, index = 0;
+        int maxLen = 0;
+        string ans;
         for (int diff = 0; diff < n; diff++) {
             for (int i = 0, j = i + diff; j < n; i++, j++) {
                 if (i == j) {
@@ -25,12 +26,12 @@ public:
                     int len = j - i + 1;
                     if (len > maxLen) {
                         maxLen = len;
-                        index = i;
+                        ans = s.substr(i, maxLen);
                     }
                 }
             }
         }
 
-        return maxLen == 0 ? "" : s.substr(index, maxLen);
+        return ans;
     }
 };
