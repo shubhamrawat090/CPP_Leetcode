@@ -9,20 +9,16 @@ public:
             for (int i = 0, j = i + diff; j < n; i++, j++) {
                 if (i == j) {
                     dp[i][j] = 1;
-                } 
-                else if (diff == 1) {
+                } else if (diff == 1) {
                     // 2 chars, match 2, no match 0
                     if (s[i] == s[j]) {
                         dp[i][j] = 2;
                     } else {
                         dp[i][j] = 0;
                     }
-                } 
-                else {
+                } else {
                     // match -> get bottom left value + 2(ith and jth chars)
-                    if (s[i] == s[j] 
-                    && dp[i + 1][j - 1]
-                    ) {
+                    if (s[i] == s[j] && dp[i + 1][j - 1]) {
                         dp[i][j] = dp[i + 1][j - 1] + 2;
                     }
                 }
@@ -38,8 +34,6 @@ public:
             }
         }
 
-        cout << "Str, maxLen, i, j: " << s << ", " << maxLen << ", " << index
-             << ", " << secondIdx << endl;
         return maxLen == 0 ? "" : s.substr(index, maxLen);
     }
 };
