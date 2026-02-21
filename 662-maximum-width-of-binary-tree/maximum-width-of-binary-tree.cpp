@@ -19,7 +19,7 @@ public:
             long long size = q.size();
             long long index = q.front().second;
             long long first = 0, last = 0;
-            for(long long i=0; i<size; i++) {
+            for(int i=0; i<size; i++) {
                 auto top = q.front(); q.pop();
                 long long currIdx = top.second - index;
                 TreeNode* currNode = top.first;
