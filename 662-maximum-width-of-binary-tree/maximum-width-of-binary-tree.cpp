@@ -16,10 +16,10 @@ public:
         queue<pair<TreeNode*, long long>> q;
         q.push({root, 0});
         while(!q.empty()) {
-            int size = q.size();
+            long long size = q.size();
             long long index = q.front().second;
             long long first = 0, last = 0;
-            for(int i=0; i<size; i++) {
+            for(long long i=0; i<size; i++) {
                 auto top = q.front(); q.pop();
                 long long currIdx = top.second - index;
                 TreeNode* currNode = top.first;
