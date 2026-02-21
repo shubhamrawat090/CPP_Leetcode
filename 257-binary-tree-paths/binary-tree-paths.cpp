@@ -10,22 +10,28 @@
  * };
  */
 class Solution {
+    vector<string> ans;
 public:
     vector<string> binaryTreePaths(TreeNode* root) {
-        vector<string> ans;
-        string path = "";
-        helper(root, ans, path);
+        ans = {};
+        string path;
+        helper(root, path);
         return ans;
     }
 
-    void helper(TreeNode* root, vector<string>& ans, string path) {
-        if(root == NULL) return;
+    void helper(TreeNode* root, string path) {
+        if(root == NULL) {
+            return;
+        }
+
         path += to_string(root->val);
+
         if(root->left == NULL && root->right == NULL) {
             ans.push_back(path);
         }
         path += "->";
-        helper(root->left, ans, path);
-        helper(root->right, ans, path);
+
+        helper(root->left, path);
+        helper(root->right, path);
     }
 };
