@@ -12,29 +12,24 @@
 class Solution {
 public:
     vector<vector<int>> levelOrderBottom(TreeNode* root) {
+        if(root == NULL) return {};
         vector<vector<int>> ans;
-        
-        if(root == NULL) return ans;
-
         queue<TreeNode*> q;
         q.push(root);
-        while (!q.empty()) {
+        while(!q.empty()) {
             int size = q.size();
-            vector<int> row;
-            for (int i = 0; i < size; i++) {
-                TreeNode* top = q.front();
-                q.pop();
-
-                row.push_back(top->val);
-                // Add neighbours
-                if (top->left) {
+            vector<int> level;
+            for(int i=0; i<size; i++) {
+                TreeNode* top = q.front(); q.pop();
+                level.push_back(top->val);
+                if(top->left) {
                     q.push(top->left);
                 }
-                if (top->right) {
+                if(top->right) {
                     q.push(top->right);
                 }
             }
-            ans.push_back(row);
+            ans.push_back(level);
         }
         reverse(ans.begin(), ans.end());
         return ans;
