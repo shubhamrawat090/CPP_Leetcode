@@ -7,11 +7,11 @@ public:
         for(int right = 0; right < s.size(); right++) {
             char ch = s[right];
             if(valIdx.find(ch) != valIdx.end()) {
-                left = max(left, valIdx[ch] + 1);
+                left = max(left, valIdx[ch]);
             }
             int len = right - left + 1;
             maxLen = max(len, maxLen);
-            valIdx[ch] = right;
+            valIdx[ch] = right + 1;
         }
         return maxLen;
     }
