@@ -2,25 +2,24 @@ class Solution {
 public:
     int longestOnes(vector<int>& nums, int k) {
         int n = nums.size();
-        int flips = 0;
-        int start = 0;
+        int left = 0, right = 0;
         int maxLen = 0;
+        vector<int> map(2, 0);
+        while(right < n) {
+            map[nums[right]]++;
 
-        for (int end = 0; end < n; end++) {
-            if (nums[end] == 0) {
-                flips++;
+            if(map[0] > k) {
+                map[nums[left]]--;
+                left++;
             }
 
-            while (flips > k) {
-                if (nums[start] == 0) {
-                    // unflip 0->1
-                    flips--;
-                }
-                start++;
+            if(map[0] <= k) {
+                maxLen = max(maxLen, right - left + 1);
             }
 
-            maxLen = max(maxLen, end - start + 1);
+            right++;
         }
+
         return maxLen;
     }
 };
