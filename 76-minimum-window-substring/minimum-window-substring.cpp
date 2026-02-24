@@ -1,7 +1,7 @@
 class Solution {
 public:
     string minWindow(string large, string small) {
-        int freq[255] = {0};
+        int freq[128] = {0};
         int minLen = INT_MAX, start = 0;
         int left = 0, right = 0;
         int count = 0;
