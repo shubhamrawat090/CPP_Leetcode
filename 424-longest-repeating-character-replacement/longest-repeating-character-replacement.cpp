@@ -1,27 +1,18 @@
 class Solution {
 public:
     int characterReplacement(string s, int k) {
-        int left = 0, right = 0;
         int n = s.size();
+        int left = 0, right = 0, maxCharCount = 0;
         int maxLen = 0;
-        int maxCharCount = 0;
-        vector<int> map(26, 0);
+        vector<int> freq(26, 0);
         while(right < n) {
-            map[s[right] - 'A']++;
-            maxCharCount = max(maxCharCount, map[s[right] - 'A']);
-
-            int range = right-left+ 1;
-            int leastCharCount = range - maxCharCount;
-
-            if(leastCharCount > k) {
-                map[s[left] - 'A']--;
+            freq[s[right] - 'A']++;
+            maxCharCount = max(maxCharCount, freq[s[right] - 'A']);
+            while(right - left + 1 - maxCharCount > k) {
+                freq[s[left] - 'A']--;
                 left++;
             }
-
-            if(leastCharCount <= k) {
-                maxLen = max(range, maxLen);
-            }
-
+            maxLen = max(maxLen, right - left + 1);
             right++;
         }
         return maxLen;
