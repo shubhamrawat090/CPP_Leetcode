@@ -8,7 +8,7 @@ public:
         while(right < n) {
             freq[s[right] - 'A']++;
             maxCharCount = max(maxCharCount, freq[s[right] - 'A']);
-            while(right - left + 1 - maxCharCount > k) {
+            if(right - left + 1 - maxCharCount > k) {
                 freq[s[left] - 'A']--;
                 left++;
             }
