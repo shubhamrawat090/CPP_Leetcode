@@ -7,6 +7,7 @@ public:
         }
 
         int highestStreak = -1;
+        ///// NOTE: Do run loop on nums, only on the set because it can give TLE  
         for(int num: uniqueElems) {
             if(uniqueElems.find(num - 1) == uniqueElems.end()) {
                 // possible start point as nums-1 is not present for nums
