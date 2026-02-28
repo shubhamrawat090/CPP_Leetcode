@@ -1,13 +1,8 @@
 class Solution {
 public:
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        vector<int> topo = getTopologicalSort(prerequisites, numCourses);
-        return topo.size() == numCourses;
-    }
-
-    vector<int> getTopologicalSort(vector<vector<int>>& courses, int& V) {
+    bool canFinish(int V, vector<vector<int>>& prerequisites) {
         vector<vector<int>> adj(V);
-        for(vector<int> course: courses) {
+        for(vector<int> course: prerequisites) {
             int u = course[1], v = course[0];
             adj[u].push_back(v);
         }
@@ -40,6 +35,6 @@ public:
             }
         }
 
-        return topo;
+        return topo.size() == V;
     }
 };
