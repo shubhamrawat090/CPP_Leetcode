@@ -24,10 +24,7 @@ public:
 
             st.push(nums2[i]);
         }
-
-        for(int i=0; i<n; i++) {
-            cout<<nextGreater[i]<<" ";
-        }
+        
         vector<int> ans;
         for(int i=0; i<m; i++) {
             int val = nums1[i];
