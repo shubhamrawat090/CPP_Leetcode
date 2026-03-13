@@ -1,32 +1,37 @@
 class MyStack {
     queue<int> q;
 public:
-    MyStack() {}
+    MyStack() {
+        this->q = {};
+    }
     
     void push(int x) {
-        // add target elem in queue
-        // remove and add back first n-1 elements back in the same queue
+        // push in queue
+        // pop and push back n-1 elems in the same queue
         q.push(x);
-        int size = q.size();
-        for(int i=0; i<size-1; i++) {
-            int elem = q.front();
+        int n = q.size();
+        for(int i=0; i<n-1; i++) {
+            int top = q.front();
             q.pop();
-            q.push(elem);
-        }
+            q.push(top);
+        }        
     }
     
     int pop() {
-        int elem = q.front();
+        if(q.empty()) return -1;
+        int top = q.front();
         q.pop();
-        return elem;
+        return top;
     }
     
     int top() {
-        return q.front();
+        if(q.empty()) return -1;
+        int top = q.front();
+        return top;
     }
     
     bool empty() {
-        return q.empty();
+        return q.empty();        
     }
 };
 
