@@ -63,6 +63,7 @@ public:
             insert(node);
             cache[key] = node;
         }
+        
         if (cache.size() > this->cap) {
             Node* lru = this->oldest->next;
             remove(lru);
