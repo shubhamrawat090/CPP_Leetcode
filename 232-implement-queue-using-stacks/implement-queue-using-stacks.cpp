@@ -1,42 +1,48 @@
 class MyQueue {
     stack<int> s1;
     stack<int> s2;
+
 public:
     MyQueue() {
-        
+        this->s1 = {};    
+        this->s2 = {};    
     }
     
     void push(int x) {
         if(s1.empty()) {
             s1.push(x);
-        } else {
-            // move all from s1->s2
-            while(!s1.empty()) {
-                int elem = s1.top();
-                s1.pop();
-                s2.push(elem);
-            }
-            // push to s1
-            s1.push(x);
-            // move all from s2->s1
-            while(!s2.empty()) {
-                int elem = s2.top();
-                s2.pop();
-                s1.push(elem);
-            }
-        }       
+            return;
+        }
+
+        // transfer s1->s2
+        // s1.push(x)
+        // transfer s2->s1
+        while(!s1.empty()) {
+            int top = s1.top();
+            s1.pop();
+            s2.push(top);
+        }
+
+        s1.push(x);
+
+        while(!s2.empty()) {
+            int top = s2.top();
+            s2.pop();
+            s1.push(top);
+        }
     }
     
     int pop() {
-        if(s1.empty()) return -1; // nothing present
-        int elem = s1.top();
+        if(s1.empty()) return -1;
+        int top = s1.top();
         s1.pop();
-        return elem;
+        return top;
     }
     
     int peek() {
-        if(s1.empty()) return -1; // nothing present
-        return s1.top();
+        if(s1.empty()) return -1;
+        int top = s1.top();
+        return top;
     }
     
     bool empty() {
