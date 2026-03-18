@@ -1,38 +1,24 @@
 class Solution {
 public:
     string removeDuplicateLetters(string s) {
-        stack<char> st;
-        vector<int> freq(26, 0);
-        vector<bool> inStack(26, false);
+        string ans;
+        vector<int> lastIndex(26, -1);
+        vector<bool> taken(26, false);
 
-        for(char ch: s) {
-            freq[ch - 'a']++;
+        int n = s.size();
+        for(int i=0; i<n; i++) {
+            lastIndex[s[i]-'a'] = i; // store last occurring index of the char
         }
 
-        for(char ch: s) {
-            freq[ch - 'a']--;
+        for(int i=0; i<n; i++) {
+            if(taken[s[i] - 'a'] == true) continue;
 
-            if(inStack[ch - 'a'] == true) continue;
-
-            while(!st.empty() && st.top() >= ch && freq[st.top() - 'a'] > 0) {
-                char remove = st.top();
-                st.pop();
-                inStack[remove - 'a'] = false;
+            while(ans.size() > 0 && s[i] < ans.back() && lastIndex[ans.back() - 'a'] > i) {
+                taken[ans.back() - 'a'] = false;
+                ans.pop_back();
             }
-
-            st.push(ch);
-            inStack[ch - 'a'] = true;
-        }
-
-        int size = st.size();
-        string ans(size, ' ');
-
-        int i = size-1;
-        while(!st.empty()) {
-            char remove = st.top();
-            st.pop();
-            ans[i] = remove;
-            i--;
+            ans.push_back(s[i]);
+            taken[s[i] - 'a'] = true;
         }
 
         return ans;
