@@ -1,36 +1,31 @@
 class Solution {
 public:
     int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
-        int count = 0;
-
         int maxReached = startFuel;
-        // maxheap to store fuel offered by stations i.e. stations[i][1]
-        // Just to make sure that most fuel offerring stations is available at top
+        int stationIndex = 0;
         priority_queue<int> pq;
 
-        int index = 0; 
+        int countStops = 0;
 
-        while(maxReached < target) { // I proceed till I haven't reached the target
-            // I collect all fuel offered by stations(Within my reach) in the Priority Queue
-            while(
-                index < stations.size() // until I can store stations' fuel 
-                && stations[index][0] <= maxReached // within my reach
+        while(maxReached < target) {
+            // while I can take the station
+            // AND the station position is within maxReached
+            // I collect it in maxHeap
+            while(stationIndex < stations.size()
+            && stations[stationIndex][0] <= maxReached
             ) {
-                pq.push(stations[index][1]); 
-                index++;
+                pq.push(stations[stationIndex][1]);
+                stationIndex++; // move to next station
             }
 
-            // if I don't have any fuel available by stations then I stop, I cannot go beyond my maxReach
             if(pq.empty()) return -1;
 
-            // I have fuel's available, I take the one with most fuel and my maxReach increases
             maxReached += pq.top();
-            pq.pop(); // remove from stored fuels
+            pq.pop();
 
-            count++;
+            countStops++;
+        } 
 
-        }
-
-        return count;
+        return countStops;
     }
 };
