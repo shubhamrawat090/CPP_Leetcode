@@ -9,9 +9,10 @@ public:
         for(int j=colStart; j<=colEnd; j++) {
             int left = rowStart, right = rowEnd;
             while(left < right) {
-                int temp = grid[left][j];
-                grid[left][j] = grid[right][j];
-                grid[right][j] = temp;
+                swap(grid[left][j], grid[right][j]);
+                // int temp = grid[left][j];
+                // grid[left][j] = grid[right][j];
+                // grid[right][j] = temp;
                 left++;
                 right--;
             }
