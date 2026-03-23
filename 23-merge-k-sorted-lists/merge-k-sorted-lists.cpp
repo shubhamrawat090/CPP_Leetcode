@@ -9,38 +9,40 @@
  * };
  */
 class Solution {
+    struct cmp {
+        bool operator()(ListNode* a, ListNode* b) { return a->val > b->val; }
+    };
+
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         int k = lists.size();
-        if(k == 0) return NULL;
-        if(k == 1) return lists[0];
-        ListNode* mergedList = mergeTwoLists(lists[0], lists[1]);
+        if (k == 0)
+            return NULL;
+        if (k == 1)
+            return lists[0];
 
-        for(int i=2; i<k; i++) {
-            mergedList = mergeTwoLists(mergedList, lists[i]);
-        }
-
-        return mergedList;
-    }
-
-    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
         ListNode* dummy = new ListNode();
-        ListNode* temp = dummy;
-        while (list1 != NULL && list2 != NULL) {
-            if (list1->val < list2->val) {
-                temp->next = list1;
-                list1 = list1->next;
-            } else {
-                temp->next = list2;
-                list2 = list2->next;
+        ListNode* tail = dummy;
+
+        priority_queue<ListNode*, vector<ListNode*>, cmp> pq;
+        for (int i = 0; i < k; i++) {
+            if (lists[i] != NULL) {
+                pq.push(lists[i]);
             }
-            temp = temp->next;
         }
-        if (list1 != NULL) {
-            temp->next = list1;
-        } else if (list2 != NULL) {
-            temp->next = list2;
+
+        while (!pq.empty()) {
+            ListNode* top = pq.top();
+            pq.pop();
+            tail->next = top;
+            tail = tail->next;
+            top = top->next;
+
+            if (top != NULL) {
+                pq.push(top);
+            }
         }
+
         return dummy->next;
     }
 };
