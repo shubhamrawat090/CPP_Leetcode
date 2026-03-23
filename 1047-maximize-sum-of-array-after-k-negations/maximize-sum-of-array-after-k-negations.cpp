@@ -1,41 +1,21 @@
 class Solution {
-    struct Compare {
-        bool operator()(const int& a, const int& b) {
-            // if(a < 0 && b < 0) return a < b;
-            // if(a < 0) return a > b;
-            // if(b < 0) return a > b;
-            return a > b; 
-        }
-    };
-
 public:
     int largestSumAfterKNegations(vector<int>& nums, int k) {
-        priority_queue<int, vector<int>, Compare> pq;
-        priority_queue<int, vector<int>, Compare> pq_temp;
+        priority_queue<int, vector<int>, greater<int>> minHeap;
         for(int num: nums) {
-            pq.push(num);
-            pq_temp.push(num);
+            minHeap.push(num);
         } 
 
-        // DEBUG: Remove 
-        int size = pq.size();
-        for(int i=0; i<size; i++) {
-            int top = pq_temp.top();
-            pq_temp.pop();
-            cout<<top<<" ";
-        }
-
-
         for(int i=0; i<k; i++) {
-            int top = pq.top();
-            pq.pop();
-            pq.push(-top);
+            int top = minHeap.top();
+            minHeap.pop();
+            minHeap.push(-top);
         }
 
         int sum = 0;
-        while(!pq.empty()) {
-            sum += pq.top();
-            pq.pop();
+        while(!minHeap.empty()) {
+            sum += minHeap.top();
+            minHeap.pop();
         }
 
         return sum;
