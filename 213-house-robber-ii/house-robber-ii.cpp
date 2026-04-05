@@ -21,15 +21,6 @@ public:
             robWithoutFirst[i] = max(robWithoutFirst[i-1], nums[i] + robWithoutFirst[i-2]);
         }
 
-        cout<<"\nRobWithFirst: ";
-        for(int i=0; i<n; i++) {
-            cout<<robWithFirst[i]<<" | ";
-        }
-        cout<<"\nRobWithoutFirst: ";
-        for(int i=0; i<n; i++) {
-            cout<<robWithoutFirst[i]<<" | ";
-        }
-
         return max(robWithFirst[n-2], robWithoutFirst[n-1]);
     }
 };
