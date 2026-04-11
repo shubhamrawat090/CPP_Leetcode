@@ -1,47 +1,44 @@
 class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
-        vector<int> ans;
-        int firstPos = findFirstPos(nums, target);
-        ans.push_back(firstPos);
-        if(firstPos != -1) {
-            int lastPos = findLastPos(nums, target);
-            ans.push_back(lastPos);
-        } else {
-            ans.push_back(-1);
+        int firstPos = getFirstPos(nums, target);
+        if(firstPos == -1) {
+            return {-1, -1};
         }
-        return ans;
+        int lastPos = getLastPos(nums, target);
+        return {firstPos, lastPos};
     }
 
-    int findFirstPos(vector<int>& nums, int target) {
-        int n = nums.size();
-        int low = 0, high = n - 1, ans = -1;
+private:
+    int getFirstPos(vector<int>& nums, int target) {
+        int ans = -1, n = nums.size();
+        int low = 0, high = n-1;
         while(low <= high) {
             int mid = (low + high) / 2;
-            if(nums[mid] == target) {
+            if(target == nums[mid]) {
                 ans = mid;
-                high = mid - 1;
-            } else if(nums[mid] > target) {
-                high = mid - 1;
+                high = mid-1;
+            } else if(target > nums[mid]) {
+                low = mid+1;
             } else {
-                low = mid + 1;
+                high = mid-1;
             }
         }
         return ans;
     }
 
-    int findLastPos(vector<int>& nums, int target) {
-        int n = nums.size();
-        int low = 0, high = n - 1, ans = -1;
+    int getLastPos(vector<int>& nums, int target) {
+        int ans = -1, n = nums.size();
+        int low = 0, high = n-1;
         while(low <= high) {
             int mid = (low + high) / 2;
-            if(nums[mid] == target) {
+            if(target == nums[mid]) {
                 ans = mid;
-                low = mid + 1;
-            } else if(nums[mid] > target) {
-                high = mid - 1;
+                low = mid+1;
+            } else if(target > nums[mid]) {
+                low = mid+1;
             } else {
-                low = mid + 1;
+                high = mid-1;
             }
         }
         return ans;
