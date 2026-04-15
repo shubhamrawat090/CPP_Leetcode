@@ -1,22 +1,18 @@
 class Solution {
 public:
     int findTargetSumWays(vector<int>& nums, int target) {
-        int ans = 0;
-        helper(nums, target, 0, ans);
-        return ans;
+        return recursive(nums, target, 0, 0);
     }
 
-    void helper(vector<int>& nums, int target, int idx, int& ans) {
-        if(idx == nums.size()) {
-            if(target == 0) {
-                ans++;
-            }
-            return;
+    int recursive(vector<int>& nums, int& target, int sum, int i) {
+        int n = nums.size();
+        if(i == n) {
+            return sum == target ? 1 : 0;
         }
 
-        // Add curr
-        helper(nums, target - nums[idx], idx+1, ans);
-        // Subtract curr
-        helper(nums, target + nums[idx], idx+1, ans);
+        // pick - make curr num minus(-), notPick - keep curr num plus(+)
+        int pick = recursive(nums, target, sum - nums[i], i+1);
+        int notPick = recursive(nums, target, sum + nums[i], i+1);
+        return pick + notPick;
     }
 };
