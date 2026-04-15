@@ -34,7 +34,6 @@ public:
     }
 
     int countPartitions(vector<int>& arr, int diff) {
-        
         // s1 = sum of subset 1, s2 = sum of subset 2
         // s1 - s2 = diff
         // s1 + s2 = total_sum
@@ -47,7 +46,6 @@ public:
         for(int val: arr) {
             totalSum += val;
         }
-        
         
         //////////// VERY VERY IMPORTANT CONDITION /////////////
         if((diff + totalSum) % 2 != 0) {
