@@ -128,22 +128,10 @@ public:
                 }
                 currRow[s + offset] = pick + notPick;
             }
-            cout<<"prevRow: ";
-            print(prevRow);
-            cout<<"currRow: ";
-            print(currRow);
-            cout<<endl;
             prevRow = currRow;
         }
 
         return currRow[target + offset];
-    }
-
-    void print(vector<int>& nums) {
-        for(int num: nums) {
-            cout<<num<<" ";
-        }
-        cout<<endl;
     }
 
     int tabulate(vector<int>& nums, int target) {
