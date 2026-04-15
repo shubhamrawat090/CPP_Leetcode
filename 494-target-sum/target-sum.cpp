@@ -12,25 +12,53 @@ public:
         // indices to sum + totalSum return memoized(nums, target, 0, 0, dp,
         // totalSum);
 
-        return tabulate(nums, target);
+        // return tabulate(nums, target);
+        return spaceOptimize(nums, target);
     }
 
-    int memoized(vector<int>& nums, int& target, int sum, int i,
-                 vector<vector<int>>& dp, int& totalSum) {
+    int spaceOptimize(vector<int>& nums, int target) {
+        int totalSum = 0;
+        for (int val : nums) {
+            totalSum += val;
+        }
+        if (abs(target) > totalSum)
+            return 0; // impossible to achieve
         int n = nums.size();
-        if (i == n) {
-            return sum == target ? 1 : 0;
+
+        vector<int> prevRow(2 * totalSum + 1, 0);
+        vector<int> currRow(2 * totalSum + 1, 0);
+
+        int offset = totalSum;
+        // sum can be -totalSum to + totalSum
+        // at i = 0 (0 elements), sum = 0, there is 1 way to make that target
+        // which is empty sum base case: 1st row looks like sum index →
+
+        //       -6 -5 -4 -3 -2 -1  0  1  2  3  4  5  6
+        // i=0    0  0  0  0  0  0  1  0  0  0  0  0  0
+
+        // after using first number:
+
+        // i=1
+        // ways to reach each sum
+        prevRow[0 + offset] = 1;
+
+        for (int i = 1; i < n + 1; i++) {
+            for (int s = -totalSum; s <= totalSum; s++) {
+                // check if it is inside the range of -totalSum to +totalSum
+                int pick = 0, notPick = 0;
+                if (s - nums[i - 1] >= -totalSum) {
+                    pick = prevRow[s - nums[i - 1] + offset];
+                }
+
+                if (s + nums[i - 1] <= totalSum) {
+                    notPick = prevRow[s + nums[i - 1] + offset];
+                }
+                currRow[s + offset] = pick + notPick;
+            }
+            prevRow = currRow;
         }
 
-        if (dp[i][sum + totalSum] != -1) {
-            return dp[i][sum + totalSum];
-        }
-
-        // pick - make curr num minus(-), notPick - keep curr num plus(+)
-        int pick = memoized(nums, target, sum - nums[i], i + 1, dp, totalSum);
-        int notPick =
-            memoized(nums, target, sum + nums[i], i + 1, dp, totalSum);
-        return dp[i][sum + totalSum] = pick + notPick;
+        return currRow[target + offset];
     }
 
     int tabulate(vector<int>& nums, int target) {
@@ -38,7 +66,8 @@ public:
         for (int val : nums) {
             totalSum += val;
         }
-        if(abs(target) > totalSum) return 0; // impossible to achieve
+        if (abs(target) > totalSum)
+            return 0; // impossible to achieve
         int n = nums.size();
 
         vector<vector<int>> dp(n + 1, vector<int>(2 * totalSum + 1, 0));
@@ -72,6 +101,24 @@ public:
         }
 
         return dp[n][target + offset];
+    }
+
+    int memoized(vector<int>& nums, int& target, int sum, int i,
+                 vector<vector<int>>& dp, int& totalSum) {
+        int n = nums.size();
+        if (i == n) {
+            return sum == target ? 1 : 0;
+        }
+
+        if (dp[i][sum + totalSum] != -1) {
+            return dp[i][sum + totalSum];
+        }
+
+        // pick - make curr num minus(-), notPick - keep curr num plus(+)
+        int pick = memoized(nums, target, sum - nums[i], i + 1, dp, totalSum);
+        int notPick =
+            memoized(nums, target, sum + nums[i], i + 1, dp, totalSum);
+        return dp[i][sum + totalSum] = pick + notPick;
     }
 
     int recursive(vector<int>& nums, int& target, int sum, int i) {
