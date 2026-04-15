@@ -1,6 +1,13 @@
 class Solution {
 public:
     int findTargetSumWays(vector<int>& nums, int target) {
+        int totalSum = 0;
+        for(int val: nums) {
+            totalSum += val;
+        }
+
+        if(abs(target) > totalSum) return 0; // No possible
+
         // return recursive(nums, target, 0, 0);
 
         // int totalSum = 0;
@@ -13,7 +20,73 @@ public:
         // totalSum);
 
         // return tabulate(nums, target);
-        return spaceOptimize(nums, target);
+        // return spaceOptimize(nums, target);
+
+        // [1, 1, 1, 1, 1], target = 3
+        // -1 + 1 + 1 + 1 + 1 = 3,  + [1, 1, 1, 1], -[1]
+        // +1 - 1 + 1 + 1 + 1 = 3,  + [1, 1, 1, 1], -[1]
+        // +1 + 1 - 1 + 1 + 1 = 3,  + [1, 1, 1, 1], -[1]
+        // +1 + 1 + 1 - 1 + 1 = 3,  + [1, 1, 1, 1], -[1]
+        // +1 + 1 + 1 + 1 - 1 = 3,  + [1, 1, 1, 1], -[1]
+
+        // We can look it as count number of ways to split it into 2 subsets where the difference is target
+        return countPartitions(nums, target);
+    }
+
+    int countPartitions(vector<int>& arr, int diff) {
+        
+        // s1 = sum of subset 1, s2 = sum of subset 2
+        // s1 - s2 = diff
+        // s1 + s2 = total_sum
+        // Adding both we get
+        // s1 - s2 + s1 + s2 = diff + total_sum
+        // s1 = (diff + total_sum) / 2;
+        // Now we need to count the total number of subsets where the sum of a subset = (diff + total_sum) / 2;
+        
+        int totalSum = 0;
+        for(int val: arr) {
+            totalSum += val;
+        }
+        
+        
+        //////////// VERY VERY IMPORTANT CONDITION /////////////
+        if((diff + totalSum) % 2 != 0) {
+            return 0; // I don't want s1 to be broken into decimals because it is not possible.
+            // Suppose totalSum = 17, diff = 2,
+            // s1 = 17 + 2  / 2 = 19/2 = 9.5 this is impossible as all numbers are whole numbers
+        } 
+        
+        int targetSum = (diff + totalSum) / 2;
+        
+        int n = arr.size();
+        vector<vector<int>> dp(n + 1, vector<int>(targetSum + 1, 0));
+        
+        dp[0][0] = 1;
+        for(int i=1; i<n+1; i++) {
+            if(arr[i-1] == 0) {
+                dp[i][0] = 2 * dp[i-1][0];
+            } else {
+                dp[i][0] = dp[i-1][0];
+            }
+            // dp[i][0] = 1;
+        }
+        
+        for(int i=1; i<n+1; i++) {
+            for(int j=1; j<targetSum+1; j++) {
+                if(j >= arr[i-1]) {
+                    // pick + notPick
+                    int pick = dp[i-1][j-arr[i-1]];
+                    int notPick = dp[i-1][j];
+                    dp[i][j] = pick + notPick;
+                } else {
+                    // notPick
+                    int notPick = dp[i-1][j];
+                    dp[i][j] = notPick;
+                }
+            }
+        }
+        
+        return dp[n][targetSum];
     }
 
     int spaceOptimize(vector<int>& nums, int target) {
@@ -55,10 +128,22 @@ public:
                 }
                 currRow[s + offset] = pick + notPick;
             }
+            cout<<"prevRow: ";
+            print(prevRow);
+            cout<<"currRow: ";
+            print(currRow);
+            cout<<endl;
             prevRow = currRow;
         }
 
         return currRow[target + offset];
+    }
+
+    void print(vector<int>& nums) {
+        for(int num: nums) {
+            cout<<num<<" ";
+        }
+        cout<<endl;
     }
 
     int tabulate(vector<int>& nums, int target) {
