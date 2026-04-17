@@ -6,13 +6,12 @@ public:
         // vector<vector<int>> dp(n + 1, vector<int>(amount + 1, -1));
         // int ans = memoized(coins, amount, n, dp);
         // return ans == INT_MAX ? -1 : ans;
-        return tabulate(coins, amount, n);
+        // return tabulate(coins, amount, n);
         return spaceOptimize(coins, amount, n);
     }
 
     int spaceOptimize(vector<int>& coins, int amount, int n) {
-        vector<int> prev(amount+1, 0);
-        vector<int> curr(amount+1, 0);
+        vector<int> prev(amount + 1, 0);
 
         if (n >= 0) {
             // n = 1 coin row, from amount: 1 -> amount+1
@@ -22,9 +21,11 @@ public:
         }
 
         for (int i = 2; i < n + 1; i++) {
+            vector<int> curr(amount+1, INT_MAX);
+            curr[0] = 0;
             for (int j = 1; j < amount + 1; j++) {
-                if(j >= coins[i-1]) {
-                    int pickCall = curr[j - coins[i-1]];
+                if (j >= coins[i - 1]) {
+                    int pickCall = curr[j - coins[i - 1]];
                     int pick = pickCall == INT_MAX ? INT_MAX : 1 + pickCall;
                     int notPick = prev[j];
                     curr[j] = min(pick, notPick);
@@ -36,7 +37,7 @@ public:
             prev = curr;
         }
 
-        return curr[amount] == INT_MAX ? -1 : curr[amount];
+        return prev[amount] == INT_MAX ? -1 : prev[amount];
     }
 
     int tabulate(vector<int>& coins, int amount, int n) {
@@ -51,13 +52,13 @@ public:
 
         for (int i = 2; i < n + 1; i++) {
             for (int j = 1; j < amount + 1; j++) {
-                if(j >= coins[i-1]) {
-                    int pickCall = dp[i][j - coins[i-1]];
+                if (j >= coins[i - 1]) {
+                    int pickCall = dp[i][j - coins[i - 1]];
                     int pick = pickCall == INT_MAX ? INT_MAX : 1 + pickCall;
-                    int notPick = dp[i-1][j];
+                    int notPick = dp[i - 1][j];
                     dp[i][j] = min(pick, notPick);
                 } else {
-                    int notPick = dp[i-1][j];
+                    int notPick = dp[i - 1][j];
                     dp[i][j] = notPick;
                 }
             }
