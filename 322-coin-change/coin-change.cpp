@@ -11,17 +11,18 @@ public:
     }
 
     int spaceOptimize(vector<int>& coins, int amount, int n) {
-        vector<int> prev(amount + 1, 0);
+        vector<int> prev(amount + 1, INT_MAX);
+        vector<int> curr(amount + 1, INT_MAX);
 
-        if (n >= 0) {
-            // n = 1 coin row, from amount: 1 -> amount+1
-            for (int j = 1; j < amount + 1; j++) {
-                prev[j] = j % coins[0] == 0 ? j / coins[0] : INT_MAX;
-            }
+        prev[0] = curr[0] = 0;
+
+        // n = 1 coin row, from amount: 1 -> amount+1
+        for (int j = 1; j < amount + 1; j++) {
+            prev[j] = j % coins[0] == 0 ? j / coins[0] : INT_MAX;
         }
 
         for (int i = 2; i < n + 1; i++) {
-            vector<int> curr(amount+1, INT_MAX);
+            fill(curr.begin(), curr.end(), INT_MAX);
             curr[0] = 0;
             for (int j = 1; j < amount + 1; j++) {
                 if (j >= coins[i - 1]) {
