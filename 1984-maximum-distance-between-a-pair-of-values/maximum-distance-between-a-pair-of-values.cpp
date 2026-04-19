@@ -3,6 +3,17 @@ public:
     int maxDistance(vector<int>& nums1, vector<int>& nums2) {
         int maxDist = 0;
         int left = 0;
+
+        // BIG HINT
+        // If for some i, the farthest valid j is 7
+        // then for i+1 (smaller value), the farthest valid j cannot move left.
+
+        // It will either:
+
+        // stay same
+        // move right
+
+        // So j pointer never needs to reset back to i each time.
         for(int i=0; i<nums1.size(); i++) {
             left = i;
             int right = nums2.size()-1;
