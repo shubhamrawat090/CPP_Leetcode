@@ -32,14 +32,6 @@ public:
             j++;
         }
 
-        // DEBUG
-        // for (int row = 0; row < numRows; row++) {
-        //     for (int col = 0; col < n; col++) {
-        //         cout << grid[row][col] << " ";
-        //     }
-        //     cout << endl;
-        // }
-
         // Build Ans
         string ans;
         for (int row = 0; row < numRows; row++) {
