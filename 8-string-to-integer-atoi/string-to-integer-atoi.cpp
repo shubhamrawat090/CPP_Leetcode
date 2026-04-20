@@ -17,7 +17,7 @@ public:
         if (s[i] == '-') {
             sign = -1;
             i++;
-        } else if(s[i] == '+') {
+        } else if (s[i] == '+') {
             sign = 1;
             i++;
         }
@@ -28,7 +28,7 @@ public:
 
             int digit = s[i] - '0';
 
-            if (ans > INT_MAX / 10 || (ans == INT_MAX / 10 && digit > 7)) {
+            if (ans > INT_MAX / 10 || (ans == INT_MAX / 10 && digit > INT_MAX % 10)) {
                 return sign == 1 ? INT_MAX : INT_MIN;
             }
 
