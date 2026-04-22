@@ -30,6 +30,7 @@ public:
                     if(x >= 0 && y >= 0 && x < r && y < c && grid[x][y] == 1) {
                         grid[x][y] = 2;
                         fresh--;
+                        if(fresh == 0) return time+1;
                         q.push({x, y});
                     }
                 }
