@@ -16,6 +16,7 @@ public:
                 for(int i=0; i<word.size(); i++) {
                     if(word[i] != query[i]) {
                         diff++;
+                        if(diff > MAX_EDITS) break; // anyways more edits are needed.
                     }
                 }
                 if(diff <= MAX_EDITS) {
