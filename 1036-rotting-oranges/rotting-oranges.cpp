@@ -37,6 +37,6 @@ public:
             }
             time++;
         }
-        return fresh == 0 ? time - 1 : -1;
+        return fresh == 0 ? time - 1 : -1; // time - 1 kyunki last ki 1 extra iteration hoti hai after getting all oranges rotten
     }
 };
