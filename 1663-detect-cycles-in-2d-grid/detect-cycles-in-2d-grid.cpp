@@ -21,11 +21,6 @@ private:
 
                         if (visited[nx][ny] &&
                             (nx != parentX || ny != parentY)) {
-                            // cycle found
-                            cout << "Found here (x, y, parentX, parentY, nx, "
-                                    "ny): "
-                                 << x << "," << y << ", " << parentX << ","
-                                 << parentY << ", " << nx << "," << ny << endl;
                             return true;
                         } else if (!visited[nx][ny]) {
                             visited[nx][ny] = 1;
