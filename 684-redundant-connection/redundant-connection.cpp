@@ -48,7 +48,7 @@ public:
             parent[i] = i;
         }
         rank.resize(n+1, 0);
-        size.resize(n+1, 0); // Use either size(unionBySize) or rank(unionByRank) 
+        size.resize(n+1, 1); // Use either size(unionBySize) or rank(unionByRank) 
 
         for(vector<int> edge: edges) {
             int u = edge[0], v = edge[1];
