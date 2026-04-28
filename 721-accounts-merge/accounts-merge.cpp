@@ -84,7 +84,7 @@ public:
         }
     }
 
-    void groupSameParentEmails(unordered_map<string, int> emailToId, DSU& dsu, vector<vector<string>>& emailGroups) {
+    void groupSameParentEmails(unordered_map<string, int>& emailToId, DSU& dsu, vector<vector<string>>& emailGroups) {
         // Go through each email and push into same groups
         for(auto it: emailToId) {
             string email = it.first;
