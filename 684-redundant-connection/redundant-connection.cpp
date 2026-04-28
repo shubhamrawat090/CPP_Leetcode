@@ -9,14 +9,12 @@ private:
     }
 
     void unionByRank(int u, int v) {
-        int pu = parent[u], pv = parent[v];
+        int pu = find(u), pv = find(v);
 
         if(rank[pu] > rank[pv]) {
             parent[pv] = pu;
-            rank[pu]++;
         } else if(rank[pv] > rank[pu]) {
             parent[pu] = pv;
-            rank[pv]++;
         } else {
             parent[pv] = pu;
             rank[pu]++;
