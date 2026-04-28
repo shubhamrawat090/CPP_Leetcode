@@ -70,7 +70,6 @@ public:
 
     void buildNameToSortedEmails(vector<vector<string>>& emailGroups, DSU& dsu, unordered_map<string, string>& emailToName, vector<vector<string>>& ans) {
         for(vector<string> group: emailGroups) {
-            
             if(group.size() == 0) continue; // Skip empty groups
 
             sort(group.begin(), group.end());
