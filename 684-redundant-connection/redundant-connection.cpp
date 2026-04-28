@@ -1,11 +1,27 @@
 class Solution {
     vector<int> parent;
     vector<int> rank;
+    vector<int> size;
 
 private:
     int find(int u) {
         if(parent[u] == u) return u;
         return parent[u] = find(parent[u]);
+    }
+
+    void unionBySize(int u, int v) {
+        int pu = find(u), pv = find(v);
+
+        if(size[pu] > size[pv]) {
+            parent[pv] = pu;
+            size[pu] += size[pv];
+        } else if(size[pv] > size[pu]) {
+            parent[pu] = pv;
+            size[pv] += size[pu];
+        } else {
+            parent[pv] = pu;
+            size[pu] += size[pv];
+        }
     }
 
     void unionByRank(int u, int v) {
@@ -32,6 +48,7 @@ public:
             parent[i] = i;
         }
         rank.resize(n+1, 0);
+        size.resize(n+1, 0); // Use either size(unionBySize) or rank(unionByRank) 
 
         for(vector<int> edge: edges) {
             int u = edge[0], v = edge[1];
@@ -39,7 +56,8 @@ public:
                 ans = {u, v};
                 break;
             } else {
-                unionByRank(u, v);
+                // unionByRank(u, v);
+                unionBySize(u, v);
             }
         }
 
