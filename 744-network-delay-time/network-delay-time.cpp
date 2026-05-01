@@ -1,18 +1,9 @@
 class Solution {
     typedef pair<int, int> P;
 
-private:
-    vector<vector<vector<int>>> createAdj(vector<vector<int>>& times, int n) {
-        vector<vector<vector<int>>> adj(n + 1);
-        for(vector<int>& time: times) {
-            int u = time[0], v = time[1], w = time[2];
-            adj[u].push_back({v, w});
-        }
-        return adj;
-    }
-
 public:
     int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        // **** NOTE: DO NOT FORGET THE 1-based indexing ****
         // Create Dijkstra Array of source -> all nodes
         // Among time of individual nodes take the max value -> in that time all nodes will get the signal
         // If any node is INF means that cannot reach from source --> return -1; // IMPOSSIBLE CASE
@@ -52,5 +43,15 @@ public:
         }
 
         return maxTime;
+    }
+
+private:
+    vector<vector<vector<int>>> createAdj(vector<vector<int>>& times, int n) {
+        vector<vector<vector<int>>> adj(n + 1);
+        for(vector<int>& time: times) {
+            int u = time[0], v = time[1], w = time[2];
+            adj[u].push_back({v, w});
+        }
+        return adj;
     }
 };
