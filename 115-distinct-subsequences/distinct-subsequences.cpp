@@ -1,6 +1,33 @@
 class Solution {
 public:
     int numDistinct(string s, string t) {
+        // return tabulate(s, t);
+        return spaceOptimize(s, t);
+    }
+
+    int spaceOptimize(string s, string t) {
+        int m = s.size(), n = t.size();
+
+        vector<unsigned long long> prev(n+1, 0);
+        vector<unsigned long long> curr(n+1, 0);
+
+        prev[0] = curr[0] = 1;
+
+        for(int i=1; i<=m; i++) {
+            for(int j=1; j<=n; j++) {
+                if(s[i-1] == t[j-1]) {
+                    curr[j] = prev[j-1] + prev[j];
+                } else {
+                    curr[j] = prev[j];
+                }
+            }
+            prev = curr;
+        }
+
+        return prev[n];
+    }
+
+    int tabulate(string s, string t) {
         // 🧠 What the question is REALLY asking?
         // “In how many ways can I pick characters from s (in order) to form t?”
 
