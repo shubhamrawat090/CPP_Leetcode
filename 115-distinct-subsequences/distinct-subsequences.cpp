@@ -26,6 +26,6 @@ public:
             }
         }
 
-        return dp[m][n];
+        return (int)dp[m][n];
     }
 };
