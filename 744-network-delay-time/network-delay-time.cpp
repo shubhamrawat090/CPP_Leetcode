@@ -22,16 +22,21 @@ public:
             int d = top.first;
             int u = top.second;
 
-            if(d > dist[u]) continue; // no need to process a node where a SMALLER distance has been found
+            // if(d > dist[u]) continue; // no need to process a node where a SMALLER distance has been found
 
             // Relax neighbors
             for(vector<int> nbr: adj[u]) {
                 int v = nbr[0], w = nbr[1];
 
-                if(dist[u] + w < dist[v]) {
-                    dist[v] = dist[u] + w;
+                // if(dist[u] + w < dist[v]) {
+                //     dist[v] = dist[u] + w;
+                //     pq.push({dist[v], v});
+                // } 
+
+                if(d + w < dist[v]) {
+                    dist[v] = d + w;
                     pq.push({dist[v], v});
-                } 
+                }
             }
         }
 
