@@ -1,37 +1,65 @@
 class Solution {
-public:
-    int minCostConnectPoints(vector<vector<int>>& points) {
-        int n = points.size();
-        // Points are associated to their indices. means [[0,0],[2,2],[3,10],[5,2],[7,0]. To mark [0,0] visited I mark visited[0] = 1
-        vector<int> visited(n, 0); 
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-        pq.push({0, 0}); // Distance from first node is 0
-
-        int sum = 0;
-        while(!pq.empty()) {
-            auto top = pq.top();
-            pq.pop();
-            int node = top.second;
-            int cost = top.first;
-            vector<int> nodePoint = points[node];
-            int x = nodePoint[0], y = nodePoint[1];
-
-            // Node don't mark visited initially(BEFORE WHILE) because after this while loop won't run
-            if(visited[node] == 1) continue; 
-
-            visited[node] = 1;
-            sum += cost;
-
-            for(int i=0; i<n; i++) { // All nbr points
-                vector<int> nbr = points[i];
-                int nx = nbr[0], ny = nbr[1];
-                int nCost = abs(x-nx) + abs(y-ny);
-                if(!visited[i]) {
-                    pq.push({nCost, i});
-                }
+    struct DSU {
+        vector<int> parent;
+        vector<int> rank;
+        DSU(int n) {
+            parent.resize(n);
+            rank.resize(n, 0);
+            for(int i=0; i<n; i++) {
+                parent[i] = i;
             }
         }
 
+        int find(int u) {
+            if(parent[u] == u) return parent[u]; // or return u;
+            return parent[u] = find(parent[u]); // path compression here
+        }
+
+        void unionByRank(int u, int v) {
+            int pu = find(u), pv = find(v);
+            if(rank[pu] > rank[pv]) {
+                parent[pv] = pu;
+            } else if(rank[pv] > rank[pu]) {
+                parent[pu] = pv;
+            } else {
+                // Same rank --> INCREASE
+                parent[pv] = pu;
+                rank[pu]++;
+            }
+        }
+    };
+
+public:
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        vector<vector<int>> edges;
+
+        int n = points.size();
+        for(int u=0; u<n; u++) {
+            int ux = points[u][0], uy = points[u][1];
+            for(int v=0; v<n; v++) {
+                int vx = points[v][0], vy = points[v][1];
+                if(u == v) continue; // No edge for same point
+
+                int cost = abs(ux - vx) + abs(uy - vy);
+
+                edges.push_back({cost, u, v});
+            }
+        }
+
+        sort(edges.begin(), edges.end());
+
+        DSU dsu(n);
+
+        int sum = 0;
+        for(vector<int>& edge: edges) {
+            int u = edge[1], v = edge[2], w = edge[0];
+
+            if(dsu.find(u) != dsu.find(v)) {
+                // Different component can be part of MST
+                sum += w;
+                dsu.unionByRank(u, v);
+            }
+        }
         return sum;
     }
 };
