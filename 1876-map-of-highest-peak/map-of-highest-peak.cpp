@@ -29,8 +29,8 @@ public:
                     int x = i + dir[0], y = j + dir[1];
                     if(x >= 0 && x < rows && y >= 0 && y < cols) { // within bounds
                         if(isWater[x][y] == -1) {
-                            // NOT ACTUALLY MARKING FINAL DISTANCE
-                            isWater[x][y] = INT_MAX; // Just a placeholder for saying it is already visited
+                            // NOT ACTUALLY MARKING FINAL DISTANCE(can be anything actually, except -1)
+                            isWater[x][y] = dist; // Just a placeholder for saying it is already visited
                             q.push({x, y});
                         }
                     }
