@@ -27,8 +27,8 @@ public:
                 auto top = q.front();
                 q.pop();
                 int i = top[0], j = top[1];
-                cout<<"Freshoranges: "<<freshOranges<<", time: "<<time<<endl;
-                if(freshOranges == 0) return time;
+                // cout<<"Freshoranges: "<<freshOranges<<", time: "<<time<<endl;
+                // if(freshOranges == 0) return time;
 
                 for(auto& dir: dirs) {
                     int x = i + dir[0], y = j + dir[1];
