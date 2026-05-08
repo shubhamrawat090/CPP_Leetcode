@@ -18,17 +18,13 @@ public:
         if(freshOranges == 0) return 0; // No fresh oranges present to rot
         if(q.empty()) return -1; // No rotten oranges present
 
-        cout<<"First Freshoranges: "<<freshOranges<<endl;
-
-        int time = 0;
+        int time = 1;
         while(!q.empty()) {
             int size = q.size();
             while(size--) {
                 auto top = q.front();
                 q.pop();
                 int i = top[0], j = top[1];
-                // cout<<"Freshoranges: "<<freshOranges<<", time: "<<time<<endl;
-                // if(freshOranges == 0) return time;
 
                 for(auto& dir: dirs) {
                     int x = i + dir[0], y = j + dir[1];
@@ -36,8 +32,9 @@ public:
                         if(grid[x][y] == 1) {
                             grid[x][y] = 2; // Rot the fresh orange
                             freshOranges--;
-                            cout<<"Nbrs: Freshoranges: "<<freshOranges<<", time: "<<time<<endl;
-                            if(freshOranges == 0) return time + 1;
+
+                            if(freshOranges == 0) return time;
+
                             q.push({x, y});
                         }
                     }
