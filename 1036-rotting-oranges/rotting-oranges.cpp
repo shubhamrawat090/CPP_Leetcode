@@ -1,42 +1,51 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-        int r = grid.size(), c = grid[0].size();
-        int fresh = 0;
-        queue<pair<int, int>> q;
-
-        for(int i=0; i<r; i++) {
-            for(int j=0; j<c; j++) {
-                if(grid[i][j] == 1) {
-                    fresh++;
-                } else if(grid[i][j] == 2) {
+        int freshOranges = 0;
+        int rows = grid.size(), cols = grid[0].size();
+        queue<vector<int>> q;
+        vector<vector<int>> dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        for(int i=0; i<rows; i++) {
+            for(int j=0; j<cols; j++) {
+                if(grid[i][j] == 2) {
                     q.push({i, j});
+                } else if(grid[i][j] == 1) {
+                    freshOranges++;
                 }
             }
         }
 
-        if(fresh == 0) return 0;
+        if(freshOranges == 0) return 0; // No fresh oranges present to rot
+        if(q.empty()) return -1; // No rotten oranges present
+
+        cout<<"First Freshoranges: "<<freshOranges<<endl;
 
         int time = 0;
-        vector<vector<int>> dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-        while(q.size() > 0) {
+        while(!q.empty()) {
             int size = q.size();
-            for(int i=0; i<size; i++) {
-                auto temp = q.front();
+            while(size--) {
+                auto top = q.front();
                 q.pop();
-                for(auto dir: dirs) {
-                    int x = temp.first + dir[0];
-                    int y = temp.second + dir[1];
-                    if(x >= 0 && y >= 0 && x < r && y < c && grid[x][y] == 1) {
-                        grid[x][y] = 2;
-                        fresh--;
-                        if(fresh == 0) return time+1;
-                        q.push({x, y});
+                int i = top[0], j = top[1];
+                cout<<"Freshoranges: "<<freshOranges<<", time: "<<time<<endl;
+                if(freshOranges == 0) return time;
+
+                for(auto& dir: dirs) {
+                    int x = i + dir[0], y = j + dir[1];
+                    if(x >= 0 && x < rows && y >= 0 && y < cols) { // Within bounds
+                        if(grid[x][y] == 1) {
+                            grid[x][y] = 2; // Rot the fresh orange
+                            freshOranges--;
+                            cout<<"Nbrs: Freshoranges: "<<freshOranges<<", time: "<<time<<endl;
+                            if(freshOranges == 0) return time + 1;
+                            q.push({x, y});
+                        }
                     }
                 }
             }
             time++;
         }
-        return fresh == 0 ? time - 1 : -1; // time - 1 kyunki last ki 1 extra iteration hoti hai after getting all oranges rotten
+
+        return -1;
     }
 };
