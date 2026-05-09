@@ -2,6 +2,7 @@ class Solution {
 private:
     vector<vector<int>> getFireTime(vector<vector<int>>& grid) {
         int rows = grid.size(), cols = grid[0].size();
+        // Keep in mind to initialize with 1e9 so that in case fire doesn't reach the time is INFINITY so that player can reach here early
         vector<vector<int>> fireTime(rows, vector<int>(cols, 1e9));
         vector<vector<int>> visited(rows, vector<int>(cols, 0));
         queue<pair<int, int>> q;
@@ -77,12 +78,6 @@ public:
     int maximumMinutes(vector<vector<int>>& grid) {
         int rows = grid.size(), cols = grid[0].size();
         vector<vector<int>> fireTime = getFireTime(grid);
-        // for(int i=0; i<rows; i++) {
-        //     for(int j=0; j<cols; j++) {
-        //         cout<<fireTime[i][j]<<", ";
-        //     }
-        //     cout<<endl;
-        // }
         int low = 0, high = (rows * cols) + 1; // These are maximum and minimum times a person can wait
         // Question is Binary Search on answer; 
         // We try to wait for a particular time b/w low-high and then see if we can traverse the whose grid and reach end
