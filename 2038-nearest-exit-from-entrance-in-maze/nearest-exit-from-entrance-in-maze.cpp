@@ -16,7 +16,7 @@ public:
                 int i = top[0], j = top[1];
                 if (i == 0 || j == 0 || i == rows - 1 || j == cols - 1) {
                     // Reached boundary
-                    if (i != entrance[0] && j != entrance[1]) {
+                    if (i != entrance[0] || j != entrance[1]) {
                         // i, j are NOT ENTRANCE(first value pushed in queue)
                         return dist;
                     }
@@ -28,11 +28,11 @@ public:
                         y < cols) { // within bounds
                         if (maze[x][y] == '.') {
                             maze[x][y] = '*';
-                            if (x == 0 || y == 0 || x == rows - 1 ||
-                                y == cols - 1) {
-                                // Reached boundary
-                                return dist + 1;
-                            }
+                            // if (x == 0 || y == 0 || x == rows - 1 ||
+                            //     y == cols - 1) {
+                            //     // Reached boundary
+                            //     return dist + 1;
+                            // }
                             q.push({x, y});
                         }
                     }
