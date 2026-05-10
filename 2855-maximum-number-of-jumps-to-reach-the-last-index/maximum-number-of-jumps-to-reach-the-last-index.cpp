@@ -8,13 +8,13 @@ public:
 
     int helper(vector<int>& nums, int& target, int endPt, vector<int>& dp) {
         if (endPt == 0)
-            return dp[endPt] = 0;
+            return 0;
         if (endPt == 1) {
             int diff = nums[1] - nums[0];
             if (diff >= -target && diff <= target) {
-                return dp[endPt] = 1; // 1 jump if within target
+                return 1; // 1 jump if within target
             } else {
-                return dp[endPt] = -1; // Cannot reach
+                return -1; // Cannot reach
             }
         }
 
