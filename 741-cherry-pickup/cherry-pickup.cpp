@@ -85,7 +85,8 @@ class Solution {
                 for (int r2 = n - 1; r2 >= 0; r2--) {
                     int c2 = r1 + c1 - r2;
                     // c2 can be negative for r1=0, c1=0, r2=2
-                    if(c2 < 0 || c2 >= n) continue; // Do not process for -ve indexes
+                    if (c2 < 0 || c2 >= n)
+                        continue; // Do not process for -ve indexes
 
                     if (r1 == n - 1 && c1 == n - 1 && r2 == n - 1 &&
                         c2 == n - 1) {
@@ -119,7 +120,7 @@ class Solution {
                         for (int d2 = 0; d2 < 2; d2++) {
                             int nr2 = r2 + dirs[d2][0], nc2 = c2 + dirs[d2][1];
                             int remainValue = -1e9;
-                            if(nr1 < n && nr2 < n && nc1 < n && nc2 < n) {
+                            if (nr1 < n && nr2 < n && nc1 < n && nc2 < n) {
                                 remainValue = dp[nr1][nc1][nr2];
                             }
                             int value = cherries + remainValue;
@@ -134,6 +135,75 @@ class Solution {
         return dp[0][0][0];
     };
 
+    int spaceOptimized(vector<vector<int>>& grid) {
+        int n = grid.size();
+
+        const int NEG = -1e9;
+
+        // prev[r1][r2]
+        vector<vector<int>> prev(n, vector<int>(n, NEG));
+
+        // Base case: both at (0,0)
+        prev[0][0] = grid[0][0];
+
+        // step = total moves made
+        // max steps = (n-1) + (n-1)
+        for (int step = 1; step <= 2 * (n - 1); step++) {
+
+            vector<vector<int>> curr(n, vector<int>(n, NEG));
+
+            for (int r1 = 0; r1 < n; r1++) {
+                for (int r2 = 0; r2 < n; r2++) {
+
+                    int c1 = step - r1;
+                    int c2 = step - r2;
+
+                    // Out of bounds
+                    if (c1 < 0 || c1 >= n || c2 < 0 || c2 >= n)
+                        continue;
+
+                    // Thorn cells
+                    if (grid[r1][c1] == -1 || grid[r2][c2] == -1)
+                        continue;
+
+                    int cherries = 0;
+
+                    if (r1 == r2 && c1 == c2) {
+                        cherries = grid[r1][c1];
+                    } else {
+                        cherries = grid[r1][c1] + grid[r2][c2];
+                    }
+
+                    int bestPrev = NEG;
+
+                    // Previous states:
+                    // (r1-1,r2-1)
+                    // (r1-1,r2)
+                    // (r1,r2-1)
+                    // (r1,r2)
+
+                    for (int dr1 = 0; dr1 <= 1; dr1++) {
+                        for (int dr2 = 0; dr2 <= 1; dr2++) {
+
+                            int pr1 = r1 - dr1;
+                            int pr2 = r2 - dr2;
+
+                            if (pr1 >= 0 && pr2 >= 0) {
+                                bestPrev = max(bestPrev, prev[pr1][pr2]);
+                            }
+                        }
+                    }
+
+                    curr[r1][r2] = cherries + bestPrev;
+                }
+            }
+
+            prev = curr;
+        }
+
+        return max(0, prev[n - 1][n - 1]);
+    }
+
 public:
     int cherryPickup(vector<vector<int>>& grid) {
         // Think of the question like 2 robots at (0, 0) want to go to (n-1,
@@ -147,7 +217,9 @@ public:
         // vector<vector<vector<int>>> dp(n, vector<vector<int>>(n,
         // vector<int>(n, -1))); int ans = memoized(0, 0, 0, grid, dp);
 
-        int ans = tabulate(grid);
+        // int ans = tabulate(grid);
+
+        int ans = spaceOptimized(grid);
         return max(0, ans);
     }
 };
