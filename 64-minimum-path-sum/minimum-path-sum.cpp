@@ -11,7 +11,7 @@ public:
 
         for(int i=1; i<rows; i++) {
             vector<int> curr(cols);
-            curr[0] = grid[i][0] + prev[0];
+            curr[0] = grid[i][0] + prev[0]; // Current cell(grid[i][0]) + Sum till 1 cell above(prev[0])
             for(int j=1; j<cols; j++) {
                 curr[j] = grid[i][j] + min(curr[j-1], prev[j]);
             }
