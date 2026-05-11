@@ -119,12 +119,7 @@ class Solution {
                         for (int d2 = 0; d2 < 2; d2++) {
                             int nr2 = r2 + dirs[d2][0], nc2 = c2 + dirs[d2][1];
                             int remainValue = -1e9;
-                            if(
-                                nr1 >= 0 && nr1 < n &&
-                                nr2 >= 0 && nr2 < n &&
-                                nc1 >= 0 && nc1 < n &&
-                                nc2 >= 0 && nc2 < n
-                            ) {
+                            if(nr1 < n && nr2 < n && nc1 < n && nc2 < n) {
                                 remainValue = dp[nr1][nc1][nr2];
                             }
                             int value = cherries + remainValue;
