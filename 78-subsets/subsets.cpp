@@ -7,7 +7,7 @@ public:
         return result;
     }
 
-    void helper(vector<int>& nums, int start, vector<int> path, vector<vector<int>>& result) {
+    void helper(vector<int>& nums, int start, vector<int>& path, vector<vector<int>>& result) {
         result.push_back(path);
         for(int i=start; i<nums.size(); i++) {
             path.push_back(nums[i]);
