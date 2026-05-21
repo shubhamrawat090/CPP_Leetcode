@@ -2,22 +2,17 @@ class Solution {
 public:
     vector<vector<int>> subsets(vector<int>& nums) {
         vector<vector<int>> result;
-        vector<int> currList;
-        helper(nums, 0, currList, result);
+        vector<int> path;
+        helper(nums, 0, path, result);
         return result;
     }
 
-    void helper(vector<int>& nums, int i, vector<int> currList, vector<vector<int>>& result) {
-        if(i == nums.size()) {
-            result.push_back(currList);
-            return;
+    void helper(vector<int>& nums, int start, vector<int> path, vector<vector<int>>& result) {
+        result.push_back(path);
+        for(int i=start; i<nums.size(); i++) {
+            path.push_back(nums[i]);
+            helper(nums, i+1, path, result);
+            path.pop_back();
         }
-
-        // include ith element
-        currList.push_back(nums[i]);
-        helper(nums, i+1, currList, result);
-        currList.pop_back();
-        // exclude ith element
-        helper(nums, i+1, currList, result);
     }
 };
