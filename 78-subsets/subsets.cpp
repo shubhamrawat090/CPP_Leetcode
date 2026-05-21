@@ -1,19 +1,23 @@
 class Solution {
 public:
     vector<vector<int>> subsets(vector<int>& nums) {
-        vector<vector<int>> ans;
-        vector<int> subArr;
-        helper(nums, 0, subArr, ans);
-        return ans;
+        vector<vector<int>> result;
+        vector<int> currList;
+        helper(nums, 0, currList, result);
+        return result;
     }
 
-    void helper(vector<int>& nums, int start, vector<int>& subArr, vector<vector<int>>& ans) {
-        ans.push_back(subArr);
-
-        for(int i=start; i<nums.size(); i++) {
-            subArr.push_back(nums[i]);
-            helper(nums, i+1, subArr, ans);
-            subArr.pop_back();
+    void helper(vector<int>& nums, int i, vector<int> currList, vector<vector<int>>& result) {
+        if(i == nums.size()) {
+            result.push_back(currList);
+            return;
         }
+
+        // include ith element
+        currList.push_back(nums[i]);
+        helper(nums, i+1, currList, result);
+        currList.pop_back();
+        // exclude ith element
+        helper(nums, i+1, currList, result);
     }
 };
