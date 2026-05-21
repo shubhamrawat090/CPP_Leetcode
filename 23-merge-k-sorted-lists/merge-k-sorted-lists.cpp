@@ -8,41 +8,35 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution {
-    struct cmp {
-        bool operator()(ListNode* a, ListNode* b) { return a->val > b->val; }
-    };
+struct compare {
+    bool operator()(ListNode* a, ListNode* b) {
+        return a->val > b->val;
+    }
+};
 
+class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
+        priority_queue<ListNode*, vector<ListNode*>, compare> minHeap;
         int k = lists.size();
-        if (k == 0)
-            return NULL;
-        if (k == 1)
-            return lists[0];
-
-        ListNode* dummy = new ListNode();
+        for(int i=0; i<k; i++) {
+            if(lists[i] != NULL) {
+                minHeap.push(lists[i]);
+            }
+        }
+        
+        ListNode* dummy = new ListNode(-1);
         ListNode* tail = dummy;
-
-        priority_queue<ListNode*, vector<ListNode*>, cmp> pq;
-        for (int i = 0; i < k; i++) {
-            if (lists[i] != NULL) {
-                pq.push(lists[i]);
-            }
-        }
-
-        while (!pq.empty()) {
-            ListNode* top = pq.top();
-            pq.pop();
+        while(!minHeap.empty()) {
+            ListNode* top = minHeap.top();
+            minHeap.pop();
             tail->next = top;
-            tail = tail->next;
             top = top->next;
-
-            if (top != NULL) {
-                pq.push(top);
+            tail = tail->next;
+            if(top != NULL) {
+                minHeap.push(top);
             }
         }
-
         return dummy->next;
     }
 };
