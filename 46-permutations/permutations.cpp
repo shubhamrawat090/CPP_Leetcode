@@ -6,11 +6,9 @@ public:
         return ans;
     }
 
-    void helper(vector<int>& nums, int start,
-                vector<vector<int>>& ans) {
+    void helper(vector<int>& nums, int start, vector<vector<int>>& ans) {
         if (start == nums.size()) {
             ans.push_back(nums);
-            return;
         }
 
         for (int i = start; i < nums.size(); i++) {
