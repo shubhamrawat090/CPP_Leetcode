@@ -1,25 +1,27 @@
 class Solution {
 public:
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<vector<int>> ans;
-        vector<int> temp;
-        helper(ans, temp, candidates, target, 0);
-        return ans;
+        vector<vector<int>> result;
+        vector<int> path;
+        helper(candidates, 0, target, result, path);
+        return result;
     }
 
-    void helper(vector<vector<int>>& ans, vector<int>& temp, vector<int>& nums, int remain, int start) {
-        if(remain < 0) {
+    void helper(vector<int>& nums, int i, int target, vector<vector<int>>& result, vector<int>& path) {
+        if(target == 0) {
+            result.push_back(path);
             return;
         }
 
-        if(remain == 0) {
-            ans.push_back(temp);
-        }
+        if(i == nums.size()) return; // No further possible
 
-        for(int i=start; i<nums.size(); i++) {
-            temp.push_back(nums[i]);
-            helper(ans, temp, nums, remain - nums[i], i);
-            temp.pop_back();
+        // Take 
+        if(target >= nums[i]) {
+            path.push_back(nums[i]);
+            helper(nums, i, target-nums[i], result, path);
+            path.pop_back();
         }
+        // Not take
+        helper(nums, i+1, target, result, path);
     }
 };
