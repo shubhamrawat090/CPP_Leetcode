@@ -6,6 +6,7 @@ public:
         vector<int> uppercase(26, 0);
         vector<int> digits(10, 0);
         unordered_map<char, int> specialChar;
+        string str = "!@#$";
 
         for (char ch : password) {
             if (ch >= 'a' && ch <= 'z') {
@@ -15,7 +16,6 @@ public:
             } else if (ch >= '0' && ch <= '9') {
                 digits[ch - '0'] = 1;
             } else {
-                string str = "!@#$";
                 if (str.find(ch) != string::npos) {
                     specialChar[ch] = 1;
                 }
