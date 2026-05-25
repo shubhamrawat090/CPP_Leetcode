@@ -2,9 +2,9 @@ class Solution {
 public:
     bool exist(vector<vector<char>>& board, string word) {
         int rows = board.size(), cols = board[0].size();
+        vector<vector<int>> visited(rows, vector<int>(cols, false));
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                vector<vector<int>> visited(rows, vector<int>(cols, false));
                 if (helper(board, word, visited, i, j, 0))
                     return true;
             }
