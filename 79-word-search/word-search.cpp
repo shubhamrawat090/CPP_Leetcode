@@ -16,7 +16,7 @@ public:
                 vector<vector<int>>& visited, int i, int j, int w) {
         if (w == word.size())
             return true;
-            
+
         int rows = board.size(), cols = board[0].size();
 
         if (i < 0 || j < 0 || i >= rows || j >= cols)
