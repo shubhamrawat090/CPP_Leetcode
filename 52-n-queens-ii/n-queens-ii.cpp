@@ -3,23 +3,20 @@ public:
     int totalNQueens(int n) {
         int ans = 0;
         vector<vector<char>> board(n, vector<char>(n, '.'));
-        solve(board, n, 0, 0, ans);
+        solve(board, n, 0, ans);
         return ans;
     }
 
-    void solve(vector<vector<char>>& board, int n, int row, int queens,
-               int& ans) {
+    void solve(vector<vector<char>>& board, int n, int row, int& ans) {
         if (row == n) {
-            if (queens == n) {
-                ans++;
-            }
+            ans++;
             return;
         }
 
         for (int col = 0; col < n; col++) {
             board[row][col] = 'Q';
             if (isSafe(row, col, board, n)) {
-                solve(board, n, row + 1, queens + 1, ans);
+                solve(board, n, row + 1, ans);
             }
             board[row][col] = '.';
         }
