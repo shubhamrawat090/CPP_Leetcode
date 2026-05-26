@@ -1,79 +1,69 @@
 class Solution {
 public:
     vector<vector<string>> solveNQueens(int n) {
-        vector<vector<bool>> board(n, vector<bool>(n, false));
         vector<vector<string>> ans;
-        helper(board, n, ans, 0);
+        vector<vector<char>> board(n, vector<char>(n, '.'));
+        solve(board, n, 0, 0, ans);
         return ans;
     }
 
-    void helper(vector<vector<bool>>& board, int n, vector<vector<string>>& ans, int row) {
-        if(row == n) {
-            // build the answer board
-            vector<string> ansBoard = buildStrBoard(board);
-            ans.push_back(ansBoard);
+    void solve(vector<vector<char>>& board, int n, int row, int queens,
+               vector<vector<string>>& ans) {
+        if (row == n) {
+            if (queens == n) {
+                insertBoard(board, ans, n);
+            }
             return;
         }
 
-        for(int col=0; col<n; col++) {
-            board[row][col] = true;
-            if(isSafe(board, n, row, col)) {
-                helper(board, n, ans, row+1);
+        for (int col = 0; col < n; col++) {
+            board[row][col] = 'Q';
+            if (isSafe(row, col, board, n)) {
+                solve(board, n, row + 1, queens + 1, ans);
             }
-            board[row][col] = false;
+            board[row][col] = '.';
         }
     }
 
-    vector<string> buildStrBoard(vector<vector<bool>>& board) {
-        vector<string> ans;
-        for(vector<bool> row: board) {
+    bool isSafe(int row, int col, vector<vector<char>>& board, int n) {
+        // Same row
+        for (int c = 0; c < n; c++) {
+            if (c == col)
+                continue;
+            if (board[row][c] == 'Q')
+                return false;
+        }
+        // upward
+        for (int r = 0; r < row; r++) {
+            if (board[r][col] == 'Q')
+                return false;
+        }
+
+        // top-left diag
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q')
+                return false;
+        }
+
+        // top-right diag
+        for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++) {
+            if (board[i][j] == 'Q')
+                return false;
+        }
+
+        return true;
+    }
+
+    void insertBoard(vector<vector<char>>& board, vector<vector<string>>& ans,
+                     int n) {
+        vector<string> res;
+        for (int i = 0; i < n; i++) {
             string str = "";
-            for(bool val: row) {
-                if(val == false) {
-                    str.push_back('.');
-                } else {
-                    str.push_back('Q');
-                }
+            for (int j = 0; j < n; j++) {
+                str.push_back(board[i][j]);
             }
-            ans.push_back(str);
+            res.push_back(str);
         }
-        return ans;
-    }
-
-    bool isSafe(vector<vector<bool>>& board, int n, int row, int col) {
-        // top->bottom
-        for(int r=0; r<row; r++) {
-            if(board[r][col] == true) {
-                return false;
-            }
-        }
-        // left->right
-        for(int c=0; c<col; c++) {
-            if(board[row][c] == true) {
-                return false;
-            } 
-        }
-
-        // left diagonal
-        // top-half
-        int r=row-1, c=col-1;
-        while(r>=0 && c>=0) {
-            if(board[r][c] == true) {
-                return false;
-            }
-            r--, c--;
-        }
-
-        // right diagonal
-        // top-half
-        r=row-1, c=col+1;
-        while(r>=0 && c<n) {
-            if(board[r][c] == true) {
-                return false;
-            }
-            r--, c++;
-        }
-
-        return true; // None of the condition caught pre-existing queen
+        ans.push_back(res);
     }
 };
