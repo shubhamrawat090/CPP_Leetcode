@@ -1,75 +1,81 @@
 class Solution {
     struct TrieNode {
-        TrieNode* children[26] = {};
-        string word = ""; // store full word at end node
-    };
-
-    TrieNode* root = new TrieNode();
-    vector<string> ans;
-    int rows, cols;
-
-    void insert(const string& word) {
-        TrieNode* node = root;
-        for (char ch : word) {
-            int idx = ch - 'a';
-            if (!node->children[idx])
-                node->children[idx] = new TrieNode();
-            node = node->children[idx];
-        }
-        node->word = word; // mark complete word
-    }
-
-    void dfs(vector<vector<char>>& board, int r, int c, TrieNode* node) {
-        char ch = board[r][c];
-        int idx = ch - 'a';
-
-        // ❌ no path in Trie → stop immediately
-        if (!node->children[idx])
-            return;
-
-        node = node->children[idx];
-
-        // ✅ found a word
-        if (!node->word.empty()) {
-            ans.push_back(node->word);
-            node->word.clear(); // avoid duplicates
-        }
-
-        // mark visited
-        board[r][c] = '#';
-
-        // explore 4 directions
-        int dirs[4][2] = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}};
-        for (auto& d : dirs) {
-            int nr = r + d[0];
-            int nc = c + d[1];
-            if (nr >= 0 && nc >= 0 && nr < rows && nc < cols &&
-                board[nr][nc] != '#') {
-                dfs(board, nr, nc, node);
+        TrieNode* children[26];
+        bool isWord;
+        TrieNode() {
+            for (int i = 0; i < 26; i++) {
+                children[i] = NULL;
             }
+            isWord = false;
         }
 
-        // backtrack
-        board[r][c] = ch;
-    }
+        void addWord(string word) {
+            TrieNode* curr = this;
+            for (int i = 0; i < word.size(); i++) {
+                char ch = word[i];
+                if (curr->children[ch - 'a'] == NULL) {
+                    curr->children[ch - 'a'] = new TrieNode();
+                }
+                curr = curr->children[ch - 'a'];
+            }
+            curr->isWord = true;
+        }
+    };
 
 public:
     vector<string> findWords(vector<vector<char>>& board,
                              vector<string>& words) {
-        rows = board.size();
-        cols = board[0].size();
+        TrieNode* trie = new TrieNode();
+        for (string& word : words) {
+            trie->addWord(word);
+        }
 
-        // build Trie from words
-        for (string& w : words)
-            insert(w);
-
-        // DFS from every cell
+        int rows = board.size(), cols = board[0].size();
+        unordered_set<string> ansSet;
+        vector<vector<bool>> visited(rows, vector<bool>(cols, false));
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                dfs(board, i, j, root);
+                char ch = board[i][j];
+                if (trie->children[ch - 'a'] != NULL) {
+                    dfs(board, i, j, trie, visited, ansSet, "");
+                }
             }
         }
 
+        vector<string> ans;
+        for (string word : ansSet) {
+            ans.push_back(word);
+        }
+
         return ans;
+    }
+
+    void dfs(vector<vector<char>>& board, int i, int j, TrieNode* trie,
+             vector<vector<bool>>& visited, unordered_set<string>& ansSet,
+             string str) {
+        int rows = board.size(), cols = board[0].size();
+        if (i < 0 || j < 0 || i == rows || j == cols)
+            return;
+        if (visited[i][j])
+            return;
+        char ch = board[i][j];
+        if (trie->children[ch - 'a'] == NULL)
+            return;
+
+        str.push_back(ch);
+        trie = trie->children[ch - 'a'];
+
+        if (trie->isWord) {
+            ansSet.insert(str);
+        }
+
+        visited[i][j] = true;
+
+        dfs(board, i + 1, j, trie, visited, ansSet, str);
+        dfs(board, i - 1, j, trie, visited, ansSet, str);
+        dfs(board, i, j + 1, trie, visited, ansSet, str);
+        dfs(board, i, j - 1, trie, visited, ansSet, str);
+
+        visited[i][j] = false;
     }
 };
