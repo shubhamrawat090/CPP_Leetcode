@@ -2,8 +2,11 @@ class Solution {
 public:
     int numberOfSpecialChars(string word) {
         // NOTE: HIGHEST IDX OF lowerCase < LOWEST IDX OF upperCase
-        vector<int> lower(26, -1);
-        vector<int> upper(26, -1);
+        int lower[26];
+        int upper[26];
+
+        fill(lower, lower + 26, -1);
+        fill(upper, upper + 26, -1);
 
         for(int i=0; i<word.size(); i++) {
             char ch = word[i];
