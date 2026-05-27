@@ -7,7 +7,7 @@ public:
 
         for(int i=0; i<word.size(); i++) {
             char ch = word[i];
-            if(ch >= 'a' && ch <= 'z') {
+            if(islower(ch)) {
                 lower[ch-'a'] = i;
             } else {
                 if(upper[ch-'A'] == -1) {
