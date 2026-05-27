@@ -9,8 +9,7 @@ public:
             char ch = word[i];
             if(ch >= 'a' && ch <= 'z') {
                 lower[ch-'a'] = i;
-            }
-            if(ch >= 'A' && ch <= 'Z') {
+            } else {
                 if(upper[ch-'A'] == -1) {
                     upper[ch-'A'] = i;
                 }
