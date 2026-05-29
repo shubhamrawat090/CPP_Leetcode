@@ -51,10 +51,7 @@ public:
                 }
             }
         }
-
-        for(string& task: taskList) {
-            cout<<task<<" ";
-        }
+        
         return taskList.size();
     }
 };
