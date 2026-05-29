@@ -2,8 +2,9 @@ class Solution {
 public:
     int leastInterval(vector<char>& tasks, int n) {
         vector<int> freq(26, 0);
-        vector<int> curr(26, -1);
-        vector<string> taskList;
+        vector<int> cooldown(26, -1);
+        // vector<string> taskList;
+        int taskCount = 0;
         for (char ch : tasks) {
             freq[ch - 'A']++;
         }
@@ -17,7 +18,7 @@ public:
                 if (freq[i] > maxVal) {
                     valFound = true;
                     char temp = i + 'A';
-                    if (curr[temp - 'A'] == -1 || curr[temp - 'A'] >= n) {
+                    if (cooldown[temp - 'A'] == -1 || cooldown[temp - 'A'] >= n) {
                         maxVal = freq[i];
                         ch = i + 'A';
                     }
@@ -30,28 +31,31 @@ public:
             if (ch != '\0') {
                 string str;
                 str.push_back(ch);
-                taskList.push_back(str);
+                // taskList.push_back(str);
+                taskCount++;
                 freq[ch - 'A']--;
-                // increase values in curr queue
+                // increase values in cooldown queue
                 for (int i = 0; i < 26; i++) {
-                    if (curr[i] != -1)
-                        curr[i]++;
+                    if (cooldown[i] != -1)
+                        cooldown[i]++;
                 }
 
-                curr[ch - 'A'] = 0; // Reset for curr
+                cooldown[ch - 'A'] = 0; // Reset for cooldown
 
                 if (freq[ch - 'A'] == 0)
-                    curr[ch - 'A'] = -1; // remove from queue
+                    cooldown[ch - 'A'] = -1; // remove from queue
             } else {
-                taskList.push_back("idle");
-                // increase values in curr queue
+                // taskList.push_back("idle");
+                taskCount++;
+                // increase values in cooldown queue
                 for (int i = 0; i < 26; i++) {
-                    if (curr[i] != -1)
-                        curr[i]++;
+                    if (cooldown[i] != -1)
+                        cooldown[i]++;
                 }
             }
         }
         
-        return taskList.size();
+        // return taskList.size();
+        return taskCount;
     }
 };
