@@ -1,43 +1,37 @@
 class Solution {
 public:
     bool isNStraightHand(vector<int>& hand, int groupSize) {
+
         int n = hand.size();
+
         if (n % groupSize != 0)
             return false;
-        unordered_map<int, int> elemFreq;
-        for (int& h : hand) {
-            elemFreq[h]++;
-        }
 
-        // NOTE: Important to sort because we need shortest element for make groups first
+        unordered_map<int, int> freq;
+
+        for (int x : hand)
+            freq[x]++;
+
         sort(hand.begin(), hand.end());
 
-        int totalElemsGrouped = 0;
+        for (int start : hand) {
 
-        for (int i = 0; i < n; i++) {
-            cout << endl;
-            int start = hand[i];
-            if (elemFreq[start] == 0) // All occurrences have been grouped
+            // already used
+            if (freq[start] == 0)
                 continue;
 
-            vector<int> currGroup;
-            for (int e = start; e <= start + groupSize - 1; e++) {
-                if (elemFreq[e] > 0) {
-                    currGroup.push_back(e);
-                } else {
-                    currGroup = {};
-                    break;
-                }
-            }
+            // try making group
+            for (int card = start;
+                 card < start + groupSize;
+                 card++) {
 
-            // Clear out elems which formed a group
-            for(int& e: currGroup) {
-                elemFreq[e]--;
-            }
+                if (freq[card] == 0)
+                    return false;
 
-            totalElemsGrouped += currGroup.size();
+                freq[card]--;
+            }
         }
 
-        return totalElemsGrouped == hand.size();
+        return true;
     }
 };
