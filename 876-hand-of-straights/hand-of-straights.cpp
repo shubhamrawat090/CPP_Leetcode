@@ -9,6 +9,7 @@ public:
             elemFreq[h]++;
         }
 
+        // NOTE: Important to sort because we need shortest element for make groups first
         sort(hand.begin(), hand.end());
 
         int totalElemsGrouped = 0;
@@ -22,10 +23,8 @@ public:
             vector<int> currGroup;
             for (int e = start; e <= start + groupSize - 1; e++) {
                 if (elemFreq[e] > 0) {
-                    cout << "Found: " << e << endl;
                     currGroup.push_back(e);
                 } else {
-                    cout << "Didn't Find: " << e << endl;
                     currGroup = {};
                     break;
                 }
