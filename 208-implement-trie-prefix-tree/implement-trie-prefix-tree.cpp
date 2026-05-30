@@ -4,7 +4,7 @@ class Trie {
         int isWord;
         TrieNode() {
             for (int i = 0; i < 26; i++) {
-                children[i] = NULL;
+                children[i] = nullptr;
             }
             isWord = false;
         }
@@ -19,7 +19,7 @@ public:
         TrieNode* curr = root;
         for (char ch : word) {
             int idx = ch - 'a';
-            if (curr->children[idx] == NULL) {
+            if (curr->children[idx] == nullptr) {
                 curr->children[idx] = new TrieNode();
             }
             curr = curr->children[idx];
@@ -31,7 +31,7 @@ public:
         TrieNode* curr = root;
         for (char ch : word) {
             int idx = ch - 'a';
-            if (curr->children[idx] == NULL) {
+            if (curr->children[idx] == nullptr) {
                 return false;
             }
             curr = curr->children[idx];
@@ -43,7 +43,7 @@ public:
         TrieNode* curr = root;
         for (char ch : prefix) {
             int idx = ch - 'a';
-            if (curr->children[idx] == NULL) {
+            if (curr->children[idx] == nullptr) {
                 return false;
             }
             curr = curr->children[idx];
