@@ -1,48 +1,52 @@
 class Trie {
-    struct Node {
-        bool isEnd = false;
-        // Node* children[26] = {NULL};
-        unordered_map<char, Node*> children;
+    struct TrieNode {
+        TrieNode* children[26];
+        int isWord;
+        TrieNode() {
+            for (int i = 0; i < 26; i++) {
+                children[i] = NULL;
+            }
+            isWord = false;
+        }
     };
 
-    Node* root;
+    TrieNode* root;
+
 public:
-    Trie() {
-        root = new Node();
-    }
-    
+    Trie() { root = new TrieNode(); }
+
     void insert(string word) {
-        Node* curr = root;
-        for(int i=0; i<word.size(); i++) {
-            // int index = word[i] - 'a';
-            if(curr->children.find(word[i]) == curr->children.end()) {
-                curr->children[word[i]] = new Node();
+        TrieNode* curr = root;
+        for (char ch : word) {
+            int idx = ch - 'a';
+            if (curr->children[idx] == NULL) {
+                curr->children[idx] = new TrieNode();
             }
-            curr = curr->children[word[i]];
-        }   
-        curr->isEnd = true; // end of word
-    }
-    
-    bool search(string word) {
-        Node* curr = root;
-        for(int i=0; i<word.size(); i++) {
-            // int index = word[i] - 'a';
-            if(curr->children.find(word[i]) == curr->children.end()) {
-                return false; // char not present
-            }
-            curr = curr->children[word[i]];
+            curr = curr->children[idx];
         }
-        return curr->isEnd;
+        curr->isWord = true;
     }
-    
-    bool startsWith(string prefix) {
-        Node* curr = root;
-        for(int i=0; i<prefix.size(); i++) {
-            // int index = prefix[i] - 'a';
-            if(curr->children.find(prefix[i]) == curr->children.end()) {
-                return false; // char not present
+
+    bool search(string word) {
+        TrieNode* curr = root;
+        for (char ch : word) {
+            int idx = ch - 'a';
+            if (curr->children[idx] == NULL) {
+                return false;
             }
-            curr = curr->children[prefix[i]];
+            curr = curr->children[idx];
+        }
+        return curr->isWord;
+    }
+
+    bool startsWith(string prefix) {
+        TrieNode* curr = root;
+        for (char ch : prefix) {
+            int idx = ch - 'a';
+            if (curr->children[idx] == NULL) {
+                return false;
+            }
+            curr = curr->children[idx];
         }
         return true;
     }
