@@ -8,24 +8,20 @@ public:
             return false;
 
         unordered_map<int, int> freq;
-
-        for (int x : hand)
+        for (int x : hand) {
             freq[x]++;
+        }
 
         sort(hand.begin(), hand.end());
 
         for (int start : hand) {
-
             // already used
             if (freq[start] == 0)
                 continue;
 
             // try making group
-            for (int card = start;
-                 card < start + groupSize;
-                 card++) {
-
-                if (freq[card] == 0)
+            for (int card = start; card < start + groupSize; card++) {
+                if (freq[card] == 0) // Next card not found - UNABLE TO FORM A GROUP
                     return false;
 
                 freq[card]--;
