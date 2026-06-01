@@ -2,120 +2,129 @@ class Solution {
     struct DSU {
         vector<int> parent;
         vector<int> rank;
-
         DSU(int n) {
-            parent.resize(n);
             rank.resize(n, 0);
-            for(int i=0; i<n; i++) {
+            parent.resize(n);
+            for (int i = 0; i < n; i++) {
                 parent[i] = i;
             }
         }
 
         int find(int u) {
-            if(parent[u] == u) return parent[u];
+            if (parent[u] == u)
+                return u;
             return parent[u] = find(parent[u]);
         }
 
         void unionByRank(int u, int v) {
-            int pu = find(u), pv = find(v);
+            int pu = find(u);
+            int pv = find(v);
 
-            if(rank[pu] > rank[pv]) {
+            if (rank[pu] > rank[pv]) {
                 parent[pv] = pu;
-            } else if(rank[pv] > rank[pu]) {
+            } else if (rank[pu] < rank[pv]) {
                 parent[pu] = pv;
             } else {
-                parent[pv] = pu;
-                rank[pu]++;
+                parent[pu] = pv;
+                rank[pv]++;
             }
         }
     };
 
 public:
     vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
-        // APPROACH: 
-        // We need email -> unique ID/num map for DSU(intuitive with numbers than strings)
-        // We need email -> name map --> O(1) access of name for an email
-        // Group same emails together
-        // WHAT IS A GROUP? [a, b, c, d]. a--b, a--c, a--d. This is a group, everything in a same array is a same group
-        // If a new group [b, e]. b--e. But, b is under a --> b, e are under a as well. Now we have a new group, [a,b,c,d,e]
-        // At the end after grouping, get same group emails array AND SORT THEM(asked in question)
-        // you have [a,b,c,d,e]. Get the name for 'a' from the email->name map and push [name, a,b,c,d,e] in answer
-        unordered_map<string, int> emailToNum = getEmailToNum(accounts);
+        // Unique Emails list
+        // Email -> name map
+        // Email -> assign unique ID num
+        // For a list of email [a,b,c]. I take a as (u) and b,c as (v)
+        // FORM DSU by unionByRank(u, v)
+        // Separate same group emails again.
+        // Add names to them as well.
+        // Return the list
+        unordered_set<string> uniqueEmails = getUniqueEmails(accounts);
         unordered_map<string, string> emailToName = getEmailToName(accounts);
-        int n = emailToNum.size(); // no. of nodes
-        DSU dsu = buildEmailsDSU(accounts, n, emailToNum);
-        vector<vector<string>> sameGroupEmails = getSameEmailGroups(dsu, n, emailToNum);
-        return buildEmailWithNames(sameGroupEmails, emailToName);
+        unordered_map<string, int> emailToID = getEmailToID(accounts);
+
+        int n = uniqueEmails.size();
+        DSU dsu = createDSU(n, accounts, emailToID);
+
+        vector<vector<string>> sameGroupEmails =
+            getSameGroupEmails(uniqueEmails, dsu, emailToID);
+        return addNamesToEmailList(sameGroupEmails, emailToName);
     }
 
-private:
-    unordered_map<string, int> getEmailToNum(vector<vector<string>>& accounts) {
-        int num = 0;
-        unordered_map<string, int> emailToNum;
-        for(auto& account: accounts) {
-            for(int i=1; i<account.size(); i++) {
-                string email = account[i];
-                if(emailToNum.find(email) == emailToNum.end()) {
-                    emailToNum[email] = num;
-                    num++;
-                }
+    vector<vector<string>> addNamesToEmailList(vector<vector<string>>& sameGroupEmails, unordered_map<string, string> emailToName) {
+        vector<vector<string>> ans;
+        for(auto& emailGroup: sameGroupEmails) {
+            if(emailGroup.empty()) continue;
+            sort(emailGroup.begin(), emailGroup.end());
+            vector<string> account;
+            string firstEmail = emailGroup[0];
+            string name = emailToName[firstEmail];
+            account.push_back(name);
+            for(auto& email: emailGroup) {
+                account.push_back(email);
             }
+            ans.push_back(account);
         }
-        return emailToNum;
+        return ans;
     }
 
-    unordered_map<string, string> getEmailToName(vector<vector<string>>& accounts) {
-        unordered_map<string, string> emailToName;
-        for(auto& account: accounts) {
-            string name = account[0];
-            for(int i=1; i<account.size(); i++) {
-                emailToName[account[i]] = name;
-            }
+    vector<vector<string>> getSameGroupEmails(unordered_set<string>& uniqueEmails, DSU& dsu, unordered_map<string, int>& emailToID) {
+        int n = uniqueEmails.size();
+        vector<vector<string>> ans(n);
+        for(auto& email: uniqueEmails) {
+            int u = emailToID[email];
+            int pu = dsu.find(u);
+            ans[pu].push_back(email);
         }
-        return emailToName;
+        return ans;
     }
 
-    DSU buildEmailsDSU(vector<vector<string>>& accounts, int n, unordered_map<string, int>& emailToNum) {
+    DSU createDSU(int& n, vector<vector<string>>& accounts, unordered_map<string, int>& emailToID) {
         DSU dsu(n);
         for(auto& account: accounts) {
-            // [a, b, c]: a--b, a--c
-            string firstEmail = account[1];
-            int u = emailToNum[firstEmail];
+            int u = emailToID[account[1]];
             for(int i=2; i<account.size(); i++) {
-                string email = account[i];
-                int v = emailToNum[email];
+                int v = emailToID[account[i]];
                 dsu.unionByRank(u, v);
             }
         }
         return dsu;
     }
 
-    vector<vector<string>> getSameEmailGroups(DSU& dsu, int n, unordered_map<string, int>& emailToNum) {
-        vector<vector<string>> sameEmailGroups(n); // index i is the uniqueNum of each email in emailToNum
-        // OBJECTIVE: sameEmailGroups[parent_u] = {all emails whose parent is parent_u}
-        // NOTE: There is a change certain groups are empty because emails can merge
-        for(auto& it: emailToNum) {
-            string email = it.first;
-            int u = it.second;
-            int pu = dsu.find(u);
-            sameEmailGroups[pu].push_back(email);
+    unordered_map<string, int> getEmailToID(vector<vector<string>>& accounts) {
+        unordered_map<string, int> ans;
+        int id = 0;
+        for (auto& account : accounts) {
+            for (int i = 1; i < account.size(); i++) {
+                if (ans.find(account[i]) == ans.end()) {
+                    ans[account[i]] = id;
+                    id++;
+                }
+            }
         }
-        return sameEmailGroups;
+        return ans;
     }
 
-    vector<vector<string>> buildEmailWithNames(vector<vector<string>>& sameGroupEmails, unordered_map<string, string>& emailToName) {
-        vector<vector<string>> emailWithNames;
-        for(auto& groupEmails: sameGroupEmails) {
-            if(groupEmails.empty()) continue; // skip empty groups
-            sort(groupEmails.begin(), groupEmails.end()); // Question demands sorted
-            string firstEmail = groupEmails[0];
-            string name = emailToName[firstEmail];
-            vector<string> emailGroupWithName = {name, firstEmail};
-            for(int i=1; i<groupEmails.size(); i++) {
-                emailGroupWithName.push_back(groupEmails[i]);
+    unordered_map<string, string> getEmailToName(vector<vector<string>>& accounts) {
+        unordered_map<string, string> ans;
+        for (auto& account : accounts) {
+            string name = account[0];
+            for (int i = 1; i < account.size(); i++) {
+                ans[account[i]] = name;
             }
-            emailWithNames.push_back(emailGroupWithName);
         }
-        return emailWithNames;
+        return ans;
+    }
+
+    unordered_set<string> getUniqueEmails(vector<vector<string>>& accounts) {
+        unordered_set<string> ans;
+        for (auto& account : accounts) {
+            for (int i = 1; i < account.size(); i++) {
+                ans.insert(account[i]);
+            }
+        }
+        return ans;
     }
 };
