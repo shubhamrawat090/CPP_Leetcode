@@ -33,7 +33,6 @@ class Solution {
 
 public:
     vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
-        // Unique Emails list
         // Email -> name map
         // Email -> assign unique ID num
         // For a list of email [a,b,c]. I take a as (u) and b,c as (v)
@@ -41,15 +40,13 @@ public:
         // Separate same group emails again.
         // Add names to them as well.
         // Return the list
-        unordered_set<string> uniqueEmails = getUniqueEmails(accounts);
         unordered_map<string, string> emailToName = getEmailToName(accounts);
         unordered_map<string, int> emailToID = getEmailToID(accounts);
 
-        int n = uniqueEmails.size();
+        int n = emailToName.size();
         DSU dsu = createDSU(n, accounts, emailToID);
 
-        vector<vector<string>> sameGroupEmails =
-            getSameGroupEmails(uniqueEmails, dsu, emailToID);
+        vector<vector<string>> sameGroupEmails = getSameGroupEmails(dsu, emailToID);
         return addNamesToEmailList(sameGroupEmails, emailToName);
     }
 
@@ -70,10 +67,11 @@ public:
         return ans;
     }
 
-    vector<vector<string>> getSameGroupEmails(unordered_set<string>& uniqueEmails, DSU& dsu, unordered_map<string, int>& emailToID) {
-        int n = uniqueEmails.size();
+    vector<vector<string>> getSameGroupEmails(DSU& dsu, unordered_map<string, int>& emailToID) {
+        int n = emailToID.size();
         vector<vector<string>> ans(n);
-        for(auto& email: uniqueEmails) {
+        for(auto& entry: emailToID) {
+            string email = entry.first;
             int u = emailToID[email];
             int pu = dsu.find(u);
             ans[pu].push_back(email);
