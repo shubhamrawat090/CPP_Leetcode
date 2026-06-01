@@ -34,16 +34,18 @@ class Solution {
 public:
     int removeStones(vector<vector<int>>& stones) {
         int maxRow = 0, maxCol = 0;
-        for(auto& stone: stones) {
+        for (auto& stone : stones) {
             int row = stone[0];
             int col = stone[1];
-            maxRow = max(row, maxRow); 
-            maxCol = max(col, maxCol); 
+            maxRow = max(row, maxRow);
+            maxCol = max(col, maxCol);
         }
 
+        // totalNodes = noOfRows + noOfCols
+        // AND: noOfRows = maxRow + 1, noOfCols = maxCol + 1
         DSU dsu(maxRow + maxCol + 2);
         unordered_set<int> uniqueStones;
-        for(auto& stone: stones) {
+        for (auto& stone : stones) {
             // Each row is a node
             // Each col is a node
             // Example we have 4 rows and 4 cols.
@@ -56,8 +58,9 @@ public:
         }
 
         int noOfComponents = 0;
-        for(auto& node: uniqueStones) {
-            if(dsu.find(node) == node) noOfComponents++;
+        for (auto& node : uniqueStones) {
+            if (dsu.find(node) == node)
+                noOfComponents++;
         }
 
         // Following Components
@@ -65,7 +68,7 @@ public:
         // APPROACH: We can remove all node from a component, EXCEPT 1
         // Ans = n(C1)-1 + n(C2)-1 + n(C3)-1
         //     = [n(C1)+n(C2)+n(C3)] - [1+1+1]
-        //     = n(total unique nodes) - n(no of. components)   
+        //     = n(total unique nodes) - n(no of. components)
         int n = stones.size();
         return n - noOfComponents;
     }
