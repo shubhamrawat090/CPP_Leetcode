@@ -5,7 +5,31 @@ public:
         // int n = nums.size();
         // vector<int> dp(n, -1);
         // return memoized(nums, 0, dp);
-        return tabulate(nums);
+        // return tabulate(nums);
+        return spaceOptimize(nums);
+    }
+
+    int spaceOptimize(vector<int>& nums) {
+        int n = nums.size();
+        if (n == 0)
+            return 0;
+        if (n == 1)
+            return nums[0];
+            
+        int prev = nums[0], prev2 = nums[0];
+        if (n > 1)
+            prev = max(nums[0], nums[1]);
+        for (int i = 2; i < n; i++) {
+            // Take ith
+            int take = nums[i] + prev2;
+            // Not Take ith
+            int notTake = prev;
+            int curr = max(take, notTake);
+
+            prev2 = prev;
+            prev = curr;
+        }
+        return prev;
     }
 
     int tabulate(vector<int>& nums) {
