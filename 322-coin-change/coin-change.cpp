@@ -8,11 +8,13 @@ public:
     int spaceOptimize(vector<int>& coins, int amount) {
         int n = coins.size();
 
+        // SC: O(amount) + O(amount)
         vector<long long> prev(amount+1, INT_MAX);
-        vector<long long> curr(amount+1, INT_MAX);
+        vector<long long> curr(amount+1, INT_MAX); 
 
         curr[0] = prev[0] = 0;
 
+        // TC: O(n * amount)
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= amount; j++) {
                 long long take = INT_MAX;
