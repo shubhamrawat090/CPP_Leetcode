@@ -1,20 +1,33 @@
 class Solution {
 public:
     int rob(vector<int>& nums) {
+        // return recursive(nums, 0);
         int n = nums.size();
-        if(n == 0) return 0; // 0 house
-        if(n == 1) return nums[0]; // 1 house
-        int prev2 = nums[0]; // till 0th house there is only 1 house
-        int prev = max(nums[0], nums[1]); // either take the 0th or 1st house
+        vector<int> dp(n, -1);
+        return memoized(nums, 0, dp);
+    }
 
-        for(int i=2; i<n; i++) {
-            int take = nums[i] + prev2; // if I take ith house then I have to ignore (i-1)th
-            int notTake = prev;
-            int curr = max(take, notTake);
-            prev2 = prev;
-            prev = curr;
-        }
+    int memoized(vector<int>& nums, int i, vector<int>& dp) {
+        int n = nums.size();
+        if(i >= n) return 0;
 
-        return prev; // Till nums[n-1] house i.e. the last house
+        if(dp[i] != -1) return dp[i];
+
+        // Take ith
+        int take = nums[i] + memoized(nums, i+2, dp);
+        // Not Take ith
+        int notTake = memoized(nums, i+1, dp);
+        return dp[i] = max(take, notTake);
+    }
+
+    int recursive(vector<int>& nums, int i) {
+        int n = nums.size();
+        if(i >= n) return 0;
+
+        // Take ith
+        int take = nums[i] + recursive(nums, i+2);
+        // Not Take ith
+        int notTake = recursive(nums, i+1);
+        return max(take, notTake);
     }
 };
