@@ -1,17 +1,30 @@
 class Solution {
 public:
     int uniquePaths(int m, int n) {
-        vector<int> prev(n, 1);
+        // return recursive(0, 0, m, n);
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1, -1));
+        return memoized(0, 0, m, n, dp);
+    }
 
-        for(int i=1; i<m; i++) {
-            vector<int> curr(n, 0);
-            curr[0] = 1;
-            for(int j=1; j<n; j++) {
-                curr[j] = prev[j] + curr[j-1];
-            }
-            prev = curr;
-        }
+    int memoized(int i, int j, int rows, int cols, vector<vector<int>>& dp) {
+        if (i == rows || j == cols)
+            return 0; // out of bounds
+        if (i == rows - 1 && j == cols - 1)
+            return 1; // reached end +1 possible path
+        if (dp[i][j] != -1)
+            return dp[i][j];
+        int right = memoized(i, j + 1, rows, cols, dp);
+        int down = memoized(i + 1, j, rows, cols, dp);
+        return dp[i][j] = right + down;
+    }
 
-        return prev[n-1];
+    int recursive(int i, int j, int rows, int cols) {
+        if (i == rows || j == cols)
+            return 0; // out of bounds
+        if (i == rows - 1 && j == cols - 1)
+            return 1; // reached end +1 possible path
+        int right = recursive(i, j + 1, rows, cols);
+        int down = recursive(i + 1, j, rows, cols);
+        return right + down;
     }
 };
