@@ -18,6 +18,7 @@ public:
             }
             prev = curr;
         }
+        // NOTE: for 1x2 grid we need to return curr only always OR just initialize curr with 1s as well
         return prev[cols-1];
     }
 
