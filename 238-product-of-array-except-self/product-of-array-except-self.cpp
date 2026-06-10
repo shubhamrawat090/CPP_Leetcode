@@ -1,30 +1,24 @@
 class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
-        vector<int> ans;
-        int productAll = 1, zeroCount = 0;;
+        int zeroFreq = 0;
+        int productExceptZero = 1;
         for(int num: nums) {
-            if(num == 0) {
-                zeroCount++;
-            } else {
-                productAll *= num;
-            }
+            if(num == 0) zeroFreq++;
+            else productExceptZero *= num;
         }
 
-        for(int num: nums) {
-            if(zeroCount == 0) {
-                ans.push_back(productAll/num);
-            } else if(zeroCount == 1) {
-                // we are 0
-                if(num == 0) {
-                  ans.push_back(productAll);  
-                }
-                // we are NOT 0, someone else is
-                else {
-                    ans.push_back(0);
-                }
-            } else {
-                ans.push_back(0);
+        int n = nums.size();
+        vector<int> ans(n, 0);
+        if(zeroFreq > 1) return ans; // all will be zeroes
+
+        for(int i=0; i<n; i++) {
+            if(nums[i] == 0) {
+                ans[i] = productExceptZero;
+            } else if(zeroFreq == 0) {
+                ans[i] = productExceptZero / nums[i];
+            } else if(zeroFreq == 1) {
+                ans[i] = 0;
             }
         }
 
