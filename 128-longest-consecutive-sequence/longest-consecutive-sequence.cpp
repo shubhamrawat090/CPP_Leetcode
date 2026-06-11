@@ -7,7 +7,8 @@ public:
         }
 
         int highestStreak = -1;
-        ///// NOTE: Do run loop on nums, only on the set because it can give TLE  
+        /***** for num = 10, if 9 is not present in array then 10 is a possible starting point ******/
+        ///// NOTE: DO NOT run loop on nums, only on the set because it can give TLE  
         for(int num: uniqueElems) {
             if(uniqueElems.find(num - 1) == uniqueElems.end()) {
                 // possible start point as nums-1 is not present for nums
