@@ -2,9 +2,6 @@ class Solution {
 public:
     int characterReplacement(string s, int k) {
         int freq[26];
-        for(int i=0; i<26; i++) {
-            freq[i] = 0;
-        }
 
         int maxLen = 0;
         int maxCharCount = 0;
