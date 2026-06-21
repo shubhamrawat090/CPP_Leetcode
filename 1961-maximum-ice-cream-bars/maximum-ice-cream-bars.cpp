@@ -17,8 +17,6 @@ public:
                 // If we can't buy any more, break early
                 if (canBuy == 0) break;
             }
-
-            if(coins == 0) break;
         }
 
         return count;
