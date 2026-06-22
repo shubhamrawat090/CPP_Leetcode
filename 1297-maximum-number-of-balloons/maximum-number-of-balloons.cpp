@@ -1,25 +1,17 @@
 class Solution {
 public:
     int maxNumberOfBalloons(string text) {
-        // b - 2
-        // a - 1
-        // l - 12
-        // l - 12
-        // o - 15
-        // o - 15
-        // n - 14
         int freq[26] = {0};
-        for(char ch: text) {
-            freq[ch-'a']++;
+        for (char ch : text) {
+            freq[ch - 'a']++;
         }
-
-        freq['l'-'a'] /= 2;
-        freq['o'-'a'] /= 2;
 
         string str = "balloon";
         int minOccur = INT_MAX;
-        for(char ch: str) {
-            minOccur = min(minOccur, freq[ch-'a']);
+        for (char ch : str) {
+            bool is_L_O = (ch == 'l' || ch == 'o');
+            int charFreq = is_L_O ? freq[ch - 'a'] / 2 : freq[ch - 'a'];
+            minOccur = min(minOccur, charFreq);
         }
 
         return minOccur;
