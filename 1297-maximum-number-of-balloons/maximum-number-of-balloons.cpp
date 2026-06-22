@@ -19,7 +19,6 @@ public:
         string str = "balloon";
         int minOccur = INT_MAX;
         for(char ch: str) {
-            cout<<ch<<": "<<freq[ch-'a']<<endl;
             minOccur = min(minOccur, freq[ch-'a']);
         }
 
