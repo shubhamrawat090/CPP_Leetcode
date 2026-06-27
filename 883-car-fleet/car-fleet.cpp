@@ -11,7 +11,7 @@ public:
         stack<double> stk;
         for(int i=n-1; i>=0; i--) {
             int pos = posSpeed[i].first, sp = posSpeed[i].second;
-            double time = (target - pos) * 1.0 / sp;
+            double time = (target - pos) * 1.0 / sp; // NOTE: Important to multiply 1.0 for correct decimal division
             stk.push(time);
             if(stk.size() >= 2) {
                 double behindCar = stk.top(); stk.pop();
