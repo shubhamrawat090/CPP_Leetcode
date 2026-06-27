@@ -4,28 +4,35 @@ public:
         int n = s.size();
         int m = p.size();
 
-        if (m > n) return {};
+        unordered_map<char, int> charFreq;
+        for (char ch : p) {
+            charFreq[ch]++;
+        }
+        unordered_map<char, int> currCharFreq = charFreq;
 
-        vector<int> pFreq(26, 0);
-        vector<int> winFreq(26, 0);
-
-        for (char ch : p)
-            pFreq[ch - 'a']++;
-
-        for (int i = 0; i < m; i++)
-            winFreq[s[i] - 'a']++;
-
+        int left = 0, right = 0;
         vector<int> ans;
-
-        if (pFreq == winFreq)
-            ans.push_back(0);
-
-        for (int i = m; i < n; i++) {
-            winFreq[s[i] - 'a']++;
-            winFreq[s[i - m] - 'a']--;
-
-            if (pFreq == winFreq)
-                ans.push_back(i - m + 1);
+        while (right < n) {
+            if (currCharFreq.find(s[right]) != currCharFreq.end()) {
+                // Char is present in string p
+                currCharFreq[s[right]]--;
+                while (currCharFreq[s[right]] < 0) {
+                    // extra character found in window --> start shrinking 1 by
+                    // 1
+                    currCharFreq[s[left]]++;
+                    left++;
+                }
+                    
+                if (right-left+1 == m) {
+                    // All characters found from p
+                    ans.push_back(left);
+                }
+            } else {
+                // Char is not present in p --> shrink the entire window
+                currCharFreq = charFreq; // restore frequencies
+                left = right + 1;
+            }
+            right++;
         }
 
         return ans;
