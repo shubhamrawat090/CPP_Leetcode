@@ -29,7 +29,7 @@ public:
                 }
             } else {
                 // Char is not present in p --> shrink the entire window
-                currCharFreq = charFreq; // restore frequencies
+                currCharFreq = charFreq; // restore frequencies - MIGHT BE EXPENSIVE KEEPING MULTIPLE COPIES
                 left = right + 1;
             }
             right++;
