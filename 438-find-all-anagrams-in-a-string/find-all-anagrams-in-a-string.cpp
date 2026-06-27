@@ -19,7 +19,7 @@ public:
                 while (currCharFreq[s[right]] < 0) {
                     // extra character found in window --> start shrinking 1 by
                     // 1
-                    currCharFreq[s[left]]++;
+                    if (currCharFreq.count(s[left])) currCharFreq[s[left]]++;
                     left++;
                 }
                     
