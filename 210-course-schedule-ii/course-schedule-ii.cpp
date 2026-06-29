@@ -5,8 +5,8 @@ public:
         vector<int> indegree(numCourses, 0);
         for(auto& edge: prerequisites) {
             int u = edge[0], v = edge[1];
-            adj[u].push_back(v);
-            indegree[v]++;
+            adj[v].push_back(u);
+            indegree[u]++;
         }
 
         queue<int> q;
@@ -22,8 +22,8 @@ public:
             int size = q.size();
             while(size--) {
                 int top = q.front();
-                topo.push_back(top);
                 q.pop();
+                topo.push_back(top);
                 for(int nbr: adj[top]) {
                     indegree[nbr]--;
                     if(indegree[nbr] == 0) {
@@ -33,7 +33,6 @@ public:
             }
         }
         if(topo.size() != numCourses) return {};
-        reverse(topo.begin(), topo.end());
         return topo;
     }
 };
