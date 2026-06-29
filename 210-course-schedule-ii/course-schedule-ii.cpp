@@ -1,43 +1,39 @@
 class Solution {
 public:
-    vector<int> findOrder(int V, vector<vector<int>>& prerequisites) {
-        vector<vector<int>> adj(V);
-        for(vector<int> course: prerequisites) {
-            int u = course[1], v = course[0];
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> adj(numCourses);
+        vector<int> indegree(numCourses, 0);
+        for(auto& edge: prerequisites) {
+            int u = edge[0], v = edge[1];
             adj[u].push_back(v);
-        }
-
-        vector<int> indegree(V);
-        vector<int> topo;
-
-        for(int i = 0; i<V; i++) {
-            for(int it: adj[i]) {
-                indegree[it]++;
-            }
+            indegree[v]++;
         }
 
         queue<int> q;
-        for(int i=0; i<V; i++) {
-            if(indegree[i] == 0) {
-                q.push(i);
+
+        vector<int> topo;
+        for(int node=0; node<numCourses; node++) {
+            if(indegree[node] == 0) {
+                q.push(node);
             }
         }
 
         while(!q.empty()) {
-            int top = q.front(); q.pop();
-            topo.push_back(top);
-
-            for(int it: adj[top]) {
-                indegree[it]--;
-                if(indegree[it] == 0) {
-                    q.push(it);
+            int size = q.size();
+            while(size--) {
+                int top = q.front();
+                topo.push_back(top);
+                q.pop();
+                for(int nbr: adj[top]) {
+                    indegree[nbr]--;
+                    if(indegree[nbr] == 0) {
+                        q.push(nbr);
+                    }
                 }
             }
         }
-
-        if(topo.size() != V) {
-            return {};
-        }
+        if(topo.size() != numCourses) return {};
+        reverse(topo.begin(), topo.end());
         return topo;
     }
 };
