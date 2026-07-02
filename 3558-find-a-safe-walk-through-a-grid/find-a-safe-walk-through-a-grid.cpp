@@ -15,9 +15,12 @@ public:
         while(!pq.empty()) {
             auto top = pq.top();
             pq.pop();
+            
             int dist = top[0];
             int i = top[1];
             int j = top[2];
+
+            if (dist > result[i][j]) continue;
 
             for(auto& dir: dirs) {
                 int x = i + dir[0];
