@@ -15,15 +15,10 @@ public:
             }
         }
 
-        for(int i=0; i<n; i++) {
-            cout<<intervals[i][0]<<", "<<intervals[i][1]<<"\t";
-        }
-
         int covered = 0;
         for(bool c: coveredInterval) {
             if(c) covered++;
         }
-        cout<<"\nCovered: "<<covered<<endl;
 
         return n - covered;
     }
