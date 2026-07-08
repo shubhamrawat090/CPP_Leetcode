@@ -24,10 +24,5 @@ public:
             curr = ptr;
         }
         return head;
-
-        // 1 ------------>  1               2
-        // curr  
-        //                                 ptr
-        //                delPtr           
     }
 };
