@@ -9,12 +9,12 @@ public:
         while (right < n) {
             product *= nums[right];
             // shrink left
-            right++;
             while (left < n && product >= k) {
                 product /= nums[left];
                 left++;
             }
-            count += (right - left);
+            count += (right - left + 1);
+            right++;
         }
 
         return count;
