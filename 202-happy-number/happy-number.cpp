@@ -1,15 +1,14 @@
 class Solution {
 public:
     bool isHappy(int n) {
-        int slow = n, fast = n;
-        slow = digitSquareSum(slow);
-        fast = digitSquareSum(digitSquareSum(fast));
-        while (slow != fast && slow != 1 && fast != 1) {
-            slow = digitSquareSum(slow);
-            fast = digitSquareSum(digitSquareSum(fast));
+        int count = 0;
+        if(n == 1) return true;
+        while(count != 50) {
+            n = digitSquareSum(n);
+            if(n == 1) return true;
+            count++;
         }
-
-        return slow == 1 || fast == 1;
+        return false;
     }
 
     int digitSquareSum(int n) {
