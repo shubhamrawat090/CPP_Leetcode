@@ -17,15 +17,15 @@ public:
         // The duplicate value (2) causes two indices to point to the same node, creating a cycle.
 
         // Phase 1: Find meeting point
-        int slow = 0;
-        int fast = 0;
+        int slow = nums[0];
+        int fast = nums[0];
         do {
             slow = nums[slow];
             fast = nums[nums[fast]];
         } while(fast != slow);
 
         // Phase 2: Find cycle entrance
-        slow = 0;
+        slow = nums[0];
         while(fast != slow) {
             slow = nums[slow];
             fast = nums[fast];
