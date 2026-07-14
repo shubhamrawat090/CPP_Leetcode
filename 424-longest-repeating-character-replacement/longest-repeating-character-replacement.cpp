@@ -27,9 +27,13 @@ public:
         for (int right = 0; right < n; right++) {
             freq[s[right] - 'A']++;
             maxOccur = max(maxOccur, freq[s[right] - 'A']);
+
+            // OPTIMISATION - 2, O(N+N) --> O(N)
             // while (right - left + 1 - maxOccur > k) {
             if (right - left + 1 - maxOccur > k) {
                 freq[s[left] - 'A']--;
+
+                // OPTIMISATION - 1, O(N)*26 ==> O(N): Remove 26 multiplier
                 // maxOccur = 0;
                 // for(int i=0; i<26; i++) {
                 //     maxOccur = max(maxOccur, freq[i]);
