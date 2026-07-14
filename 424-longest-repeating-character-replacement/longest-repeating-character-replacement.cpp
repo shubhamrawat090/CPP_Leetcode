@@ -27,8 +27,8 @@ public:
         for (int right = 0; right < n; right++) {
             freq[s[right] - 'A']++;
             maxOccur = max(maxOccur, freq[s[right] - 'A']);
-            // if(right-left+1-maxOccur > k) {
-            while (right - left + 1 - maxOccur > k) {
+            // while (right - left + 1 - maxOccur > k) {
+            if (right - left + 1 - maxOccur > k) {
                 freq[s[left] - 'A']--;
                 // maxOccur = 0;
                 // for(int i=0; i<26; i++) {
