@@ -15,6 +15,7 @@ public:
                 typeCount[fruits[left]]--;
                 if (typeCount[fruits[left]] == 0) {
                     distinct--;
+                    typeCount.erase(fruits[left]); // remove 0 freq entry from map
                 }
                 left++;
             }
