@@ -16,9 +16,10 @@ public:
             maxOccur = max(maxOccur, freq[s[right]-'A']);
             if(right-left+1-maxOccur > k) {
                 freq[s[left]-'A']--;
-                // for(int i=0; i<26; i++) {
-                //     maxOccur = max(maxOccur, freq[i]);
-                // }
+                maxOccur = 0;
+                for(int i=0; i<26; i++) {
+                    maxOccur = max(maxOccur, freq[i]);
+                }
                 left++;
             }
             maxLen = max(maxLen, right-left+1);
