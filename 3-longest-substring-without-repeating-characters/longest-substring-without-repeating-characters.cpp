@@ -2,14 +2,13 @@ class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
         int n = s.size();
-        unordered_map<char, int> freq;
+        vector<int> freq(256, 0);
         int distinct = 0;
         int left = 0;
         int maxLen = 0;
         for(int right=0; right<n; right++) {
-            // Not found || freq == 0 ==> a distinct char
-            bool found = freq.find(s[right]) != freq.end();
-            if(!found || freq[s[right]] == 0) {
+            // freq == 0 ==> a distinct char
+            if(freq[s[right]] == 0) {
                 distinct++;
             }
             freq[s[right]]++;
@@ -23,7 +22,7 @@ public:
                 left++;
             }
 
-            if(distinct == right-left+1) {
+            if(distinct == right-left+1) { // If window size == no. of distinct chars --> WE FOUND A VALID WINDOW
                 maxLen = max(maxLen, right-left+1);
             }
         }
