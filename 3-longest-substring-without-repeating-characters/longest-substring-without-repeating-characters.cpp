@@ -14,7 +14,7 @@ public:
             freq[s[right]]++;
 
             // Shrink -> window > distinct chars
-            while(right-left+1 > distinct) {
+            if(right-left+1 > distinct) {
                 freq[s[left]]--;
                 if(freq[s[left]] == 0) {
                     distinct--; // Removal of all occurrences of a char from window
