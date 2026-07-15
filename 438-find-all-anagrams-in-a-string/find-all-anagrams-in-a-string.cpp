@@ -1,40 +1,33 @@
 class Solution {
 public:
     vector<int> findAnagrams(string s, string p) {
-        int n = s.size();
-        int m = p.size();
-
-        unordered_map<char, int> charFreq;
+        int m = p.size(), n = s.size();
+        vector<int> freq(26, 0);
+        int charCounted = 0;
         for (char ch : p) {
-            charFreq[ch]++;
+            freq[ch - 'a']--;
         }
-        unordered_map<char, int> currCharFreq = charFreq;
 
-        int left = 0, right = 0;
+        int left = 0;
         vector<int> ans;
-        while (right < n) {
-            if (currCharFreq.find(s[right]) != currCharFreq.end()) {
-                // Char is present in string p
-                currCharFreq[s[right]]--;
-                while (currCharFreq[s[right]] < 0) {
-                    // extra character found in window --> start shrinking 1 by
-                    // 1
-                    if (currCharFreq.count(s[left])) currCharFreq[s[left]]++;
-                    left++;
-                }
-                    
-                if (right-left+1 == m) {
-                    // All characters found from p
-                    ans.push_back(left);
-                }
-            } else {
-                // Char is not present in p --> shrink the entire window
-                currCharFreq = charFreq; // restore frequencies - MIGHT BE EXPENSIVE KEEPING MULTIPLE COPIES
-                left = right + 1;
+        for (int right = 0; right < n; right++) {
+            if (freq[s[right] - 'a'] < 0) {
+                charCounted++;
             }
-            right++;
-        }
+            freq[s[right] - 'a']++;
 
+            while (charCounted == m) {
+                int len = right - left + 1;
+                if (len == m)
+                    ans.push_back(left); // Window size is same as chars in p AND all
+                                 // chars of p are in window
+                if (freq[s[left] - 'a'] == 0) {
+                    charCounted--;
+                }
+                freq[s[left] - 'a']--;
+                left++;
+            }
+        }
         return ans;
     }
 };
