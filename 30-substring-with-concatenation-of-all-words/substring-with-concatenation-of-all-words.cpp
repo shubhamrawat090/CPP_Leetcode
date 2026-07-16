@@ -1,6 +1,10 @@
 class Solution {
 public:
     vector<int> findSubstring(string s, vector<string>& words) {
+        // NOTE: THE BELOW APPROACH IS RIGHT
+        // Instead of starting from 0 only. Start right from all possible 0, 1, 2, 3, .. till jump-1
+
+        
         // foo : -1
         // bar : -1
 
