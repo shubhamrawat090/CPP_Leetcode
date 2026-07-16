@@ -4,7 +4,7 @@ public:
         // NOTE: THE BELOW APPROACH IS RIGHT
         // Instead of starting from 0 only. Start right from all possible 0, 1, 2, 3, .. till jump-1
 
-        
+
         // foo : -1
         // bar : -1
 
@@ -36,7 +36,7 @@ public:
 
         // NEW: Run for every possible alignment
         for (int offset = 0; offset < jump; offset++) {
-
+            // THINGS NEED TO BE RESETTED AFTER EACH START
             unordered_map<string, int> freq = originalFreq;
 
             int count = 0;
