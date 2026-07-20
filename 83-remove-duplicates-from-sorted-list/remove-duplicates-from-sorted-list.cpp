@@ -15,13 +15,14 @@ public:
         while(curr != NULL) {
             ListNode* ptr = curr->next;
             while(ptr != NULL && curr->val == ptr->val) {
-                ListNode* delPtr = ptr;
+                ListNode* temp = ptr;
                 ptr = ptr->next;
-                delPtr->next = NULL;
-                delete delPtr;
+                // OPTIONAL: Free node memory
+                temp->next = NULL; // unlink node 
+                delete temp;
             }
             curr->next = ptr;
-            curr = ptr;
+            curr = curr->next;
         }
         return head;
     }
