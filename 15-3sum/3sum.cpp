@@ -1,31 +1,22 @@
 class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
-        int n = nums.size();
         sort(nums.begin(), nums.end());
+        int target = 0;
+        int n = nums.size();
         vector<vector<int>> ans;
-        for (int first = 0; first < n - 2; first++) {
-            // Skip same values for first as well
+        for (int first = 0; first <= n - 3; first++) {
             if(first > 0 && nums[first] == nums[first-1]) continue;
-
-            int second = first + 1, third = n - 1;
-            while (second < third) {
+            int second = first + 1, third = n-1;
+            while(second < third) {
                 int sum = nums[first] + nums[second] + nums[third];
-
-                if (sum == 0) {
-                    ans.push_back({nums[first], nums[second], nums[third]});
-
-                    // SKIP DUPLICATES
-                    int s = second, t = third;
-
-                    while (s < n && nums[s] == nums[second])
-                        s++;
-                    while (t >= 0 && nums[t] == nums[third])
-                        t--;
-
-                    second = s;
-                    third = t;
-                } else if (sum > 0) {
+                if(sum == target) {
+                    int firstVal = nums[first], secondVal = nums[second], thirdVal = nums[third];
+                    // Skipping same values
+                    while(second < third && nums[second] == secondVal) second++; 
+                    while(second < third && nums[third] == thirdVal) third--; 
+                    ans.push_back({firstVal, secondVal, thirdVal});
+                } else if(sum > target) {
                     third--;
                 } else {
                     second++;
