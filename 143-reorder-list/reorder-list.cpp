@@ -15,22 +15,7 @@ public:
         ListNode* mid = findMid(head);
         ListNode* secondHalf = mid->next;
         mid->next = NULL;
-        if (secondHalf) {
-            ListNode* curr = secondHalf;
-            while (curr) {
-                cout << curr->val << "->";
-                curr = curr->next;
-            }
-            cout<<endl;
-        }
         secondHalf = reverseList(secondHalf);
-        if (secondHalf) {
-            ListNode* curr = secondHalf;
-            while (curr) {
-                cout << curr->val << "->";
-                curr = curr->next;
-            }
-        }
         ListNode* dummy = new ListNode();
         ListNode* tail = dummy;
         while (head != NULL && secondHalf != NULL) {
