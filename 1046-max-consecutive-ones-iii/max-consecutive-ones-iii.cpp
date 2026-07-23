@@ -13,7 +13,7 @@ public:
                     zeroes--;
                 left++;
             }
-            if (zeroes <= k)
+            // if (zeroes <= k)
                 maxLen = max(maxLen, right - left + 1);
         }
         return maxLen;
