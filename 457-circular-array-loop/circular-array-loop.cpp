@@ -2,56 +2,52 @@ class Solution {
 public:
     bool circularArrayLoop(vector<int>& nums) {
         int n = nums.size();
-        for (int i = 0; i < n; i++) {
-            // TRY ALL INDICES AS STARTING POINT
-            bool forwardDirection = (nums[i] > 0);
-            int slow = i, fast = i;
-            do {
-                // Jahan se aya hu --> jahan pahucha hu ==> SHOULD BE DIFFERENT
-                // Otherwise 1 size cycle
-                int prevSlow = slow;
-                slow = move(nums, slow, nums[slow]);
-                if (slow == prevSlow)
-                    break;
-                bool currDir = (nums[slow] > 0);
-                if(currDir != forwardDirection) {
-                    break;
-                }
 
-                int prevFast = fast;
-                fast = move(nums, fast, nums[fast]);
-                if (fast == prevFast)
-                    break;
-                currDir = (nums[fast] > 0);
-                if(currDir != forwardDirection) {
-                    break;
-                }
+        for (int start = 0; start < n; start++) {
 
-                prevFast = fast;
-                fast = move(nums, fast, nums[fast]);
-                if (fast == prevFast)
+            bool forward = nums[start] > 0;
+            int slow = start;
+            int fast = start;
+
+            while (true) {
+
+                slow = next(nums, slow, forward);
+                if (slow == -1)
                     break;
-                currDir = (nums[fast] > 0);
-                if(currDir != forwardDirection) {
+
+                fast = next(nums, fast, forward);
+                if (fast == -1)
                     break;
-                }
+
+                fast = next(nums, fast, forward);
+                if (fast == -1)
+                    break;
 
                 if (slow == fast)
                     return true;
-            } while (true);
+            }
         }
+
         return false;
     }
 
-    int move(vector<int>& nums, int pos, int steps) {
+private:
+    int next(vector<int>& nums, int curr, bool forward) {
+
+        // Direction changed
+        if ((nums[curr] > 0) != forward)
+            return -1;
+
         int n = nums.size();
-        int newPos = pos;
-        if (steps > 0) {
-            newPos = (pos + steps) % n;
-        } else if (steps < 0) {
-            // to make -ve to positive. Just add it to n
-            newPos = move(nums, pos, n + steps);
-        }
-        return newPos;
+        int nxt = (curr + nums[curr]) % n;
+
+        if (nxt < 0)
+            nxt += n;
+
+        // Self loop
+        if (nxt == curr)
+            return -1;
+
+        return nxt;
     }
 };
