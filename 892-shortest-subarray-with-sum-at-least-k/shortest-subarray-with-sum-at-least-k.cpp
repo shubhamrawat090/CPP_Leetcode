@@ -3,7 +3,7 @@ public:
     int shortestSubarray(vector<int>& nums, int k) {
         int n = nums.size();
 
-        deque<int> dq; // stores monotically increasing indices of cumulative sums
+        deque<int> dq; // stores indices in monotically increasing order of cumulative sum
         vector<long long> cumulativeSum(n, 0);
 
         int res = INT_MAX;
