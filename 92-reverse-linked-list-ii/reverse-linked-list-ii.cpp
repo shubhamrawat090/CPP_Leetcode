@@ -24,26 +24,16 @@ public:
         }
         rightEnd = end->next;
 
-        // printVal(start, "start");
-        // printVal(end, "end");
-
         ListNode* prev = rightEnd;
         ListNode* curr = start;
 
-        // printVal(prev, "prev");
-        // printVal(curr, "curr");
         while (curr != NULL && curr != rightEnd) {
-            // cout<<"\nRunning: "<<endl;
-            // printVal(curr, "curr");
-            // printVal(curr->next, "curr->next");
             ListNode* next = curr->next;
             curr->next = prev;
             prev = curr;
             curr = next;
         }
 
-        // printVal(leftEnd, "leftEnd");
-        // NOTE: MOST IMPORTANT CONDITION
         if (leftEnd != NULL) {
             leftEnd->next = end;
         } else {
@@ -51,11 +41,5 @@ public:
         }
 
         return head;
-    }
-
-    void printVal(ListNode* node, string name) {
-        if (node) {
-            cout << name << ": " << node->val << endl;
-        }
     }
 };
