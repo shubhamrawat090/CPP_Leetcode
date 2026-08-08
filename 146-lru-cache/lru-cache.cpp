@@ -1,51 +1,75 @@
 class LRUCache {
-    int size;
-    unordered_map<int, int> keyValStore;
-    list<int> LRU;
+    struct Node {
+        int key;
+        int val;
+        Node* prev;
+        Node* next;
+
+        Node(int k, int v) {
+            key = k;
+            val = v;
+            prev = NULL;
+            next = NULL;
+        }
+    };
+
+    Node* latest;
+    Node* oldest;
+    int cap;
+    unordered_map<int, Node*> cache;
 
 private:
-    void insert(int key) {
-        if (LRU.size() == size) {
-            int delKey = LRU.front();
-            LRU.pop_front(); // Remove LRU
-            // IMPORTANT: Remove from map as well
-            keyValStore.erase(delKey);
-        }
-        LRU.push_back(key);
+    void insert(Node* node) {
+        Node* prev = this->latest->prev;
+        prev->next = node;
+        node->prev = prev;
+        node->next = this->latest;
+        this->latest->prev = node;
     }
 
-    void update(int key) {
-        auto it = find(LRU.begin(), LRU.end(), key);
-        if (it != LRU.end()) {
-            int val = *it; // val == key, can omit this line as well
-            // Reinsert at back to make MRU
-            LRU.erase(it);
-            LRU.push_back(val);
-        }
+    void remove(Node* node) {
+        Node* prev = node->prev;
+        Node* next = node->next;
+        prev->next = next;
+        next->prev = prev;
     }
 
 public:
     LRUCache(int capacity) {
-        size = capacity;
-        keyValStore = {};
+        this->cap = capacity;
+        this->latest = new Node(0, 0);
+        this->oldest = new Node(0, 0);
+        this->oldest->next = this->latest;
+        this->latest->prev = this->oldest;
+        this->cache = {};
     }
 
     int get(int key) {
-        if (keyValStore.find(key) == keyValStore.end())
+        if (cache.find(key) == cache.end())
             return -1;
-        int val = keyValStore[key];
-        update(key); // Make this key MRU
-        return val;
+        Node* node = cache[key];
+        remove(node);
+        insert(node);
+        return node->val;
     }
 
     void put(int key, int value) {
-        if (keyValStore.find(key) == keyValStore.end()) {
-            // first time adding the value
-            insert(key); // Insert in LRU
+        if (cache.find(key) != cache.end()) {
+            Node* node = cache[key];
+            node->val = value;
+            remove(node);
+            insert(node);
         } else {
-            update(key);
+            Node* node = new Node(key, value);
+            insert(node);
+            cache[key] = node;
         }
-        keyValStore[key] = value;
+
+        if (cache.size() > this->cap) {
+            Node* lru = this->oldest->next;
+            remove(lru);
+            cache.erase(lru->key);
+        }
     }
 };
 
