@@ -31,20 +31,14 @@ public:
     }
 
     int get(int key) {
-        // cout<<"Before get("<<key<<"): ";
-        // print(LRU);
         if (keyValStore.find(key) == keyValStore.end())
             return -1;
         int val = keyValStore[key];
         update(key); // Make this key MRU
-        // cout<<"After get("<<key<<"): ";
-        // print(LRU);
         return val;
     }
 
     void put(int key, int value) {
-        // cout<<"Before put("<<key<<"): ";
-        // print(LRU);
         if (keyValStore.find(key) == keyValStore.end()) {
             // first time adding the value
             insert(key); // Insert in LRU
@@ -52,15 +46,7 @@ public:
             update(key);
         }
         keyValStore[key] = value;
-        // cout<<"After put("<<key<<"): ";
-        // print(LRU);
     }
-
-    // void print(list<int>& l) {
-    //     for (auto it = l.begin(); it != l.end(); ++it)
-    //         cout << *it << ",";
-    //     cout<<endl;
-    // }
 };
 
 /**
