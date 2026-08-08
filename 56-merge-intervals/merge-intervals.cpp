@@ -1,16 +1,29 @@
 class Solution {
+private:
+    static bool compare(const vector<int>& a, const vector<int>& b) {
+        return a[0] < b[0];
+    }
+
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        sort(intervals.begin(), intervals.end());
-        vector<vector<int>> ans;
-        ans.push_back(intervals[0]);
-        for(int i=1; i<intervals.size(); i++) {
-            if(intervals[i][0] <= ans.back()[1]) {
-                ans.back()[1] = max(ans.back()[1], intervals[i][1]);
+        sort(intervals.begin(), intervals.end(), compare);
+        int n = intervals.size();
+        vector<int> interval = intervals[0];
+        vector<vector<int>> result;
+        for (int i = 1; i < n; i++) {
+            vector<int> currInterval = intervals[i];
+            int a = interval[0], b = interval[1];
+            int c = currInterval[0], d = currInterval[1];
+            if(c <= b) {
+                // merging
+                interval[1] = max(b, d);
             } else {
-                ans.push_back(intervals[i]);
+                result.push_back(interval);
+                interval = currInterval;
             }
         }
-        return ans;
+
+        result.push_back(interval);
+        return result;
     }
 };
