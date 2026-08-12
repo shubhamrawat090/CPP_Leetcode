@@ -1,52 +1,34 @@
 class Solution {
 public:
     int numIslands(vector<vector<char>>& grid) {
-        int count = 0;
-        int m = grid.size(), n = grid[0].size();
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == '1') {
-                    dfs(grid, i, j, m, n);
-                    count++;
+        int rows = grid.size(), cols = grid[0].size();
+        vector<vector<int>> visited(rows, vector<int>(cols, 0));
+
+        int islands = 0;
+        for(int i=0; i<rows; i++) {
+            for(int j=0; j<cols; j++) {
+                if(!visited[i][j] && grid[i][j] == '1') {
+                    dfs(grid, visited, i, j);
+                    islands++;
                 }
             }
         }
-
-        // Undo visited changes - OPTIONAL
-        // cout<<"BEFORE"<<end;
-        // for(int i=0; i<m; i++) {
-        //     for(int j=0;j<n; j++) {
-        //         cout<<grid[i][j]<<" ";
-        //     }
-        //     cout<<endl;
-        // }
-        // for(int i=0; i<m; i++) {
-        //     for(int j=0;j<n; j++) {
-        //         if(grid[i][j] == '2')  {
-        //             grid[i][j] = '1';
-        //         }
-        //     }
-        // }
-        // cout<<"AFTER"<<end;
-        // for(int i=0; i<m; i++) {
-        //     for(int j=0;j<n; j++) {
-        //         cout<<grid[i][j]<<" ";
-        //     }
-        //     cout<<endl;
-        // }
-
-        return count;
+        return islands;
     }
 
-    void dfs(vector<vector<char>>& grid, int i, int j, int r, int c) {
-        if (i < 0 || j < 0 || i >= r || j >= c || grid[i][j] == '0' ||
-            grid[i][j] == '2')
-            return;
+    void dfs(vector<vector<char>>& grid, vector<vector<int>>& visited, int i, int j) {
+        int rows = grid.size(), cols = grid[0].size();
 
-        grid[i][j] = '2';
-        dfs(grid, i + 1, j, r, c);
-        dfs(grid, i, j + 1, r, c);
-        dfs(grid, i - 1, j, r, c);
-        dfs(grid, i, j - 1, r, c);
+        visited[i][j] = 1;
+
+        vector<vector<int>> dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+        for(auto dir: dirs) {
+            int x = dir[0] + i;
+            int y = dir[1] + j;
+
+            if(x < 0 || y < 0 || x == rows || y == cols || visited[x][y] == 1 || grid[x][y] == '0') continue;
+
+            dfs(grid, visited, x, y);
+        }
     }
 };
