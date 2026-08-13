@@ -4,7 +4,7 @@ public:
         int sum = 0;
         int maxSum = INT_MIN;
         for(int num: nums) {
-            sum = max(sum + num, num);
+            sum = max(num, sum + num);
             maxSum = max(sum, maxSum);
         }
         return maxSum;
