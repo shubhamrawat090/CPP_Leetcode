@@ -17,6 +17,8 @@ public:
             //                   |
             // ------maxLeftA, minRightA -------
             int maxLeftA = (partA == 0) ? INT_MIN : nums1[partA - 1];
+            // NOTE: check m instead of m-1 because here we are taking partA and
+            // not partA+1
             int minRightA = (partA == m) ? INT_MAX : nums1[partA];
 
             //                 partB
@@ -39,7 +41,7 @@ public:
                 }
             }
             // ALWAYS MOVE ACCORDING TO POINTER partA
-            else if(maxLeftA > minRightB) {
+            else if (maxLeftA > minRightB) {
                 // Take a shorter maxLeftA
                 right = partA - 1;
             } else { // maxLeftB > minRightA
