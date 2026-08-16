@@ -1,38 +1,53 @@
 class Solution {
 public:
-    double findMedianSortedArrays(vector<int>& a, vector<int>& b) {
-        int m = a.size(), n = b.size();
-        if (m > n) {
-            return findMedianSortedArrays(b, a);
-        }
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int m = nums1.size(), n = nums2.size();
+        // ALWAYS HAVE nums1 < nums2 SIZE
+        if (m > n)
+            return findMedianSortedArrays(nums2, nums1);
 
-        int left = 0, right = m;
+        int left = 0, right = m; // Right always size of SMALLER ARRAY
+
         while (left <= right) {
             int partA = (left + right) / 2;
-            int partB = ((m + n + 1) / 2) - partA;
+            int partB = (m + n + 1) / 2 - partA;
 
-            int maxLeftA = partA == 0 ? INT_MIN : a[partA - 1];
-            int minRightA = partA == m ? INT_MAX : a[partA];
+            //                 partA
+            //                   |
+            //                   |
+            // ------maxLeftA, minRightA -------
+            int maxLeftA = (partA == 0) ? INT_MIN : nums1[partA - 1];
+            int minRightA = (partA == m) ? INT_MAX : nums1[partA];
 
-            int maxLeftB = partB == 0 ? INT_MIN : b[partB - 1];
-            int minRightB = partB == n ? INT_MAX : b[partB];
+            //                 partB
+            //                   |
+            //                   |
+            // ------maxLeftB, minRightB -------
+            int maxLeftB = (partB == 0) ? INT_MIN : nums2[partB - 1];
+            int minRightB = (partB == n) ? INT_MAX : nums2[partB];
 
             if ((maxLeftA <= minRightB) && (maxLeftB <= minRightA)) {
+                // POSSIBLE ANSWER
+
                 if ((m + n) % 2 == 0) {
                     return (max(maxLeftA, maxLeftB) +
                             min(minRightA, minRightB)) /
                            2.0;
                 } else {
-                    // Assume answer is always on left side -> for ODD
+                    // For ODD: take left side value's max
                     return max(maxLeftA, maxLeftB);
                 }
-            } else if (maxLeftA > minRightB) {
+            }
+            // ALWAYS MOVE ACCORDING TO POINTER partA
+            else if(maxLeftA > minRightB) {
+                // Take a shorter maxLeftA
                 right = partA - 1;
-            } else {
+            } else { // maxLeftB > minRightA
+                // Take a higher minRightA
                 left = partA + 1;
             }
         }
 
-        return 0.0;
+        return 0.0; // ONLY POSSIBLE WHEN NO ELEMENTS IN ARRAY
     }
 };
