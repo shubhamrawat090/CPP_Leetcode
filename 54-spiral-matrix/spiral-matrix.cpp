@@ -29,8 +29,6 @@ public:
         int dPtr = 0;
 
         while (elemsLeft) {
-            // cout<<"Dir: "<<dirs[dPtr]<<endl;
-            // cout<<"Elem taken: "<<i<<", "<<j<<endl;
             ans.push_back(matrix[i][j]);
             elemsLeft--;
             // mark visited
