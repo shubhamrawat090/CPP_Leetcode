@@ -7,11 +7,9 @@ public:
 
         int sum = 0;
         int count = 0;
-        for(auto& num: nums) {
+        for (auto& num : nums) {
             sum += num;
-            if(sumFreq.find(sum-k) != sumFreq.end()) {
-                count += sumFreq[sum-k];
-            }
+            count += sumFreq[sum - k];
             sumFreq[sum]++;
         }
 
