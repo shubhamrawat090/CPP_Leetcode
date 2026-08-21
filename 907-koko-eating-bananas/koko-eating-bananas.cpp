@@ -29,10 +29,10 @@ public:
         return ans;
     }
     
-    bool isPossible(int mid, vector<int>& arr, int k) {
+    bool isPossible(int speed, vector<int>& arr, int k) {
         long long totalHours = 0;
-        for(int val: arr) {
-            totalHours += ceil(val * 1.0 / mid);
+        for(int pile: arr) {
+            totalHours += ceil(pile * 1.0 / speed);
         }
         return totalHours <= k;
     }
