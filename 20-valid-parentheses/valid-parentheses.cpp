@@ -15,6 +15,7 @@ public:
                 char close = ch;
                 char open = closeToOpen[ch];
 
+                // Close should match to corresponding open
                 if(open == stk.top()) {
                     stk.pop();
                 } else {
