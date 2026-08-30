@@ -12,14 +12,16 @@ public:
             } else {
                 if(stk.empty()) return false;
 
-                char open = '*';
+                // char open = '*';
+                // char close = ch;
+                // for(auto& entry: closeToOpen) {
+                //     if(ch == entry.first) {
+                //         open = entry.second;
+                //         break;
+                //     }
+                // }
                 char close = ch;
-                for(auto& entry: closeToOpen) {
-                    if(ch == entry.first) {
-                        open = entry.second;
-                        break;
-                    }
-                }
+                char open = closeToOpen[ch];
 
                 if(open == stk.top()) {
                     stk.pop();
