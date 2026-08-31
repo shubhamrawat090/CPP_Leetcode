@@ -4,7 +4,21 @@ public:
         // return recursive(n);
         // vector<int> dp(n+1, -1);
         // return memoized(n, dp);
-        return tabulate(n);
+        // return tabulate(n);
+        return spaceOptimized(n);
+    }
+
+    int spaceOptimized(int n) {
+        int prev2 = 1; 
+        int prev = 1;
+
+        for(int i=2; i<=n; i++) {
+            int curr = prev + prev2;
+            prev2 = prev;
+            prev = curr;
+        }
+
+        return prev;
     }
 
     int tabulate(int n) {
