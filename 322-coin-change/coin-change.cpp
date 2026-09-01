@@ -22,7 +22,6 @@ public:
         curr[0] = 0;
 
         for (int i = n - 1; i >= 0; i--) {
-            curr[0] = 0; // Base case for amount = 0 should be initialized
             for (int a = 1; a <= amount; a++) {
                 int take = INT_MAX;
                 if (coins[i] <= a) {
