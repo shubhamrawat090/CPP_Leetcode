@@ -1,59 +1,55 @@
 class Solution {
 public:
     int coinChange(vector<int>& coins, int amount) {
-        // return tabulate(coins, amount);
-        return spaceOptimize(coins, amount);
+        // int res = recursive(coins, 0, amount);
+        vector<vector<int>> dp(coins.size() + 1, vector<int>(amount + 1, -1));
+        int res = memoized(coins, 0, amount, dp);
+        return res == INT_MAX ? -1 : res;
     }
 
-    int spaceOptimize(vector<int>& coins, int amount) {
+    int memoized(vector<int>& coins, int i, int amount, vector<vector<int>>& dp) {
+        if (amount == 0)
+            return 0;
         int n = coins.size();
+        if (i >= n)
+            return INT_MAX; // Impossible
 
-        // SC: O(amount) + O(amount)
-        vector<long long> prev(amount+1, INT_MAX);
-        vector<long long> curr(amount+1, INT_MAX); 
+        if(dp[i][amount] != -1) return dp[i][amount];
 
-        curr[0] = prev[0] = 0;
-
-        // TC: O(n * amount)
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= amount; j++) {
-                long long take = INT_MAX;
-                if (j >= coins[i - 1]) {
-                    take = 1 + curr[j - coins[i - 1]];
-                }
-
-                long long notTake = prev[j];
-
-                curr[j] = min(take, notTake);
+        int take = INT_MAX;
+        if (coins[i] <= amount) {
+            int remainingRes = memoized(coins, i, amount - coins[i], dp);
+            if (remainingRes != INT_MAX) {
+                take = 1 + remainingRes;
             }
-            prev = curr;
-        }
-        return curr[amount] == INT_MAX ? -1 : curr[amount];
+        } 
+        
+
+        int notTake = memoized(coins, i+1, amount, dp);
+    
+
+        return dp[i][amount] = min(take, notTake);
     }
 
-    int tabulate(vector<int>& coins, int amount) {
+    int recursive(vector<int>& coins, int i, int amount) {
+        if (amount == 0)
+            return 0;
         int n = coins.size();
-        vector<vector<long long>> dp(n + 1, vector<long long>(amount + 1, 0));
+        if (i >= n)
+            return INT_MAX; // Impossible
 
-        dp[0][0] = 0;
-        for (int j = 1; j <= amount; j++) {
-            // When 0 coins => amount = 0 takes 0 coins. Other amounts are
-            // IMPOSSIBLE TO MAKE
-            dp[0][j] = INT_MAX;
-        }
-
-        for (int i = 1; i <= n; i++) {
-            for (int j = 1; j <= amount; j++) {
-                long long take = INT_MAX;
-                if (j >= coins[i - 1]) {
-                    take = 1 + dp[i][j - coins[i - 1]];
-                }
-
-                long long notTake = dp[i - 1][j];
-
-                dp[i][j] = min(take, notTake);
+        int take = INT_MAX;
+        if (coins[i] <= amount) {
+            int remainingRes = recursive(coins, i, amount - coins[i]);
+            if (remainingRes != INT_MAX) {
+                take = 1 + remainingRes;
             }
-        }
-        return dp[n][amount] == INT_MAX ? -1 : dp[n][amount];
+        } 
+        
+
+        int notTake = recursive(coins, i+1, amount);
+    
+
+        return min(take, notTake);
     }
 };
