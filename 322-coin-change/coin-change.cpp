@@ -8,7 +8,37 @@ public:
         // -1)); int res = memoized(coins, 0, amount, dp); return res == INT_MAX
         // ? -1 : res;
 
-        return tabulate(coins, amount);
+        // return tabulate(coins, amount);
+
+        return spaceOptimized(coins, amount);
+    }
+
+    int spaceOptimized(vector<int>& coins, int amount) {
+        int n = coins.size();
+
+        vector<int> curr(amount + 1, 0);
+        vector<int> next(amount + 1, INT_MAX);
+
+        curr[0] = 0;
+
+        for (int i = n - 1; i >= 0; i--) {
+            curr[0] = 0; // Base case for amount = 0 should be initialized
+            for (int a = 1; a <= amount; a++) {
+                int take = INT_MAX;
+                if (coins[i] <= a) {
+                    if (curr[a - coins[i]] != INT_MAX) {
+                        take = 1 + curr[a - coins[i]];
+                    }
+                }
+
+                int notTake = next[a];
+
+                curr[a] = min(take, notTake);
+            }
+            next = curr;
+        }
+
+        return curr[amount] == INT_MAX ? -1 : curr[amount];
     }
 
     int tabulate(vector<int>& coins, int amount) {
@@ -39,17 +69,6 @@ public:
                 dp[i][a] = min(take, notTake);
             }
         }
-
-        // PRINTING DP
-        // for (int i = 0; i <= n; i++) {
-        //     for (int a = 0; a <= amount; a++) {
-        //         if (dp[i][a] == INT_MAX)
-        //             cout << "INF" << " ";
-        //         else
-        //             cout << dp[i][a] << " ";
-        //     }
-        //     cout << endl;
-        // }
 
         return dp[0][amount] == INT_MAX ? -1 : dp[0][amount];
     }
