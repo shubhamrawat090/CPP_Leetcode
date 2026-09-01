@@ -16,11 +16,14 @@ public:
         // nums2 = [1],
         //          j
 
+
+        // NOTE: Trick - Start
+
         int i = m - 1, j = n - 1;
         int ptr = nums1.size() - 1;
 
-        while (i >= 0 && j >= 0) {
-            if (nums1[i] > nums2[j]) {
+        while (j >= 0) {
+            if (i >= 0 && nums1[i] > nums2[j]) {
                 nums1[ptr] = nums1[i];
                 ptr--;
                 i--;
@@ -29,17 +32,6 @@ public:
                 ptr--;
                 j--;
             }
-        }
-
-        while (i >= 0) {
-            nums1[ptr] = nums1[i];
-            ptr--;
-            i--;
-        }
-        while (j >= 0) {
-            nums1[ptr] = nums2[j];
-            ptr--;
-            j--;
         }
     }
 };
