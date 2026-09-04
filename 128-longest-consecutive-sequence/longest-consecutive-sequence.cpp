@@ -1,20 +1,31 @@
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
-        sort(nums.begin(), nums.end());
-        int n = nums.size();
-        if(n == 0) return 0;
-        int maxCount = 1, count = 1;
-        for (int i = n - 1; i > 0; i--) {
-            if (nums[i - 1] != nums[i]) {
-                if (nums[i - 1] == nums[i] - 1) {
-                    count++;
-                } else {
-                    count = 1;
-                }
-            }
-            maxCount = max(count, maxCount);
+        int longest = 0;
+        unordered_map<int, bool> visited;
+        for(int num: nums) {
+            visited[num] = false;
         }
-        return maxCount;
+
+        for(int num: nums) {
+            if(visited[num] == true) continue;
+            // Is it a starting point
+            // num-1 exists. Therefore, num is not a starting point
+            if(visited.find(num-1) != visited.end()) continue;
+
+            // Now num is a starting point
+            int count = 0;
+            int val = num;
+            while(true) {
+                if(visited.find(val) == visited.end()) break;
+                count++; // num exists -> count it
+                visited[val] = true; // Mark visited so that we don't visit it again
+                val++; // try for next val
+            }
+
+            longest = max(count, longest);
+        }
+
+        return longest;
     }
 };
