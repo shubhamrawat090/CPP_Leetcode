@@ -8,8 +8,6 @@ public:
             while(left < right && !isalnum(s[left])) left++;
             while(left < right && !isalnum(s[right])) right--;
 
-            if(left >= right) break;
-
             bool isNumLeft = isdigit(s[left]);
             bool isNumRight = isdigit(s[right]);
 
