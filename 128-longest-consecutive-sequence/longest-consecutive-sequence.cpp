@@ -5,11 +5,11 @@ public:
         int longest = 0;
 
         for (int num : values) {
-            if (values.find(num - 1) == values.end()) {
+            if (!values.count(num - 1)) {
                 int current = num;
                 int length = 1;
 
-                while (values.find(current + 1) != values.end()) {
+                while (values.count(current + 1)) {
                     ++current;
                     ++length;
                 }
