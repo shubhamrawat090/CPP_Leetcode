@@ -1,39 +1,46 @@
 class MedianFinder {
-    priority_queue<int> maxHeap;
-    priority_queue<int, vector<int>, greater<int>> minHeap;
+    // Maintain lower half                              Maintain upper half
+    // --------- highest val(use maxHeap)         lowest val(use minHeap) -------------
+    // Median is somewhere in between
+
+    // 1 THING TO MAKE SURE: lowerHalf.size() SHOULDN'T EXCEED upperHalf.size() + 1
+
+    // DIFFERENCE OF 1 ELEMENT SHOULD BE MAINTAINED between both halves
+
+    priority_queue<int> lowerHalf;
+    priority_queue<int, vector<int>, greater<int>> upperHalf;
 
 public:
     MedianFinder() {
-        this->minHeap = {};
-        this->maxHeap = {};
+        lowerHalf = {};    
+        upperHalf = {};    
     }
-
+    
     void addNum(int num) {
-        if (maxHeap.empty() || num <= maxHeap.top()) {
-            maxHeap.push(num);
+        if(lowerHalf.empty() || num <= lowerHalf.top()) {
+            lowerHalf.push(num);
         } else {
-            minHeap.push(num);
+            upperHalf.push(num);
         }
 
-        // Balance heaps
-        if (maxHeap.size() > minHeap.size() + 1) {
-            minHeap.push(maxHeap.top());
-            maxHeap.pop();
-        } else if (minHeap.size() > maxHeap.size()) {
-            maxHeap.push(minHeap.top());
-            minHeap.pop();
+        // Rebalance
+        if(lowerHalf.size() > upperHalf.size() + 1) {
+            // Remove 1 element from lowerHalf and push it to upperHalf
+            upperHalf.push(lowerHalf.top());
+            lowerHalf.pop();
+        } else if(upperHalf.size() > lowerHalf.size()) {
+            // Remove 1 element from upperHalf and push it to lowerHalf
+            lowerHalf.push(upperHalf.top());
+            upperHalf.pop();
         }
     }
-
+    
     double findMedian() {
-        double median = 0.0;
-        // Update median
-        if (maxHeap.size() > minHeap.size()) {
-            median = maxHeap.top();
+        if(lowerHalf.size() > upperHalf.size()) {
+            return lowerHalf.top();
         } else {
-            median = (maxHeap.top() + minHeap.top()) / 2.0;
+            return (lowerHalf.top() + upperHalf.top()) / 2.0;
         }
-        return median;
     }
 };
 
