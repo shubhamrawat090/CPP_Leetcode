@@ -2,40 +2,42 @@ class Solution {
 public:
     bool exist(vector<vector<char>>& board, string word) {
         int rows = board.size(), cols = board[0].size();
-        vector<vector<int>> visited(rows, vector<int>(cols, false));
+
+        // using # for visited
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                if (helper(board, word, visited, i, j, 0))
+                if (dfs(board, i, j, word, 0))
                     return true;
             }
         }
+
         return false;
     }
 
-    bool helper(vector<vector<char>>& board, string& word,
-                vector<vector<int>>& visited, int i, int j, int w) {
-        if (w == word.size())
-            return true;
-
+private:
+    bool dfs(vector<vector<char>>& board, int i, int j, string& word, int w) {
         int rows = board.size(), cols = board[0].size();
 
-        if (i < 0 || j < 0 || i >= rows || j >= cols)
+        if (i < 0 || j < 0 || i == rows || j == cols)
             return false;
-        if (visited[i][j])
+        if (board[i][j] == '#')
             return false;
-
         if (board[i][j] != word[w])
             return false;
+        // Might not need the below condition
+        if (w == word.size() - 1 && word[w] == board[i][j])
+            return true;
 
-        visited[i][j] = true;
+        char temp = board[i][j];
+        board[i][j] = '#'; // mark visited
 
-        bool sol1 = helper(board, word, visited, i + 1, j, w + 1);
-        bool sol2 = helper(board, word, visited, i - 1, j, w + 1);
-        bool sol3 = helper(board, word, visited, i, j + 1, w + 1);
-        bool sol4 = helper(board, word, visited, i, j - 1, w + 1);
+        bool result = dfs(board, i + 1, j, word, w + 1) ||
+                      dfs(board, i - 1, j, word, w + 1) ||
+                      dfs(board, i, j + 1, word, w + 1) ||
+                      dfs(board, i, j - 1, word, w + 1);
 
-        visited[i][j] = false;
+        board[i][j] = temp; // Backtrack
 
-        return sol1 || sol2 || sol3 || sol4;
+        return result;
     }
 };
