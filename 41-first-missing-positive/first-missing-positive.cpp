@@ -3,23 +3,29 @@ public:
     int firstMissingPositive(vector<int>& nums) {
         int n = nums.size();
         int i = 0;
-        while(i < n) {
-            int correctIndex = nums[i] <= 0 ? -1 : nums[i] - 1;
-            if(nums[i] <= 0 || nums[i] > n) {
+        while (i < n) {
+            if (nums[i] <= 0) {
                 i++;
-            } else if(nums[i] != nums[correctIndex]) {
-                swap(nums[i], nums[correctIndex]);
             } else {
-                i++;
+                int correctPos = nums[i] - 1;
+                // cout << "i: " << i << ", nums[i]: " << nums[i] << endl;
+                if (correctPos >= n || nums[i] == nums[correctPos]) {
+                    i++;
+                } else {
+                    swap(nums[i], nums[correctPos]);
+                }
             }
         }
 
-        for(int j=0; j<n; j++) {
-            if(j+1 != nums[j]) {
-                return j+1;
+        int result = n + 1;
+        for (int i = 0; i < n; i++) {
+            // cout << "** i: " << i << ", nums[i]: " << nums[i] << endl;
+            if (nums[i] != i + 1) {
+                result = i + 1;
+                break;
             }
         }
 
-        return n + 1;
+        return result;
     }
 };
