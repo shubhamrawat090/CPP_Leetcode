@@ -2,37 +2,38 @@ class Solution {
 public:
     string minWindow(string s, string t) {
         int n = s.size(), m = t.size();
-        vector<int> freq(256, 0);
-        int left = 0;
-        int minLen = INT_MAX;
-        int stIdx = -1;
+        unordered_map<char, int> charFreq;
 
-        for(char ch: t) {
-            freq[ch]--;
+        // For small str start with negative freq
+        for(int i=0; i<m; i++) {
+            charFreq[t[i]]--;
         }
 
-        int matchCharCount = 0;
-        for(int right=0; right<n; right++) {
-            if(freq[s[right]] < 0) {
-                matchCharCount++;
-            }
-            freq[s[right]]++;
+        int charsFound = 0;
 
-            while(matchCharCount == m) {
+        int startPt = -1;
+        int minLen = INT_MAX;
+        int left = 0;
+        for(int right=0; right<n; right++) {
+            if(charFreq[s[right]] < 0) {
+                charsFound++;
+            }
+
+            charFreq[s[right]]++;
+
+            while(left <= right && charsFound == m) {
                 int len = right-left+1;
                 if(len < minLen) {
-                    stIdx = left;
                     minLen = len;
+                    startPt = left;
                 }
 
-                if(freq[s[left]] == 0) {
-                    matchCharCount--;
-                }
-                freq[s[left]]--;
+                charFreq[s[left]]--;
+                if(charFreq[s[left]] < 0) charsFound--;
                 left++;
             }
         }
 
-        return minLen == INT_MAX ? "" : s.substr(stIdx, minLen);
+        return startPt == -1 ? "" : s.substr(startPt, minLen);
     }
 };
