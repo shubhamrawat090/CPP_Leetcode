@@ -12,7 +12,6 @@ public:
             int length = nextSmallerRight[i] - nextSmallerLeft[i] - 1;
             int area = height * length;
             maxArea = max(area, maxArea);
-            cout << endl;
         }
 
         return maxArea;
