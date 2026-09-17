@@ -15,7 +15,7 @@ public:
         ListNode* dummy = new ListNode();
         ListNode* tail = dummy;
         
-        while(l1 != NULL || l2 != NULL) {
+        while(l1 != NULL || l2 != NULL || carry != 0) {
             int v1 = l1 == NULL ? 0 : l1->val;
             int v2 = l2 == NULL ? 0 : l2->val;
 
@@ -28,10 +28,6 @@ public:
             
             if(l1 != NULL) l1 = l1->next;
             if(l2 != NULL) l2 = l2->next;
-        }
-        
-        if(carry > 0) {
-            tail -> next = new ListNode(carry);
         }
         
         return dummy->next;
