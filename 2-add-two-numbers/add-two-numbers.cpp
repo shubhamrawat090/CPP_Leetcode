@@ -14,26 +14,26 @@ public:
         int carry = 0;
         ListNode* dummy = new ListNode();
         ListNode* tail = dummy;
+        
         while(l1 != NULL || l2 != NULL) {
             int v1 = l1 == NULL ? 0 : l1->val;
             int v2 = l2 == NULL ? 0 : l2->val;
+
             int sum = (v1 + v2 + carry);
             
-            // cout<<"v1: "<<v1<<", ";
-            // cout<<"v2: "<<v2<<", ";
-            // cout<<"carry: "<<carry<<", ";
-            // cout<<"sum: "<<sum<<", ";
-            // cout<<endl;
-            
             carry = sum / 10;
+            
             tail->next = new ListNode(sum % 10);
             tail = tail->next;
+            
             if(l1 != NULL) l1 = l1->next;
             if(l2 != NULL) l2 = l2->next;
         }
+        
         if(carry > 0) {
             tail -> next = new ListNode(carry);
         }
+        
         return dummy->next;
     }
 };
