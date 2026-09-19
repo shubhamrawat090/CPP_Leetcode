@@ -5,7 +5,33 @@ public:
         // int n = nums.size();
         // vector<vector<int>> dp(n, vector<int>(n + 1, -1));
         // return memoized(nums, 0, -1, dp);
-        return tabulate(nums);
+        // return tabulate(nums);
+        return spaceOptimized(nums);
+    }
+
+    int spaceOptimized(vector<int>& nums) {
+        int n = nums.size();
+        // i -> 0 --> n-1
+        // prevIdx -> -1 -> n-1
+        vector<int> currRow(n + 1, 0);
+        vector<int> nextRow(n + 1, 0);
+
+        for (int i = n - 1; i >= 0; i--) {
+            for (int prevIdx = n - 2; prevIdx >= -1; prevIdx--) {
+                // not take
+                int len = 0 + nextRow[prevIdx + 1];
+                // take - ONLY WHEN prevVal < currVal
+                if (prevIdx == -1 || nums[prevIdx] < nums[i]) {
+                    // YEH ELEM LIYA HAI ==> prevIdx = i
+                    len = max(len, 1 + nextRow[i + 1]);
+                }
+
+                currRow[prevIdx + 1] = len;
+            }
+            nextRow = currRow;
+        }
+
+        return currRow[0];
     }
 
     int tabulate(vector<int>& nums) {
