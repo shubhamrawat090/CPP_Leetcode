@@ -1,22 +1,23 @@
 class Solution {
 public:
     bool isHappy(int n) {
-        int count = 0;
-        if(n == 1) return true;
-        while(count != 50) {
-            n = digitSquareSum(n);
-            if(n == 1) return true;
-            count++;
+        unordered_set<int> seen;
+
+        while (n != 1 && seen.find(n) == seen.end()) {
+            seen.insert(n);
+            n = nextValue(n);
         }
-        return false;
+
+        return n == 1;
     }
 
-    int digitSquareSum(int n) {
+private:
+    int nextValue(int n) {
         int sum = 0;
-        while (n) {
-            int rem = n % 10;
+        while (n > 0) {
+            int digit = n % 10;
+            sum += digit * digit;
             n /= 10;
-            sum += (rem * rem);
         }
         return sum;
     }
