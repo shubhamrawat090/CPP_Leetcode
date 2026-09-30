@@ -1,15 +1,34 @@
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
-        int i = 0;
-        for(int j=1; j<nums.size(); j++) {
-            // same ko ignore karo
-            // different ko update karo
-            if(nums[i] != nums[j]) {
-                i++;
-                nums[i] = nums[j];
+        int itr = 0;
+        int curr = 0;
+        int n = nums.size();
+        for (int n : nums)
+            cout << n << " ";
+        cout << endl;
+        while (itr < n) {
+            int nextGr = n;
+            for (int i = curr + 1; i < n; i++) {
+                if (nums[i] > nums[curr]) {
+                    nextGr = i;
+                    break;
+                }
             }
+            // cout << "ARR: ";
+            // for (int n : nums)
+            //     cout << n << " ";
+            // cout << "\ncurr, itr, nextGr: " << curr << ", " << itr << ", "
+            //      << nextGr << endl;
+            if (nextGr == n)
+                break;
+            swap(nums[++itr], nums[nextGr]);
+            curr = itr;
         }
-        return i + 1; // for index i, size = i+1
+
+        for (int n : nums)
+            cout << n << " ";
+
+        return itr + 1;
     }
 };
