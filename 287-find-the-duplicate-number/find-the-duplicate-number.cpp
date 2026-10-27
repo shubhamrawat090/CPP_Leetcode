@@ -1,4 +1,20 @@
 class Solution {
+    int floydCycle(vector<int>& nums) {
+        int slow = 0, fast = 0;
+        do {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        } while(slow != fast);
+
+        slow = 0;
+        while(slow != fast) {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+
+        return slow;
+    }
+
     int cyclicSort(vector<int>& nums) {
         int n = nums.size();
         int i = 0;
@@ -22,5 +38,8 @@ class Solution {
     }
 
 public:
-    int findDuplicate(vector<int>& nums) { return cyclicSort(nums); }
+    int findDuplicate(vector<int>& nums) { 
+        return floydCycle(nums); 
+        // return cyclicSort(nums); 
+    }
 };
