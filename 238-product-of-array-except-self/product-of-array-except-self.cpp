@@ -1,33 +1,28 @@
 class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
-        int productOfAllExcept_0 = 1;
-        int zeroCount = 0;
-        for (int num : nums) {
-            if (num == 0)
-                zeroCount++;
-            else
-                productOfAllExcept_0 *= num;
+        int n = nums.size();
+
+        vector<int> ans(n, 1);
+
+        int leftProduct = 1;
+        int prefixLeft[n];
+        for (int i = 0; i < n; i++) {
+            leftProduct *= nums[i];
+            prefixLeft[i] = leftProduct;
         }
 
-        int n = nums.size();
-        vector<int> ans(n, 0);
-
-        if (zeroCount > 1)
-            return ans; // all will have zero
+        int rightProduct = 1;
+        int prefixRight[n];
+        for (int i = n - 1; i >= 0; i--) {
+            rightProduct *= nums[i];
+            prefixRight[i] = rightProduct;
+        }
 
         for (int i = 0; i < n; i++) {
-            if (zeroCount == 0) {
-                // there are no zeroes
-                ans[i] = productOfAllExcept_0 / nums[i];
-            } else {
-                // There is 1 zero
-                if (nums[i] == 0) {
-                    ans[i] = productOfAllExcept_0;
-                } else {
-                    ans[i] = 0;
-                }
-            }
+            int lP = (i == 0) ? 1 : prefixLeft[i - 1];
+            int rP = (i == n - 1) ? 1 : prefixRight[i + 1];
+            ans[i] = lP * rP;
         }
 
         return ans;
