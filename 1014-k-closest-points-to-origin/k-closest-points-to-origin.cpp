@@ -1,34 +1,42 @@
+struct Coords {
+    int x;
+    int y;
+    int dist;
+};
+
+struct cmp {
+    bool operator()(const Coords& a, const Coords& b) {
+        return a.dist < b.dist;
+    }
+};
+
 class Solution {
-    typedef pair<int, vector<int>> P;
-
-    struct Compare {
-        bool operator()(const auto& a, const auto& b) {
-            return a.first < b.first;
-        }
-    };
-
 public:
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
-        // custom priority queue needed - a maxheap(distance b/w 0,0(origin) and x,y is largest first)
-        // in order to remove them fastest
-        // maintain heap.size == k
         int n = points.size();
-        priority_queue<P, vector<P>, Compare> pq;
 
-        for(int i=0; i<n; i++) {
-            int x = points[i][0], y = points[i][1];
-            int dist = x*x + y*y;
-            pq.push({dist, {x, y}});
-            if(pq.size() > k) {
-                pq.pop();
-            }
+        priority_queue<Coords, vector<Coords>, cmp> maxHeap;
+
+        for (int i = 0; i < n; i++) {
+            Coords c;
+            c.x = points[i][0];
+            c.y = points[i][1];
+            c.dist = (c.x * c.x) + (c.y * c.y);
+
+            maxHeap.push(c);
+
+            if (maxHeap.size() > k)
+                maxHeap.pop();
         }
 
-        vector<vector<int>> ans;
-        while(!pq.empty()) {
-            vector<int> pts = pq.top().second;
-            pq.pop();
-            ans.push_back(pts); 
+        vector<vector<int>> ans(k);
+        int i = 0;
+        while (!maxHeap.empty()) {
+            Coords c = maxHeap.top();
+            maxHeap.pop();
+
+            ans[i] = {c.x, c.y};
+            i++;
         }
 
         return ans;
