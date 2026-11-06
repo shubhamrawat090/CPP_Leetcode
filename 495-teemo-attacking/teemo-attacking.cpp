@@ -21,6 +21,8 @@ public:
             int start = timeSeries[i];
             int end = timeSeries[i] + duration - 1;
             
+            // ** Important Condition **
+            // If end exceedes the next point then take nextPoint - 1 as end
             if (i < n - 1) {
                 if (end >= timeSeries[i + 1])
                     end = timeSeries[i + 1] - 1;
