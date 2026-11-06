@@ -20,12 +20,11 @@ public:
         for (int i = 0; i < n; i++) {
             int start = timeSeries[i];
             int end = timeSeries[i] + duration - 1;
-            // cout<<"start: "<<start<<", end: "<<end;
+            
             if (i < n - 1) {
                 if (end >= timeSeries[i + 1])
                     end = timeSeries[i + 1] - 1;
             }
-            // cout<<", takenEnd: "<<end<<"\n";
 
             int count = end - start + 1;
             totalTime += count;
