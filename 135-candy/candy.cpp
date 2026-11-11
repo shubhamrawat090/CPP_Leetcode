@@ -20,7 +20,6 @@ public:
 
         int candyCount = 0;
         for (auto& c : candies) {
-            // cout << c << " ";
             candyCount += c;
         }
 
