@@ -59,7 +59,8 @@ public:
             }
 
             if (sign * ans <= INT_MIN) {
-                ans = 1LL * -1 * INT_MIN;
+                // make -(-INF) so that final return statement balances out the signs with correct value
+                ans = 1LL * -1 * INT_MIN; 
                 // cout<<"-ve max rached: STOP"<<endl;
                 break;
             }
