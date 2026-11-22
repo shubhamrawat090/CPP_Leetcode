@@ -10,7 +10,7 @@ public:
         int left = 1, right = n;
         int ans = -1;
         while(left <= right) {
-            int mid = right + (left - right) / 2;
+            int mid = right - (right - left) / 2;
             if(isBadVersion(mid)) {
                 ans = mid;
                 right = mid - 1; // first occurence of BAD version
