@@ -2,23 +2,28 @@ class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
         sort(intervals.begin(), intervals.end());
+
         int n = intervals.size();
-        vector<int> interval = intervals[0];
-        vector<vector<int>> result;
-        for (int i = 1; i < n; i++) {
-            vector<int> currInterval = intervals[i];
-            int a = interval[0], b = interval[1];
-            int c = currInterval[0], d = currInterval[1];
-            if (c <= b) {
-                // merging
-                interval[1] = max(b, d);
-            } else {
-                result.push_back(interval);
-                interval = currInterval;
+        vector<int> curr = intervals[0];
+        vector<vector<int>> ans;
+
+        for(int i=1; i<n; i++) {
+            int currStart = curr[0], currEnd = curr[1];
+            int nextStart = intervals[i][0], nextEnd = intervals[i][1];
+
+            // OVERLAP -> merge into curr
+            if(nextStart <= currEnd) {
+                curr[1] = max(currEnd, nextEnd);
+            }
+            // NO OVERLAP -> push curr in ans, set curr = intervals[i]
+            else {
+                ans.push_back(curr);
+                curr = intervals[i];
             }
         }
 
-        result.push_back(interval);
-        return result;
+        ans.push_back(curr); // add the last meeting as well
+
+        return ans;
     }
 };
