@@ -6,7 +6,7 @@ public:
         // OPTIMIZATION: push new interval into appropriate place, INTERVALS ARE
         // SORTED Then sorting is NOT required
         // sort the intervals array
-        // apply the MERGE INTERVALS method
+        // apply the MERGE INTERVALS method -> NOT SORT FOR OPTIMIZATION
         int n = intervals.size();
         int insertIndex = 0;
         while (insertIndex < n && intervals[insertIndex][0] < newInterval[0]) {
