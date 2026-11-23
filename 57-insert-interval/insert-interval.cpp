@@ -1,30 +1,37 @@
 class Solution {
 public:
     vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
-        int pushPosition = -1;
-        // insert at apt position
-        for (int i = 0; i < intervals.size(); i++) {
-            if (newInterval[0] <= intervals[i][0]) {
-                pushPosition = i;
-                break;
-            }
-        }
+        // push newInterval into intervals array
+        // sort the intervals array
+        // apply the MERGE INTERVALS method
+        intervals.push_back(newInterval);
+        return merge(intervals);
+    }
 
-        if (pushPosition == -1) {
-            intervals.push_back(newInterval);
-        } else {
-            intervals.insert(intervals.begin() + pushPosition, newInterval);
-        }
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        sort(intervals.begin(), intervals.end());
 
+        int n = intervals.size();
+        vector<int> curr = intervals[0];
         vector<vector<int>> ans;
-        ans.push_back(intervals[0]);
-        for (int i = 1; i < intervals.size(); i++) {
-            if (intervals[i][0] <= ans.back()[1]) {
-                ans.back()[1] = max(ans.back()[1], intervals[i][1]);
-            } else {
-                ans.push_back(intervals[i]);
+
+        for(int i=1; i<n; i++) {
+            int currStart = curr[0], currEnd = curr[1];
+            int nextStart = intervals[i][0], nextEnd = intervals[i][1];
+
+            // OVERLAP -> merge into curr
+            if(nextStart <= currEnd) {
+                curr[1] = max(currEnd, nextEnd);
+            }
+            // NO OVERLAP -> push curr in ans, set curr = intervals[i]
+            else {
+                ans.push_back(curr);
+                curr = intervals[i];
             }
         }
+
+        ans.push_back(curr); // add the last meeting as well
+
         return ans;
     }
 };
