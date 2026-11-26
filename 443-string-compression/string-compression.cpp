@@ -3,17 +3,21 @@ public:
     int compress(vector<char>& chars) {
         int n = chars.size();
 
+        int compressIdx = 0;
+
         char currChar = chars[0];
         int currCount = 0;
 
-        string compressed;
         for (int i = 0; i < n; i++) {
             if (chars[i] == currChar) {
                 currCount++;
             } else {
-                compressed.push_back(currChar);
+                chars[compressIdx++] = currChar;
                 if (currCount > 1) {
-                    compressed += to_string(currCount);
+                    string count = to_string(currCount);
+                    for (char c : count) {
+                        chars[compressIdx++] = c;
+                    }
                 }
 
                 currCount = 1;
@@ -21,15 +25,14 @@ public:
             }
         }
 
-        compressed.push_back(currChar);
+        chars[compressIdx++] = currChar;
         if (currCount > 1) {
-            compressed += to_string(currCount);
+            string count = to_string(currCount);
+            for (char c : count) {
+                chars[compressIdx++] = c;
+            }
         }
 
-        int size = compressed.size();
-        for (int i = 0; i < size; i++) {
-            chars[i] = compressed[i];
-        }
-        return size;
+        return compressIdx;
     }
 };
